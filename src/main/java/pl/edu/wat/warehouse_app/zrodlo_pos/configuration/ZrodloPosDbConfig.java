@@ -22,7 +22,7 @@ import java.util.HashMap;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "zrodloPosEntityManagerFactory",
         transactionManagerRef = "zrodloPosTransactionManager",
-        basePackages = "pl.edu.wat.warehouse_app.zrodlo_pos.model"
+        basePackages = "pl.edu.wat.warehouse_app.zrodlo_pos.repository"
 )
 public class ZrodloPosDbConfig {
 

@@ -21,7 +21,7 @@ import java.util.HashMap;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "stageEntityManagerFactory",
         transactionManagerRef = "stageTransactionManager",
-        basePackages = "pl.edu.wat.warehouse_app.stage.model"
+        basePackages = "pl.edu.wat.warehouse_app.stage.repository"
 )
 public class StageDbConfig {
 
