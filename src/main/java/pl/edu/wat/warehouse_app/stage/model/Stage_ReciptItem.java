@@ -1,5 +1,6 @@
 package pl.edu.wat.warehouse_app.stage.model;
 
+import lombok.Data;
 import pl.edu.wat.warehouse_app.zrodlo_pos.model.ZrodloPos_ReciptItem;
 
 import javax.persistence.Entity;
