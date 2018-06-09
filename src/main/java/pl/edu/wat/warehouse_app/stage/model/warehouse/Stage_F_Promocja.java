@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -21,8 +21,8 @@ public class Stage_F_Promocja {
 
     private Integer procentObnizki;
 
-    private LocalDateTime creationTime;
+    private Timestamp creationTime;
 
-    private LocalDateTime importTime;
+    private Timestamp importTime;
 
 }

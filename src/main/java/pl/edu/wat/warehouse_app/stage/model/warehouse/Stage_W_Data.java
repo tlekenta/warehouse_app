@@ -4,8 +4,8 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -14,7 +14,7 @@ public class Stage_W_Data {
     @Id
     private Long dataId;
 
-    private LocalDate data;
+    private Date data;
 
     private Integer kwartal;
 
@@ -24,8 +24,8 @@ public class Stage_W_Data {
 
     private Integer dzien;
 
-    private LocalDateTime creationTime;
+    private Timestamp creationTime;
 
-    private LocalDateTime importTime;
+    private Timestamp importTime;
 
 }

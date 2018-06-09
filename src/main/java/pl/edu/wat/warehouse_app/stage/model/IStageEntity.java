@@ -1,11 +1,11 @@
 package pl.edu.wat.warehouse_app.stage.model;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public interface IStageEntity {
 
-    void setCreationTime(LocalDateTime pDate);
+    void setCreationTime(Timestamp pDate);
 
-    void setImportTime(LocalDateTime pDate);
+    void setImportTime(Timestamp pDate);
 
 }

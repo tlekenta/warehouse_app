@@ -5,7 +5,7 @@ import pl.edu.wat.warehouse_app.warehouse.model.key.F_DostawaKey;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -30,8 +30,8 @@ public class Stage_F_Dostawa {
 
     private Float cenaBrutto;
 
-    private LocalDateTime creationTime;
+    private Timestamp creationTime;
 
-    private LocalDateTime importTime;
+    private Timestamp importTime;
 
 }

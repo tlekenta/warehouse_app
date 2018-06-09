@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -14,7 +14,7 @@ public class W_Czas {
     @Id
     private Long czasId;
 
-    private LocalDateTime dateTime;
+    private Timestamp dateTime;
 
     @ManyToOne
     private W_Data dataId;

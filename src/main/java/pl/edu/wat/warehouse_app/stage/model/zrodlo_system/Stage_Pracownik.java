@@ -6,7 +6,7 @@ import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -34,8 +34,8 @@ public class Stage_Pracownik implements IStageEntity {
     @Column(length = 50)
     private String Nazwisko;
 
-    private LocalDateTime creationTime;
+    private Timestamp creationTime;
 
-    private LocalDateTime importTime;
+    private Timestamp importTime;
 
 }

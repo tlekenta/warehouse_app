@@ -11,7 +11,7 @@ import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_KlientReposit
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_AdresRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_KlientRepository;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -42,8 +42,8 @@ public class KlientDimensionTransformer {
                         sourceClient.getNazwisko(),
                         sourceClient.getTelefon(),
                         getWarehouseAddress(sourceClient.getAdresId()).getAdresId(),
-                        LocalDateTime.now(),
-                        LocalDateTime.now()
+                        new Timestamp(System.currentTimeMillis()),
+                        new Timestamp(System.currentTimeMillis())
                 );
                 stage_w_klientRepository.save(warehouseClient);
             } else {
@@ -68,7 +68,7 @@ public class KlientDimensionTransformer {
                 }
 
                 if(change) {
-                   warehouseClient.setImportTime(LocalDateTime.now());
+                   warehouseClient.setImportTime(new Timestamp(System.currentTimeMillis()));
                    stage_w_klientRepository.save(warehouseClient);
                 }
 

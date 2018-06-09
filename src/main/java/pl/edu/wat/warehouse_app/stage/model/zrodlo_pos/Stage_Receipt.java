@@ -5,7 +5,6 @@ import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -22,8 +21,8 @@ public class Stage_Receipt implements IStageEntity {
 
     private double totalCost;
 
-    private LocalDateTime creationTime;
+    private Timestamp creationTime;
 
-    private LocalDateTime importTime;
+    private Timestamp importTime;
 
 }

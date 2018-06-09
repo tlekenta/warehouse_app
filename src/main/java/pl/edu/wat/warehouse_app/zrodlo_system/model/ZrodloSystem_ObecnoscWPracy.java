@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -20,8 +20,8 @@ public class ZrodloSystem_ObecnoscWPracy {
     @ManyToOne
     private ZrodloSystem_Sklep sklepId;
 
-    private LocalDateTime przybycie;
+    private Timestamp przybycie;
 
-    private LocalDateTime wyjscie;
+    private Timestamp wyjscie;
 
 }

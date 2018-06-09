@@ -1,12 +1,10 @@
 package pl.edu.wat.warehouse_app.stage.model.warehouse;
 
 import lombok.Data;
-import pl.edu.wat.warehouse_app.warehouse.model.dimension.W_Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -15,7 +13,7 @@ public class Stage_W_Czas {
     @Id
     private Long czasId;
 
-    private LocalDateTime dateTime;
+    private Timestamp dateTime;
 
     private Long dataId;
 
@@ -25,8 +23,8 @@ public class Stage_W_Czas {
 
     private Integer sekunda;
 
-    private LocalDateTime creationTime;
+    private Timestamp creationTime;
 
-    private LocalDateTime importTime;
+    private Timestamp importTime;
 
 }

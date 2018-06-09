@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.LocalDate;
+import java.sql.Date;
 
 @Data
 @Entity
@@ -13,7 +13,7 @@ public class W_Data {
     @Id
     private Long dataId;
 
-    private LocalDate data;
+    private Date data;
 
     private Integer kwartal;
 

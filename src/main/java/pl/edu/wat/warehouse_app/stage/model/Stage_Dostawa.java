@@ -3,7 +3,7 @@ package pl.edu.wat.warehouse_app.stage.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -31,10 +31,10 @@ public class Stage_Dostawa {
 
     private Float kwota;
 
-    private LocalDateTime dataDostawy;
+    private Timestamp dataDostawy;
 
-    private LocalDateTime dataZaplaty;
+    private Timestamp dataZaplaty;
 
-    private LocalDateTime dataImportu;
+    private Timestamp dataImportu;
 
 }

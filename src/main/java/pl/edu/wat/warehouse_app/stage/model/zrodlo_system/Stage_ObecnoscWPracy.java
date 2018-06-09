@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -17,12 +17,12 @@ public class Stage_ObecnoscWPracy {
 
     private Long sklepId;
 
-    private LocalDateTime przybycie;
+    private Timestamp przybycie;
 
-    private LocalDateTime wyjscie;
+    private Timestamp wyjscie;
 
-    private LocalDateTime creationTime;
+    private Timestamp creationTime;
 
-    private LocalDateTime importTime;
+    private Timestamp importTime;
 
 }

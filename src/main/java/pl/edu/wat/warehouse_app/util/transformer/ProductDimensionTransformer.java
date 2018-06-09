@@ -7,7 +7,7 @@ import pl.edu.wat.warehouse_app.stage.model.zrodlo_pos.Stage_Product;
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_ProductRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_pos.Stage_ProductRepository;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -31,8 +31,8 @@ public class ProductDimensionTransformer {
                         sourceProduct.getName(),
                         sourceProduct.getBarcode(),
                         ((Double) sourceProduct.getValue()).floatValue(),
-                        LocalDateTime.now(),
-                        LocalDateTime.now()
+                        new Timestamp(System.currentTimeMillis()),
+                        new Timestamp(System.currentTimeMillis())
                 );
 
                 stage_w_productRepository.save(warehouseProduct);
@@ -49,7 +49,7 @@ public class ProductDimensionTransformer {
                 }
 
                 if(change) {
-                    warehouseProduct.setImportTime(LocalDateTime.now());
+                    warehouseProduct.setImportTime(new Timestamp(System.currentTimeMillis()));
                     stage_w_productRepository.save(warehouseProduct);
                 }
             }

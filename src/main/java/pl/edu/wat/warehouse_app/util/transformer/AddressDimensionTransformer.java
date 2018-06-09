@@ -7,7 +7,7 @@ import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.Stage_Adres;
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_AdresRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_AdresRepository;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -40,8 +40,8 @@ public class AddressDimensionTransformer {
                     sourceAddres.getKodPocztowy(),
                     sourceAddres.getMiasto(),
                     sourceAddres.getPoczta(),
-                    LocalDateTime.now(),
-                    LocalDateTime.now()
+                    new Timestamp(System.currentTimeMillis()),
+                    new Timestamp(System.currentTimeMillis())
                 );
                 stage_w_adresRepository.save(warehouseAddress);
             }

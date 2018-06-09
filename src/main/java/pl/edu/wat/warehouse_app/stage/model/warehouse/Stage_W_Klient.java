@@ -2,10 +2,9 @@ package pl.edu.wat.warehouse_app.stage.model.warehouse;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import pl.edu.wat.warehouse_app.warehouse.model.dimension.W_Adres;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -27,8 +26,8 @@ public class Stage_W_Klient {
 
     private Long adresId;
 
-    private LocalDateTime creationTime;
+    private Timestamp creationTime;
 
-    private LocalDateTime importTime;
+    private Timestamp importTime;
 
 }

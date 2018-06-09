@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
 
 import javax.persistence.Entity;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
 
@@ -41,8 +41,8 @@ public class Extractor {
 
             reflectionUtils.rewriteFields(iSourceObject, vTargetObject);
 
-            vTargetObject.setCreationTime(LocalDateTime.now());
-            vTargetObject.setImportTime(LocalDateTime.now());
+            vTargetObject.setCreationTime(new Timestamp(System.currentTimeMillis()));
+            vTargetObject.setImportTime(new Timestamp(System.currentTimeMillis()));
 
             vStageRepository.save(vTargetObject);
         }

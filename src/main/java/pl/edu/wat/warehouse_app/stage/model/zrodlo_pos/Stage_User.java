@@ -4,7 +4,7 @@ import lombok.Data;
 import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
 @Data
@@ -15,8 +15,8 @@ public class Stage_User implements IStageEntity {
 
     private String userNumber;
 
-    private LocalDateTime creationTime;
+    private Timestamp creationTime;
 
-    private LocalDateTime importTime;
+    private Timestamp importTime;
 
 }
