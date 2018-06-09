@@ -22,6 +22,13 @@ public class Stage_Adres implements IStageEntity {
 
     private Integer numerLokalu;
 
+    @Column(length = 6)
+    private String kodPocztowy;
+
+    private String miasto;
+
+    private String poczta;
+
     private LocalDateTime creationTime;
 
     private LocalDateTime importTime;

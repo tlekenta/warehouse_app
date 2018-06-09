@@ -13,7 +13,7 @@ public class ReflectionUtils {
 
         for(Field iSourceField: vSourceFields) {
             String vSourceFieldName = iSourceField.getName();
-            Field vTargetField = pTarget.getClass().getSuperclass().getDeclaredField(vSourceFieldName);
+            Field vTargetField = pTarget.getClass().getDeclaredField(vSourceFieldName);
 
             iSourceField.setAccessible(true);
             vTargetField.setAccessible(true);
