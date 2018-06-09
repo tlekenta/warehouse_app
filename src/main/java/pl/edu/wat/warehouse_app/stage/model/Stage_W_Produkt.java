@@ -1,14 +1,25 @@
 package pl.edu.wat.warehouse_app.stage.model;
 
 import lombok.Data;
-import pl.edu.wat.warehouse_app.stage.model.mapped_clesses.ZrodloPos_ReciptItem;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
-@Entity
 @Data
-public class Stage_ReciptItem extends ZrodloPos_ReciptItem implements IStageEntity {
+@Entity
+public class Stage_W_Produkt {
+
+    @Id
+    Long produktId;
+
+    String nazwa;
+
+    Float cenaJednostkowa;
+
+    Integer stawkaVat;
+
+    Float cenaBrutto;
 
     private LocalDateTime creationTime;
 

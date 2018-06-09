@@ -6,14 +6,20 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
-@Entity
 @Data
-public class Stage_Unit implements IStageEntity {
+@Entity
+public class Stage_F_Promocja {
 
     @Id
-    private Long id;
+    private Long promocjaId;
 
-    private String unitName;
+    private Long produktId;
+
+    private Long dataPoczatkowaId;
+
+    private Long dataKoncowaId;
+
+    private Integer procentObnizki;
 
     private LocalDateTime creationTime;
 

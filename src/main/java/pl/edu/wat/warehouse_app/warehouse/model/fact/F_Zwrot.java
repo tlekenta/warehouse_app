@@ -13,24 +13,24 @@ import javax.persistence.ManyToOne;
 public class F_Zwrot {
 
     @Id
-    F_ZwrotKey f_zwrotKey;
+    private F_ZwrotKey f_zwrotKey;
 
     @ManyToOne
-    W_Pracownik produktId;
+    private W_Pracownik produktId;
 
     @ManyToOne
-    W_Klient klientId;
+    private W_Klient klientId;
 
     @ManyToOne
-    W_Data dataId;
+    private W_Data dataId;
 
     @ManyToOne
-    W_Sklep sklepId;
+    private W_Sklep sklepId;
 
-    Integer liczbaSztuk;
+    private Integer liczbaSztuk;
 
-    Float cenaJednostkowa;
+    private Float cenaJednostkowa;
 
-    Float strataCalkowita;
+    private Float strataCalkowita;
 
 }

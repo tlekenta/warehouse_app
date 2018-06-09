@@ -10,14 +10,14 @@ import javax.persistence.Id;
 public class W_Produkt {
 
     @Id
-    Long produktId;
+    private Long produktId;
 
-    String nazwa;
+    private String nazwa;
 
-    Float cenaJednostkowa;
+    private Float cenaJednostkowa;
 
-    Integer stawkaVat;
+    private Integer stawkaVat;
 
-    Float cenaBrutto;
+    private Float cenaBrutto;
 
 }

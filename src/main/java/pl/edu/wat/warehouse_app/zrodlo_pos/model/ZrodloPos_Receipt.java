@@ -1,13 +1,10 @@
-package pl.edu.wat.warehouse_app.stage.model.mapped_clesses;
+package pl.edu.wat.warehouse_app.zrodlo_pos.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
-@MappedSuperclass
-public class ZrodloPos_Recipt {
+@Entity
+public class ZrodloPos_Receipt {
     private Long id;
     private Long clientId;
     private Long userId;

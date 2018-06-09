@@ -1,10 +1,10 @@
-package pl.edu.wat.warehouse_app.warehouse.model.key;
+package pl.edu.wat.warehouse_app.stage.model;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-public class F_DostawaKey implements Serializable {
+public class Stage_F_DostawaKey implements Serializable {
 
     private String nrDokumentuDostawy;
 

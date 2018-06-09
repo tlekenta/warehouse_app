@@ -14,18 +14,18 @@ import javax.persistence.ManyToOne;
 public class F_Zmiana_Pracownicza {
 
     @Id
-    Long zmianaId;
+    private Long zmianaId;
 
     @ManyToOne
-    W_Pracownik pracownikId;
+    private W_Pracownik pracownikId;
 
     @ManyToOne
-    W_Data dataRozpoczeciaId;
+    private W_Data dataRozpoczeciaId;
 
     @ManyToOne
-    W_Data dataZakonczeniaId;
+    private W_Data dataZakonczeniaId;
 
     @ManyToOne
-    W_Sklep sklepId;
+    private W_Sklep sklepId;
 
 }

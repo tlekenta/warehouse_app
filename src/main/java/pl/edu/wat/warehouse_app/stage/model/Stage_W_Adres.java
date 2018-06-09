@@ -1,14 +1,15 @@
-package pl.edu.wat.warehouse_app.warehouse.model.dimension;
+package pl.edu.wat.warehouse_app.stage.model;
 
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
-public class W_Adres {
+public class Stage_W_Adres {
 
     @Id
     private Long adresId;
@@ -25,5 +26,9 @@ public class W_Adres {
     private String miasto;
 
     private String poczta;
+
+    private LocalDateTime creationTime;
+
+    private LocalDateTime importTime;
 
 }

@@ -1,14 +1,11 @@
-package pl.edu.wat.warehouse_app.stage.model.mapped_clesses;
+package pl.edu.wat.warehouse_app.zrodlo_pos.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
-@MappedSuperclass
-public class ZrodloPos_ReciptItem {
+@Entity
+public class ZrodloPos_ReceiptItem {
     private Long id;
-    private Long reciptId;
+    private Long receiptId;
     private Long productId;
     private double amount;
 
@@ -22,12 +19,12 @@ public class ZrodloPos_ReciptItem {
     }
 
     @Basic
-    public Long getReciptId() {
-        return reciptId;
+    public Long getReceiptId() {
+        return receiptId;
     }
 
-    public void setReciptId(Long reciptId) {
-        this.reciptId = reciptId;
+    public void setReceiptId(Long receiptId) {
+        this.receiptId = receiptId;
     }
 
     @Basic

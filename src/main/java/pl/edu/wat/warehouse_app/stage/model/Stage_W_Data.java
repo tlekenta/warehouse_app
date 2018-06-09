@@ -4,16 +4,25 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
 @Data
-public class Stage_Unit implements IStageEntity {
+@Entity
+public class Stage_W_Data {
 
     @Id
-    private Long id;
+    Long dataId;
 
-    private String unitName;
+    LocalDate data;
+
+    Integer kwartal;
+
+    Integer rok;
+
+    Integer miesiac;
+
+    Integer dzien;
 
     private LocalDateTime creationTime;
 

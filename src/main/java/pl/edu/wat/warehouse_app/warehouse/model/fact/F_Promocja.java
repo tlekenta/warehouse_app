@@ -13,17 +13,17 @@ import javax.persistence.ManyToOne;
 public class F_Promocja {
 
     @Id
-    Long promocjaId;
+    private Long promocjaId;
 
     @ManyToOne
-    W_Produkt produktId;
+    private W_Produkt produktId;
 
     @ManyToOne
-    W_Data dataPoczatkowaId;
+    private W_Data dataPoczatkowaId;
 
     @ManyToOne
-    W_Data dataKoncowaId;
+    private W_Data dataKoncowaId;
 
-    Integer procentObnizki;
+    private Integer procentObnizki;
 
 }

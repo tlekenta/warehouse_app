@@ -11,17 +11,17 @@ import javax.persistence.ManyToOne;
 public class W_Klient {
 
     @Id
-    Long klientId;
+    private Long klientId;
 
-    String imie;
+    private String imie;
 
-    String nazwisko;
+    private String nazwisko;
 
-    String email;
+    private String email;
 
-    String numerTelefonu;
+    private String numerTelefonu;
 
     @ManyToOne
-    W_Adres adresId;
+    private W_Adres adresId;
 
 }

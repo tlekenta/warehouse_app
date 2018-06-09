@@ -11,16 +11,16 @@ import java.time.LocalDate;
 public class W_Data {
 
     @Id
-    Long dataId;
+    private Long dataId;
 
-    LocalDate data;
+    private LocalDate data;
 
-    Integer kwartal;
+    private Integer kwartal;
 
-    Integer rok;
+    private Integer rok;
 
-    Integer miesiac;
+    private Integer miesiac;
 
-    Integer dzien;
+    private Integer dzien;
 
 }

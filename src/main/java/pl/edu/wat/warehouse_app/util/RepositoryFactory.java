@@ -13,15 +13,15 @@ public class RepositoryFactory {
 
     private Stage_ClientRepository stage_clientRepository;
     private Stage_ProductRepository stage_productRepository;
-    private Stage_ReciptItemRepository stage_reciptItemRepository;
-    private Stage_ReciptRepository stage_reciptRepository;
+    private Stage_ReceiptItemRepository stage_reciptItemRepository;
+    private Stage_ReceiptRepository stage_reciptRepository;
     private Stage_UnitRepository stage_unitRepository;
     private Stage_UserRepository stage_userRepository;
 
     private ZrodloPos_ClientRepository zrodloPos_clientRepository;
     private ZrodloPos_ProductRepository zrodloPos_productRepository;
-    private ZrodloPos_ReciptItemRepository zrodloPos_reciptItemRepository;
-    private ZrodloPos_ReciptRepository zrodloPos_reciptRepository;
+    private ZrodloPos_ReceiptItemRepository zrodloPos_reciptItemRepository;
+    private ZrodloPos_ReceiptRepository zrodloPos_reciptRepository;
     private ZrodloPos_UnitRepository zrodloPos_unitRepository;
     private ZrodloPos_UserRepository zrodloPos_userRepository;
 
@@ -30,9 +30,9 @@ public class RepositoryFactory {
             return stage_clientRepository;
         } else if(pClass == ZrodloPos_Product.class) {
             return stage_productRepository;
-        } else if(pClass == ZrodloPos_ReciptItem.class) {
+        } else if(pClass == ZrodloPos_ReceiptItem.class) {
             return stage_reciptItemRepository;
-        } else if(pClass == ZrodloPos_Recipt.class) {
+        } else if(pClass == ZrodloPos_Receipt.class) {
             return stage_reciptRepository;
         } else if(pClass == ZrodloPos_Unit.class) {
             return stage_unitRepository;
@@ -48,9 +48,9 @@ public class RepositoryFactory {
             return zrodloPos_clientRepository;
         } else if(pClass == ZrodloPos_Product.class) {
             return zrodloPos_productRepository;
-        } else if(pClass == ZrodloPos_ReciptItem.class) {
+        } else if(pClass == ZrodloPos_ReceiptItem.class) {
             return zrodloPos_reciptItemRepository;
-        } else if(pClass == ZrodloPos_Recipt.class) {
+        } else if(pClass == ZrodloPos_Receipt.class) {
             return zrodloPos_reciptRepository;
         } else if(pClass == ZrodloPos_Unit.class) {
             return zrodloPos_unitRepository;

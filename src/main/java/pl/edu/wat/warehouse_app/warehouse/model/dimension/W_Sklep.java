@@ -9,16 +9,16 @@ import javax.persistence.*;
 public class W_Sklep {
 
     @Id
-    Long sklepId;
+    private Long sklepId;
 
-    String nazwa;
+    private String nazwa;
 
     @ManyToOne
-    W_Adres adresId;
+    private W_Adres adresId;
 
     @Column(length = 11)
-    String numerSklepu;
+    private String numerSklepu;
 
-    String telefon;
+    private String telefon;
 
 }

@@ -3,22 +3,23 @@ package pl.edu.wat.warehouse_app.stage.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class Stage_Product implements IStageEntity {
+public class Stage_Receipt implements IStageEntity {
 
     @Id
     private Long id;
 
-    private Long unitId;
+    private Long clientId;
 
-    private String name;
+    private Long userId;
 
-    private double value;
+    private Timestamp date;
 
-    private String barcode;
+    private double totalCost;
 
     private LocalDateTime creationTime;
 

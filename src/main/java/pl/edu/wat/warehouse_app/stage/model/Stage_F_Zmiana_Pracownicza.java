@@ -6,14 +6,20 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 
-@Entity
 @Data
-public class Stage_Unit implements IStageEntity {
+@Entity
+public class Stage_F_Zmiana_Pracownicza {
 
     @Id
-    private Long id;
+    private Long zmianaId;
 
-    private String unitName;
+    private Long pracownikId;
+
+    private Long dataRozpoczeciaId;
+
+    private Long dataZakonczeniaId;
+
+    private Long sklepId;
 
     private LocalDateTime creationTime;
 

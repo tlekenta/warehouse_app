@@ -9,20 +9,20 @@ import javax.persistence.*;
 public class W_Pracownik {
 
     @Id
-    Long pracownikId;
+    private Long pracownikId;
 
-    Integer numerPracownika;
+    private Integer numerPracownika;
 
-    String imie;
+    private String imie;
 
-    String nazwisko;
+    private String nazwisko;
 
     @ManyToOne
-    W_Adres adresId;
+    private W_Adres adresId;
 
     @Column(length = 11)
-    String pesel;
+    private String pesel;
 
-    String telefon;
+    private String telefon;
 
 }

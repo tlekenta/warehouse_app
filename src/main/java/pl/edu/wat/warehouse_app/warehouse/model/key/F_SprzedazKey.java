@@ -6,8 +6,8 @@ import java.io.Serializable;
 @Embeddable
 public class F_SprzedazKey implements Serializable {
 
-    String numerParagonu;
+    private String numerParagonu;
 
-    Integer pozycjaPragonu;
+    private Integer pozycjaPragonu;
 
 }

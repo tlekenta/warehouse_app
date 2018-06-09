@@ -13,25 +13,25 @@ import javax.persistence.*;
 public class F_Dostawa {
 
     @Id
-    F_DostawaKey f_dostawaKey;
+    private F_DostawaKey f_dostawaKey;
 
     @ManyToOne
-    W_Produkt produktId;
+    private W_Produkt produktId;
 
-    Long dostawcaId;
-
-    @ManyToOne
-    W_Data dataId;
+    private Long dostawcaId;
 
     @ManyToOne
-    W_Sklep sklepId;
+    private W_Data dataId;
 
-    Integer liczbaSztuk;
+    @ManyToOne
+    private W_Sklep sklepId;
 
-    Float cenaJednostkowa;
+    private Integer liczbaSztuk;
 
-    Integer stawkaVat;
+    private Float cenaJednostkowa;
 
-    Float cenaBrutto;
+    private Integer stawkaVat;
+
+    private Float cenaBrutto;
 
 }

@@ -1,14 +1,23 @@
 package pl.edu.wat.warehouse_app.stage.model;
 
 import lombok.Data;
-import pl.edu.wat.warehouse_app.stage.model.mapped_clesses.ZrodloPos_Recipt;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class Stage_Recipt extends ZrodloPos_Recipt implements IStageEntity {
+public class Stage_ReceiptItem implements IStageEntity {
+
+    @Id
+    private Long id;
+
+    private Long receiptId;
+
+    private Long productId;
+
+    private double amount;
 
     private LocalDateTime creationTime;
 

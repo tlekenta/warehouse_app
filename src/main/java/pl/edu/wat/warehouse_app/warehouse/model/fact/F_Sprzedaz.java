@@ -16,26 +16,26 @@ import javax.persistence.ManyToOne;
 public class F_Sprzedaz {
 
     @Id
-    F_SprzedazKey f_sprzedazKey;
+    private F_SprzedazKey f_sprzedazKey;
 
     @ManyToOne
-    W_Produkt produktId;
+    private W_Produkt produktId;
 
     @ManyToOne
-    W_Pracownik pracownikId;
+    private W_Pracownik pracownikId;
 
     @ManyToOne
-    W_Czas czasId;
+    private W_Czas czasId;
 
     @ManyToOne
-    W_Sklep sklepId;
+    private W_Sklep sklepId;
 
-    Integer liczbaSztuk;
+    private Integer liczbaSztuk;
 
-    Float cenaJednostkowa;
+    private Float cenaJednostkowa;
 
-    Integer stawkaVat;
+    private Integer stawkaVat;
 
-    Float cenaBrutto;
+    private Float cenaBrutto;
 
 }
