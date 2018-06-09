@@ -16,8 +16,4 @@ public class W_Produkt {
 
     private Float cenaJednostkowa;
 
-    private Integer stawkaVat;
-
-    private Float cenaBrutto;
-
 }
