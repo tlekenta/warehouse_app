@@ -2,6 +2,7 @@ package pl.edu.wat.warehouse_app.util;
 
 import org.springframework.stereotype.Component;
 import pl.edu.wat.warehouse_app.stage.model.*;
+import pl.edu.wat.warehouse_app.stage.model.zrodlo_pos.*;
 import pl.edu.wat.warehouse_app.zrodlo_pos.model.*;
 
 @Component

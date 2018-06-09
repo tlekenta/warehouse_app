@@ -3,7 +3,7 @@ package pl.edu.wat.warehouse_app.util;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
-import pl.edu.wat.warehouse_app.stage.repository.*;
+import pl.edu.wat.warehouse_app.stage.repository.zrodlo_pos.*;
 import pl.edu.wat.warehouse_app.zrodlo_pos.model.*;
 import pl.edu.wat.warehouse_app.zrodlo_pos.repository.*;
 
