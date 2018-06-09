@@ -14,17 +14,16 @@ import java.time.LocalDateTime;
 public class Stage_W_Sklep {
 
     @Id
-    Long sklepId;
+    private Long sklepId;
 
-    String nazwa;
+    private String nazwa;
 
-    @ManyToOne
-    W_Adres adresId;
+    private Long adresId;
 
     @Column(length = 11)
-    String numerSklepu;
+    private String numerSklepu;
 
-    String telefon;
+    private String telefon;
 
     private LocalDateTime creationTime;
 
