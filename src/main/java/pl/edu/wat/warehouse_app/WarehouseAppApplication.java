@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import pl.edu.wat.warehouse_app.util.DictionaryGenerator;
 import pl.edu.wat.warehouse_app.util.Extractor;
 import pl.edu.wat.warehouse_app.util.transformer.*;
 
@@ -23,6 +24,8 @@ public class WarehouseAppApplication implements CommandLineRunner {
     ProductDimensionTransformer productDimensionTransformer;
     @Autowired
     SklepDimensionTransformer sklepDimensionTransformer;
+    @Autowired
+    DictionaryGenerator dictionaryGenerator;
 
     public static void main(String[] args) {
         SpringApplication.run(WarehouseAppApplication.class, args);
@@ -33,6 +36,8 @@ public class WarehouseAppApplication implements CommandLineRunner {
         extractor.extractZrodloPos();
         extractor.extractZrodloSystem();
         extractor.extractDostawa();
+
+        dictionaryGenerator.generateDateAndTimes();
 
         addressDimensionTransformer.transform();
         pracownikDimensionTransformer.transform();

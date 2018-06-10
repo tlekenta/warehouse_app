@@ -9,8 +9,8 @@ import java.sql.Timestamp;
 
 @Data
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Stage_W_Klient {
 
     @Id
