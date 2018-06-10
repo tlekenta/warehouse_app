@@ -20,5 +20,6 @@ public class WarehouseAppApplication implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
         extractor.extractZrodloPos();
+        extractor.extractZrodloSystem();
     }
 }

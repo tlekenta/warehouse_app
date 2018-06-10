@@ -30,6 +30,15 @@ public class Extractor {
         }
     }
 
+    public void extractZrodloSystem() throws IllegalAccessException, NoSuchFieldException {
+        Reflections vReflections = new Reflections("pl.edu.wat.warehouse_app.zrodlo_system.model");
+        Set<Class<?>> vClasses = vReflections.getTypesAnnotatedWith(Entity.class);
+
+        for(Class iClass: vClasses) {
+            extract(iClass);
+        }
+    }
+
     private void extract(Class pClass) throws IllegalAccessException, NoSuchFieldException {
         JpaRepository vSourceRepository = repositoryFactory.getSourceRepository(pClass);
         JpaRepository vStageRepository = repositoryFactory.getStageRepository(pClass);
