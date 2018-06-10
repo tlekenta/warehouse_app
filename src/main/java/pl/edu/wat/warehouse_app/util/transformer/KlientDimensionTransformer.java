@@ -68,7 +68,7 @@ public class KlientDimensionTransformer {
                 }
 
                 if(change) {
-                   warehouseClient.setImportTime(new Timestamp(System.currentTimeMillis()));
+                   warehouseClient.setTimestampTo(new Timestamp(System.currentTimeMillis()));
                    stage_w_klientRepository.save(warehouseClient);
                 }
 

@@ -61,20 +61,20 @@ public class SklepDimensionTransformer {
 
                 warehouseShop.setAdresId(warehouseAddressId);
 
-                warehouseShop.setImportTime(new Timestamp(System.currentTimeMillis()));
-                warehouseShop.setCreationTime(new Timestamp(System.currentTimeMillis()));
+                warehouseShop.setTimestampTo(new Timestamp(System.currentTimeMillis()));
+                warehouseShop.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
 
                 stage_w_sklepRepository.save(warehouseShop);
 
             } else {
                 if(reflectionUtils.compareAndRewriteFields(sourceShop, warehouseShop)) {
-                    warehouseShop.setImportTime(new Timestamp(System.currentTimeMillis()));
+                    warehouseShop.setTimestampTo(new Timestamp(System.currentTimeMillis()));
                     stage_w_sklepRepository.save(warehouseShop);
                 }
 
                 if(warehouseShop.getAdresId() != null && !warehouseShop.getAdresId().equals(warehouseAddressId)) {
                     warehouseShop.setAdresId(warehouseAddressId);
-                    warehouseShop.setImportTime(new Timestamp(System.currentTimeMillis()));
+                    warehouseShop.setTimestampTo(new Timestamp(System.currentTimeMillis()));
                     stage_w_sklepRepository.save(warehouseShop);
                 }
             }

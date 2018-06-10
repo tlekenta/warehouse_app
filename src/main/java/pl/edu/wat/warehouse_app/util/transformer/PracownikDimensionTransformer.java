@@ -61,20 +61,20 @@ public class PracownikDimensionTransformer {
 
                 warehouseWorker.setAdresId(warehouseAddressId);
 
-                warehouseWorker.setImportTime(new Timestamp(System.currentTimeMillis()));
-                warehouseWorker.setCreationTime(new Timestamp(System.currentTimeMillis()));
+                warehouseWorker.setTimestampTo(new Timestamp(System.currentTimeMillis()));
+                warehouseWorker.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
 
                 stage_w_pracownikRepository.save(warehouseWorker);
 
             } else {
                 if(reflectionUtils.compareAndRewriteFields(sourceWorker, warehouseWorker)) {
-                    warehouseWorker.setImportTime(new Timestamp(System.currentTimeMillis()));
+                    warehouseWorker.setTimestampTo(new Timestamp(System.currentTimeMillis()));
                     stage_w_pracownikRepository.save(warehouseWorker);
                 }
 
                 if(warehouseWorker.getAdresId() != null && !warehouseWorker.getAdresId().equals(warehouseAddressId)) {
                     warehouseWorker.setAdresId(warehouseAddressId);
-                    warehouseWorker.setImportTime(new Timestamp(System.currentTimeMillis()));
+                    warehouseWorker.setTimestampTo(new Timestamp(System.currentTimeMillis()));
                     stage_w_pracownikRepository.save(warehouseWorker);
                 }
             }

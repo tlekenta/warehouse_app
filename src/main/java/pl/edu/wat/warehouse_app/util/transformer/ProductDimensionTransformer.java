@@ -33,14 +33,14 @@ public class ProductDimensionTransformer {
 
                 reflectionUtils.transformFields(sourceProduct, warehouseProduct);
 
-                warehouseProduct.setImportTime(new Timestamp(System.currentTimeMillis()));
-                warehouseProduct.setCreationTime(new Timestamp(System.currentTimeMillis()));
+                warehouseProduct.setTimestampTo(new Timestamp(System.currentTimeMillis()));
+                warehouseProduct.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
 
                 stage_w_productRepository.save(warehouseProduct);
 
             } else {
                 if(reflectionUtils.compareAndRewriteFields(sourceProduct, warehouseProduct)) {
-                    warehouseProduct.setImportTime(new Timestamp(System.currentTimeMillis()));
+                    warehouseProduct.setTimestampTo(new Timestamp(System.currentTimeMillis()));
                     stage_w_productRepository.save(warehouseProduct);
                 }
             }
