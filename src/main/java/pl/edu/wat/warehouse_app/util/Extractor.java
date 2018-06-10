@@ -1,12 +1,20 @@
 package pl.edu.wat.warehouse_app.util;
 
 import lombok.AllArgsConstructor;
+import net.sf.jsefa.Deserializer;
+import net.sf.jsefa.csv.CsvIOFactory;
+import net.sf.jsefa.csv.config.CsvConfiguration;
 import org.reflections.Reflections;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
+import pl.edu.wat.warehouse_app.stage.model.Stage_Dostawa;
+import pl.edu.wat.warehouse_app.util.converter.FloatConverter;
+import pl.edu.wat.warehouse_app.util.converter.IntegerConverter;
+import pl.edu.wat.warehouse_app.util.converter.TimeStampConverter;
 
 import javax.persistence.Entity;
+import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +47,25 @@ public class Extractor {
         }
     }
 
+    public void extractDostawa() throws IllegalAccessException, NoSuchFieldException {
+        CsvConfiguration config = new CsvConfiguration();
+        config.setFieldDelimiter(',');
+        config.getSimpleTypeConverterProvider().registerConverterType(Float.class, FloatConverter.class);
+        config.getSimpleTypeConverterProvider().registerConverterType(Timestamp.class, TimeStampConverter.class);
+        config.getSimpleTypeConverterProvider().registerConverterType(Integer.class, IntegerConverter.class);
+
+
+        Deserializer deserializer = CsvIOFactory.createFactory(config,Stage_Dostawa.class).createDeserializer();
+        System.out.println(this.getClass().getResourceAsStream("HD_DOSTAWY.csv"));
+        InputStreamReader fileReader = new InputStreamReader(this.getClass().getResourceAsStream("HD_DOSTAWY.csv"));
+        deserializer.open(fileReader);
+        while (deserializer.hasNext()) {
+            Stage_Dostawa dostawa = deserializer.next();
+            print(dostawa);
+        }
+        deserializer.close(true);
+    }
+
     private void extract(Class pClass) throws IllegalAccessException, NoSuchFieldException {
         JpaRepository vSourceRepository = repositoryFactory.getSourceRepository(pClass);
         JpaRepository vStageRepository = repositoryFactory.getStageRepository(pClass);
@@ -56,6 +83,14 @@ public class Extractor {
             vStageRepository.save(vTargetObject);
         }
 
+    }
+
+    private void print(Stage_Dostawa dostawa) {
+        System.out.println("---------------------------");
+        System.out.println("Name: " + dostawa.getNumerFaktury());
+        System.out.println("Role: " + dostawa.getDostawca());
+        System.out.println("Internal: " + dostawa.getProdukt());
+        System.out.println("Birthdate: " + dostawa.getDataDostawy());
     }
 
 }
