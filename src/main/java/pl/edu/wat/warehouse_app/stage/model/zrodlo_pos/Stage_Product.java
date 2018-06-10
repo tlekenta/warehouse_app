@@ -12,7 +12,6 @@ import java.sql.Timestamp;
 public class Stage_Product implements IStageEntity {
 
     @Id
-    @TransformedField(name = "prod_id")
     private Long id;
 
     private Long unitId;

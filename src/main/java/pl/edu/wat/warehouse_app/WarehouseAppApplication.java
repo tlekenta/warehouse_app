@@ -5,10 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import pl.edu.wat.warehouse_app.util.Extractor;
-import pl.edu.wat.warehouse_app.util.transformer.AddressDimensionTransformer;
-import pl.edu.wat.warehouse_app.util.transformer.KlientDimensionTransformer;
-import pl.edu.wat.warehouse_app.util.transformer.PracownikDimensionTransformer;
-import pl.edu.wat.warehouse_app.util.transformer.ProductDimensionTransformer;
+import pl.edu.wat.warehouse_app.util.transformer.*;
 
 
 @SpringBootApplication
@@ -24,6 +21,8 @@ public class WarehouseAppApplication implements CommandLineRunner {
     KlientDimensionTransformer klientDimensionTransformer;
     @Autowired
     ProductDimensionTransformer productDimensionTransformer;
+    @Autowired
+    SklepDimensionTransformer sklepDimensionTransformer;
 
     public static void main(String[] args) {
         SpringApplication.run(WarehouseAppApplication.class, args);
@@ -39,5 +38,6 @@ public class WarehouseAppApplication implements CommandLineRunner {
         pracownikDimensionTransformer.transform();
         klientDimensionTransformer.transform();
         productDimensionTransformer.transform();
+        sklepDimensionTransformer.transform();
     }
 }

@@ -18,7 +18,6 @@ public class Stage_W_Produkt {
 
     @Id
     @GeneratedValue
-    @TransformedField(name = "prod_id")
     private Long produktId;
 
     @TransformedField(name = "prod_nazwa")
