@@ -28,8 +28,8 @@ public class Stage_W_Klient {
 
     private Long adresId;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

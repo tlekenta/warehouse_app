@@ -30,8 +30,8 @@ public class Stage_F_Dostawa {
 
     private Float cenaBrutto;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

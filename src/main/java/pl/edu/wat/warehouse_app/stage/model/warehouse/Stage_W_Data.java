@@ -30,8 +30,8 @@ public class Stage_W_Data {
 
     private Integer dzien;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

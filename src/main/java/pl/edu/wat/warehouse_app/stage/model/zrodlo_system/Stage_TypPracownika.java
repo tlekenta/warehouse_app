@@ -18,8 +18,8 @@ public class Stage_TypPracownika implements IStageEntity {
     @Column(length = 100)
     private String typ;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

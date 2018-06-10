@@ -28,7 +28,7 @@ public class Stage_F_Zwrot {
 
     private Float strataCalkowita;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 }

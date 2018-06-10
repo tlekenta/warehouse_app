@@ -21,8 +21,8 @@ public class Stage_F_Promocja {
 
     private Integer procentObnizki;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

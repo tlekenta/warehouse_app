@@ -52,8 +52,8 @@ public class Stage_Dostawa {
     @CsvField(pos = 10, converterType = TimeStampConverter.class)
     private Timestamp dataZaplaty;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

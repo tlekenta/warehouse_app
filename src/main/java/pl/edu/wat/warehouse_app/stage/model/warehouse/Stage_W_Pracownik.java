@@ -35,8 +35,8 @@ public class Stage_W_Pracownik {
     @TransformedField(name = "prac_tel")
     private String telefon;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

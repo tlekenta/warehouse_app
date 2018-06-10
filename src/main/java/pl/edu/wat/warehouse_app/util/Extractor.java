@@ -67,8 +67,8 @@ public class Extractor {
 
             Stage_Dostawa test = dostawaRepository.getByNumerFakturyAndPozycjaFaktury(dostawa.getNumerFaktury(), dostawa.getPozycjaFaktury());
             if (null == test) {
-                dostawa.setCreationTime(new Timestamp(System.currentTimeMillis()));
-                dostawa.setImportTime(new Timestamp(System.currentTimeMillis()));
+                dostawa.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
+                dostawa.setTimestampTo(new Timestamp(System.currentTimeMillis()));
                 dostawaRepository.save(dostawa);
             }
         }
@@ -86,8 +86,8 @@ public class Extractor {
 
             reflectionUtils.rewriteFields(iSourceObject, vTargetObject);
 
-            vTargetObject.setCreationTime(new Timestamp(System.currentTimeMillis()));
-            vTargetObject.setImportTime(new Timestamp(System.currentTimeMillis()));
+            vTargetObject.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
+            vTargetObject.setTimestampTo(new Timestamp(System.currentTimeMillis()));
 
             vStageRepository.save(vTargetObject);
         }

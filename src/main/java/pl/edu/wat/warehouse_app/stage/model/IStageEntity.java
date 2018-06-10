@@ -4,8 +4,8 @@ import java.sql.Timestamp;
 
 public interface IStageEntity {
 
-    void setCreationTime(Timestamp pDate);
+    void setTimestampFrom(Timestamp pDate);
 
-    void setImportTime(Timestamp pDate);
+    void setTimestampTo(Timestamp pDate);
 
 }

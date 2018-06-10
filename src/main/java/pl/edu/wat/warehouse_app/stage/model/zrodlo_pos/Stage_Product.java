@@ -25,8 +25,8 @@ public class Stage_Product implements IStageEntity {
     @TransformedField(name = "prod_kod")
     private String barcode;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

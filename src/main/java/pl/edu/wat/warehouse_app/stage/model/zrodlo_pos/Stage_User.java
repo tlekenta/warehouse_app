@@ -15,8 +15,8 @@ public class Stage_User implements IStageEntity {
 
     private String userNumber;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

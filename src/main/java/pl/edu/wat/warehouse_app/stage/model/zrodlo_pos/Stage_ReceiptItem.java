@@ -20,8 +20,8 @@ public class Stage_ReceiptItem implements IStageEntity {
 
     private double amount;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

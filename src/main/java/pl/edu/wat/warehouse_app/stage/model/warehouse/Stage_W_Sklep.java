@@ -29,8 +29,8 @@ public class Stage_W_Sklep {
     @TransformedField(name = "sklep_tel")
     private String telefon;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

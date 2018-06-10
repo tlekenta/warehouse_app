@@ -16,8 +16,8 @@ public class Stage_Unit implements IStageEntity {
 
     private String unitName;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

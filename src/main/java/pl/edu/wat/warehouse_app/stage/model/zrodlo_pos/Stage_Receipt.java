@@ -21,8 +21,8 @@ public class Stage_Receipt implements IStageEntity {
 
     private double totalCost;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

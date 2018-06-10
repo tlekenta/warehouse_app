@@ -22,8 +22,8 @@ public class Stage_ObecnoscWPracy implements IStageEntity {
 
     private Timestamp wyjscie;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

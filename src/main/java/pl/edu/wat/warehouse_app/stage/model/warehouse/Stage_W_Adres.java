@@ -33,8 +33,8 @@ public class Stage_W_Adres {
 
     private String poczta;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

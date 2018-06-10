@@ -21,8 +21,8 @@ public class Stage_F_Zmiana_Pracownicza {
 
     private Long sklepId;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

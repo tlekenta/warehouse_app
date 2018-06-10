@@ -29,8 +29,8 @@ public class Stage_W_Produkt {
     @TransformedField(name = "prod_cena")
     private Float cenaJednostkowa;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

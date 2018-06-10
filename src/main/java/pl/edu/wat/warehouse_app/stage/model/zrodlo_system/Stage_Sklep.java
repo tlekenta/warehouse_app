@@ -30,7 +30,7 @@ public class Stage_Sklep implements IStageEntity {
 
     private Long AdresID;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 }

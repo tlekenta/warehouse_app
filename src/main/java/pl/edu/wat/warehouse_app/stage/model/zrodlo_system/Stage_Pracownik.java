@@ -40,8 +40,8 @@ public class Stage_Pracownik implements IStageEntity {
     @TransformedField(name = "prac_nazwisko")
     private String Nazwisko;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

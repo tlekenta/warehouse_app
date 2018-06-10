@@ -27,8 +27,8 @@ public class Stage_W_Czas {
 
     private Integer sekunda;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 
 }

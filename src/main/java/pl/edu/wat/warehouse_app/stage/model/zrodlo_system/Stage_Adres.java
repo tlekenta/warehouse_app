@@ -29,7 +29,7 @@ public class Stage_Adres implements IStageEntity {
 
     private String poczta;
 
-    private Timestamp creationTime;
+    private Timestamp timestampFrom;
 
-    private Timestamp importTime;
+    private Timestamp timestampTo;
 }
