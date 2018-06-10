@@ -21,5 +21,6 @@ public class WarehouseAppApplication implements CommandLineRunner {
     public void run(String... strings) throws Exception {
         extractor.extractZrodloPos();
         extractor.extractZrodloSystem();
+        extractor.extractDostawa();
     }
 }
