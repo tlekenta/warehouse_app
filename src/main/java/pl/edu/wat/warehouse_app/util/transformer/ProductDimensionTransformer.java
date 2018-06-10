@@ -39,17 +39,7 @@ public class ProductDimensionTransformer {
                 stage_w_productRepository.save(warehouseProduct);
 
             } else {
-                boolean change = false;
-                if(!warehouseProduct.getNazwa().equals(sourceProduct.getName())) {
-                    change = true;
-                    warehouseProduct.setNazwa(sourceProduct.getName());
-                }
-                if(!warehouseProduct.getCenaJednostkowa().equals(((Double) sourceProduct.getValue()).floatValue())) {
-                    change = true;
-                    warehouseProduct.setCenaJednostkowa(((Double) sourceProduct.getValue()).floatValue());
-                }
-
-                if(change) {
+                if(reflectionUtils.compareAndRewriteFields(sourceProduct, warehouseProduct)) {
                     warehouseProduct.setImportTime(new Timestamp(System.currentTimeMillis()));
                     stage_w_productRepository.save(warehouseProduct);
                 }

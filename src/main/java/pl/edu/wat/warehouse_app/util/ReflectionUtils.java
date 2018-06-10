@@ -29,17 +29,61 @@ public class ReflectionUtils {
             if(vSourceAnnotation != null) {
                 for(Field iTargetField: vTargetFields) {
                     TransformedField vTargetAnnotaion = iTargetField.getAnnotation(TransformedField.class);
+
+                    if(vTargetAnnotaion == null)
+                        continue;
+
                     if(vTargetAnnotaion.name().equals(vSourceAnnotation.name())) {
+
+                        //double do Float
                         if(iSourceField.getType() == Double.TYPE && iTargetField.getType() == Float.class) {
                             rewriteDoubleToFloatField(iSourceField, iTargetField, pSource, pTarget);
                             break;
+                        } else { //jednakowe typy
+                            rewriteField(iSourceField, iTargetField, pSource, pTarget);
+                            break;
                         }
-                        rewriteField(iSourceField, iTargetField, pSource, pTarget);
-                        break;
                     }
                 }
             }
         }
+    }
+
+    public boolean compareAndRewriteFields(Object pSource, Object pTarget) throws IllegalAccessException {
+        boolean change = false;
+        Field[] vSourceFields = pSource.getClass().getDeclaredFields();
+        Field[] vTargetFields = pTarget.getClass().getDeclaredFields();
+        for(Field iSourceField: vSourceFields) {
+            TransformedField vSourceAnnotation = iSourceField.getAnnotation(TransformedField.class);
+
+            if(vSourceAnnotation != null) {
+
+                for(Field iTargetField: vTargetFields) {
+                    TransformedField vTargetAnnotaion = iTargetField.getAnnotation(TransformedField.class);
+
+                    if(vTargetAnnotaion == null)
+                        continue;
+
+                    if(vTargetAnnotaion.name().equals(vSourceAnnotation.name())) {
+
+                        //double do Float
+                        if(iSourceField.getType() == Double.TYPE && iTargetField.getType() == Float.class) {
+                            if(!equalDoubleAndFloatFields(iSourceField, iTargetField, pSource, pTarget)){
+                                change = true;
+                                rewriteDoubleToFloatField(iSourceField, iTargetField, pSource, pTarget);
+                                break;
+                            }
+                        } else if(!equalFields(iSourceField, iTargetField, pSource, pTarget)) { //jednakowe typy
+                            change = true;
+                            rewriteField(iSourceField, iTargetField, pSource, pTarget);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return change;
     }
 
     private void rewriteField(Field pSourceField, Field pTargetField, Object pSource, Object pTarget) throws IllegalAccessException {
@@ -50,6 +94,23 @@ public class ReflectionUtils {
 
         pSourceField.setAccessible(false);
         pTargetField.setAccessible(false);
+    }
+
+    private boolean equalFields(Field pSourceField, Field pTargetField, Object pSource, Object pTarget) throws IllegalAccessException {
+        pSourceField.setAccessible(true);
+        pTargetField.setAccessible(true);
+
+        return pTargetField.get(pTarget).equals(pSourceField.get(pSource));
+    }
+
+    private boolean equalDoubleAndFloatFields(Field pSourceField, Field pTargetField, Object pSource, Object pTarget) throws IllegalAccessException {
+        pSourceField.setAccessible(true);
+        pTargetField.setAccessible(true);
+
+        double sourceValue = (double) pSourceField.get(pSource);
+        Float toCompare = ((Double) sourceValue).floatValue();
+
+        return pTargetField.get(pTarget).equals(toCompare);
     }
 
     private void rewriteDoubleToFloatField(Field pSourceField, Field pTargetField, Object pSource, Object pTarget) throws IllegalAccessException {
