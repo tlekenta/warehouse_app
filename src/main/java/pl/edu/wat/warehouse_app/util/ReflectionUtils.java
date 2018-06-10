@@ -16,7 +16,11 @@ public class ReflectionUtils {
             String vSourceFieldName = iSourceField.getName();
             Field vTargetField = pTarget.getClass().getDeclaredField(vSourceFieldName);
 
-            rewriteField(iSourceField, vTargetField, pSource, pTarget);
+            if(iSourceField.getType() == Double.TYPE && vTargetField.getType() == Float.class) {
+                rewriteDoubleToFloatField(iSourceField, vTargetField, pSource, pTarget);
+            } else {
+                rewriteField(iSourceField, vTargetField, pSource, pTarget);
+            }
         }
     }
 

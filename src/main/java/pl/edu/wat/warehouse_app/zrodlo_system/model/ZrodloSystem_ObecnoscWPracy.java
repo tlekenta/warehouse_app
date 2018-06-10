@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 
 @Entity
@@ -14,11 +13,9 @@ public class ZrodloSystem_ObecnoscWPracy {
     @Id
     private Long Id;
 
-    @ManyToOne
-    private ZrodloSystem_Pracownik pracownikId;
+    private Long pracownikId;
 
-    @ManyToOne
-    private ZrodloSystem_Sklep sklepId;
+    private Long sklepId;
 
     private Timestamp przybycie;
 
