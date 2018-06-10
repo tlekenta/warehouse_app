@@ -2,6 +2,7 @@ package pl.edu.wat.warehouse_app.stage.model.warehouse;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -9,6 +10,7 @@ import java.sql.Timestamp;
 @Data
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 public class Stage_W_Klient {
 
     @Id
