@@ -56,17 +56,17 @@ public class RepositoryFactory {
         } else if(pClass == ZrodloPos_User.class) {
             return stage_userRepository;
         } else if(pClass == ZrodloSystem_Adres.class){
-            return zrodloPos_adresRepository;
+            return stage_adresRepository;
         } else if(pClass == ZrodloSystem_Klient.class) {
-            return zrodloPos_klientRepository;
+            return stage_klientRepository;
         } else if(pClass == ZrodloSystem_ObecnoscWPracy.class) {
-            return zrodloPos_obecnoscWPracyRepository;
+            return stage_obecnoscWPracyRepository;
         } else if(pClass == ZrodloSystem_Pracownik.class) {
-            return zrodloPos_pracownikRepository;
+            return stage_pracownikRepository;
         } else if(pClass == ZrodloSystem_Sklep.class) {
-            return zrodloPos_sklepRepository;
+            return stage_sklepRepository;
         } else if(pClass == ZrodloSystem_TypPracownika.class) {
-            return zrodloPos_typPracownikaRepository;
+            return stage_typPracownikaRepository;
         } else {
             throw new UnsupportedOperationException("Nieobsługiwana encja: " + pClass.getName());
         }
@@ -86,17 +86,17 @@ public class RepositoryFactory {
         } else if(pClass == ZrodloPos_User.class) {
             return zrodloPos_userRepository;
         } else if(pClass == ZrodloSystem_Adres.class){
-            return stage_adresRepository;
+            return zrodloPos_adresRepository;
         } else if(pClass == ZrodloSystem_Klient.class) {
-            return stage_klientRepository;
+            return zrodloPos_klientRepository;
         } else if(pClass == ZrodloSystem_ObecnoscWPracy.class) {
-            return stage_obecnoscWPracyRepository;
+            return zrodloPos_obecnoscWPracyRepository;
         } else if(pClass == ZrodloSystem_Pracownik.class) {
-            return stage_pracownikRepository;
+            return zrodloPos_pracownikRepository;
         } else if(pClass == ZrodloSystem_Sklep.class) {
-            return stage_sklepRepository;
+            return zrodloPos_sklepRepository;
         } else if(pClass == ZrodloSystem_TypPracownika.class) {
-            return stage_typPracownikaRepository;
+            return zrodloPos_typPracownikaRepository;
         } else {
             throw new UnsupportedOperationException("Nieobsługiwana encja: " + pClass.getName());
         }

@@ -2,10 +2,7 @@ package pl.edu.wat.warehouse_app.zrodlo_system.model;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -23,6 +20,5 @@ public class ZrodloSystem_Sklep {
     @Column(length = 101)
     private String Telefon;
 
-    @ManyToOne
-    private ZrodloSystem_Adres AdresID;
+    private Long AdresID;
 }
