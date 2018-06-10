@@ -9,9 +9,11 @@ import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_AdresReposito
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_SklepRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_AdresRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_SklepRepository;
+import pl.edu.wat.warehouse_app.util.DbLogger;
 import pl.edu.wat.warehouse_app.util.ReflectionUtils;
 
 import java.sql.Timestamp;
+import java.text.MessageFormat;
 import java.util.List;
 
 @Service
@@ -28,6 +30,8 @@ public class SklepDimensionTransformer {
 
     ReflectionUtils reflectionUtils;
 
+    DbLogger logger;
+
     public void transform() throws IllegalAccessException {
         List<Stage_Sklep> sourceShops = stage_sklepRepository.findAll();
 
@@ -43,7 +47,12 @@ public class SklepDimensionTransformer {
                     sourceAddress.getPoczta()
             ).getAdresId();
 
-            //TODO: dodać obsługę błędu jak brak adresu
+            if(warehouseAddressId == null) {
+                logger.error(MessageFormat.format("W hurtowni nie istnieje adres: ul. {0} {1} m. {2}",
+                        sourceAddress.getUlica(),
+                        sourceAddress.getNumerBudynku(),
+                        sourceAddress.getNumerLokalu()), sourceAddress.getClass(), this.getClass());
+            }
 
             if(warehouseShop == null) {
                 warehouseShop = new Stage_W_Sklep();
@@ -63,7 +72,7 @@ public class SklepDimensionTransformer {
                     stage_w_sklepRepository.save(warehouseShop);
                 }
 
-                if(!warehouseShop.getAdresId().equals(warehouseAddressId)) {
+                if(warehouseShop.getAdresId() != null && !warehouseShop.getAdresId().equals(warehouseAddressId)) {
                     warehouseShop.setAdresId(warehouseAddressId);
                     warehouseShop.setImportTime(new Timestamp(System.currentTimeMillis()));
                     stage_w_sklepRepository.save(warehouseShop);
