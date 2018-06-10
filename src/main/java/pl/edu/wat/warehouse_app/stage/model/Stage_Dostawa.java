@@ -16,31 +16,32 @@ import java.sql.Timestamp;
 public class Stage_Dostawa {
 
     @Id
+    @GeneratedValue
     private Long id;
 
     @CsvField(pos = 1, converterType = IntegerConverter.class)
     private Integer lp;
 
-    @Column(length = 100)
-    @CsvField(pos = 2)
-    private String numerFaktury;
+    @CsvField(pos = 2, converterType = IntegerConverter.class)
+    private Integer pozycjaFaktury;
 
     @Column(length = 100)
     @CsvField(pos = 3)
-    private String dostawca;
+    private String numerFaktury;
 
     @Column(length = 100)
     @CsvField(pos = 4)
-    private String produkt;
+    private String dostawca;
 
-    @CsvField(pos = 5, converterType = IntegerConverter.class)
+    @Column(length = 100)
+    @CsvField(pos = 5)
+    private String kodKreskowy;
+
+    @CsvField(pos = 6, converterType = IntegerConverter.class)
     private Integer liczba;
 
-    @CsvField(pos = 6, converterType = FloatConverter.class)
+    @CsvField(pos = 7, converterType = FloatConverter.class)
     private Float cenaJednostkowa;
-
-    @CsvField(pos = 7, converterType = IntegerConverter.class)
-    private Integer vat;
 
     @CsvField(pos = 8, converterType = FloatConverter.class)
     private Float kwota;
@@ -51,6 +52,8 @@ public class Stage_Dostawa {
     @CsvField(pos = 10, converterType = TimeStampConverter.class)
     private Timestamp dataZaplaty;
 
-    private Timestamp dataImportu;
+    private Timestamp creationTime;
+
+    private Timestamp importTime;
 
 }

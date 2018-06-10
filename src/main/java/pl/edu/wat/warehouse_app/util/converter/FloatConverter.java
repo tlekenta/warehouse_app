@@ -15,7 +15,7 @@ public class FloatConverter implements SimpleTypeConverter {
     public Object fromString(String s) {
 
         if(s!=null){
-            return new Double(s);
+            return Float.parseFloat(s);
         }else{
             return null;
         }
