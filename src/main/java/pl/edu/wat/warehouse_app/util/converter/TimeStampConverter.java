@@ -16,8 +16,8 @@ public class TimeStampConverter implements SimpleTypeConverter {
     @Override
     public Object fromString(String s) {
         if(s!=null){
-            int year = Integer.parseInt(s.substring(6,10));
-            int month = Integer.parseInt(s.substring(3,5));
+            int year = Integer.parseInt(s.substring(6,10))-1900;
+            int month = Integer.parseInt(s.substring(3,5))-1;
             int day = Integer.parseInt(s.substring(0,2));
             return new Timestamp(year, month, day,0,0,0,0);
         }else{

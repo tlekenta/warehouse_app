@@ -14,7 +14,8 @@ public class IntegerConverter implements SimpleTypeConverter {
     @Override
     public Object fromString(String s) {
         if(s!=null){
-            return new Integer(s);
+            String st = s.replaceAll("\\D+","");
+            return Integer.parseInt(st);
         }else{
             return null;
         }

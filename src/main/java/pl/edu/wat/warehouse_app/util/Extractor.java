@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
 import pl.edu.wat.warehouse_app.stage.model.Stage_Dostawa;
+import pl.edu.wat.warehouse_app.stage.repository.Stage_DostawaRepository;
 import pl.edu.wat.warehouse_app.util.converter.FloatConverter;
 import pl.edu.wat.warehouse_app.util.converter.IntegerConverter;
 import pl.edu.wat.warehouse_app.util.converter.TimeStampConverter;
@@ -25,6 +26,8 @@ public class Extractor {
 
     RepositoryFactory repositoryFactory;
 
+    Stage_DostawaRepository dostawaRepository;
+
     StageEntityFactory stageEntityFactory;
 
     ReflectionUtils reflectionUtils;
@@ -33,7 +36,7 @@ public class Extractor {
         Reflections vReflections = new Reflections("pl.edu.wat.warehouse_app.zrodlo_pos.model");
         Set<Class<?>> vClasses = vReflections.getTypesAnnotatedWith(Entity.class);
 
-        for(Class iClass: vClasses) {
+        for (Class iClass : vClasses) {
             extract(iClass);
         }
     }
@@ -42,26 +45,32 @@ public class Extractor {
         Reflections vReflections = new Reflections("pl.edu.wat.warehouse_app.zrodlo_system.model");
         Set<Class<?>> vClasses = vReflections.getTypesAnnotatedWith(Entity.class);
 
-        for(Class iClass: vClasses) {
+        for (Class iClass : vClasses) {
             extract(iClass);
         }
     }
 
-    public void extractDostawa() throws IllegalAccessException, NoSuchFieldException {
+    public void extractDostawa() {
         CsvConfiguration config = new CsvConfiguration();
-        config.setFieldDelimiter(',');
+        config.setFieldDelimiter(';');
         config.getSimpleTypeConverterProvider().registerConverterType(Float.class, FloatConverter.class);
         config.getSimpleTypeConverterProvider().registerConverterType(Timestamp.class, TimeStampConverter.class);
         config.getSimpleTypeConverterProvider().registerConverterType(Integer.class, IntegerConverter.class);
 
 
-        Deserializer deserializer = CsvIOFactory.createFactory(config,Stage_Dostawa.class).createDeserializer();
-        System.out.println(this.getClass().getResourceAsStream("HD_DOSTAWY.csv"));
-        InputStreamReader fileReader = new InputStreamReader(this.getClass().getResourceAsStream("HD_DOSTAWY.csv"));
+        Deserializer deserializer = CsvIOFactory.createFactory(config, Stage_Dostawa.class).createDeserializer();
+        InputStreamReader fileReader = new InputStreamReader(this.getClass().getResourceAsStream("./HD_Dostawy.csv"));
         deserializer.open(fileReader);
+
         while (deserializer.hasNext()) {
             Stage_Dostawa dostawa = deserializer.next();
-            print(dostawa);
+
+            Stage_Dostawa test = dostawaRepository.getByNumerFakturyAndPozycjaFaktury(dostawa.getNumerFaktury(), dostawa.getPozycjaFaktury());
+            if (null == test) {
+                dostawa.setCreationTime(new Timestamp(System.currentTimeMillis()));
+                dostawa.setImportTime(new Timestamp(System.currentTimeMillis()));
+                dostawaRepository.save(dostawa);
+            }
         }
         deserializer.close(true);
     }
@@ -72,7 +81,7 @@ public class Extractor {
 
         List vSourceObjects = vSourceRepository.findAll();
 
-        for(Object iSourceObject: vSourceObjects) {
+        for (Object iSourceObject : vSourceObjects) {
             IStageEntity vTargetObject = stageEntityFactory.getStageEntity(iSourceObject);
 
             reflectionUtils.rewriteFields(iSourceObject, vTargetObject);
@@ -83,14 +92,6 @@ public class Extractor {
             vStageRepository.save(vTargetObject);
         }
 
-    }
-
-    private void print(Stage_Dostawa dostawa) {
-        System.out.println("---------------------------");
-        System.out.println("Name: " + dostawa.getNumerFaktury());
-        System.out.println("Role: " + dostawa.getDostawca());
-        System.out.println("Internal: " + dostawa.getProdukt());
-        System.out.println("Birthdate: " + dostawa.getDataDostawy());
     }
 
 }
