@@ -2,8 +2,10 @@ package pl.edu.wat.warehouse_app.util.transformer;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Adres;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.Stage_Adres;
+import pl.edu.wat.warehouse_app.stage.repository.StageToWarehouseIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_AdresRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_AdresRepository;
 import pl.edu.wat.warehouse_app.util.ReflectionUtils;
@@ -24,9 +26,12 @@ public class AddressDimensionTransformer {
 
     ReflectionUtils reflectionUtils;
 
+    StageToWarehouseIdMapRepository stageToWarehouseIdMapRepository;
+
     public void transform() throws IllegalAccessException {
         List<Stage_Adres> sourceAddresses = stage_adresRepository.findAll();
 
+        //1.
         List<Stage_Adres> newAddresses =
                 sourceAddresses
                         .stream()
@@ -36,12 +41,33 @@ public class AddressDimensionTransformer {
         for(Stage_Adres newAddress: newAddresses) {
             Stage_W_Adres addressToSave = new Stage_W_Adres();
 
-            reflectionUtils.transformFields(newAddress, addressToSave);
+            if(newAddress.getTimestampTo() == null) {
+                //2 1* a) START
+                reflectionUtils.transformFields(newAddress, addressToSave);
 
-            addressToSave.setTimestampFrom(newAddress.getTimestampFrom());
-            addressToSave.setTimestampTo(newAddress.getTimestampTo());
+                addressToSave.setTimestampFrom(newAddress.getTimestampFrom());
+                addressToSave.setTimestampTo(newAddress.getTimestampTo());
+                //2 1* a) KONIEC
 
-            stage_w_adresRepository.save(addressToSave);
+                //2 1* b)
+                stage_w_adresRepository.save(addressToSave);
+
+                StageToWarehouseIdMap idMap = new StageToWarehouseIdMap();
+                idMap.setStageId(newAddress.getId());
+                idMap.setStageTableName(newAddress.getClass().getSimpleName());
+                idMap.setWarehouseId(addressToSave.getAdresId());
+                idMap.setWarehouseTableName(addressToSave.getClass().getSimpleName());
+                stageToWarehouseIdMapRepository.save(idMap);
+            } else {
+                //2 2* a)
+
+                //2 2* b)
+
+                //TODO dokończyć, nie wiem jak to zrobić bo adres nie ma id biznesowego
+                //trzeba pewnie przez mapowanie idków jakoś wyciągnąć
+
+            }
+
         }
 
     }
