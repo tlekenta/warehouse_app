@@ -1,12 +1,15 @@
 package pl.edu.wat.warehouse_app.zrodlo_system.model;
 
 import lombok.Data;
+import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
 
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Data
-public class ZrodloSystem_Sklep {
+public class ZrodloSystem_Sklep implements IBusinessEntity {
 
     @Id
     private Long Id;
@@ -21,4 +24,8 @@ public class ZrodloSystem_Sklep {
     private String Telefon;
 
     private Long AdresID;
+
+    @Override public List getBusinessKey() {
+        return Collections.singletonList(NumerSklepu);
+    }
 }
