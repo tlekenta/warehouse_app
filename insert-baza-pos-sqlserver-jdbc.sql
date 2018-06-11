@@ -1,0 +1,121 @@
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Unit VALUES(1, 'szt.');
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Unit VALUES(2, 'kg');
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Unit VALUES(3, 'litry');
+
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Product VALUES(1, '123456789012345', 'kalafior', 1, 2.00);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Product VALUES(2, '998745468486432', 'ziemniaki', 2, 0.99);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Product VALUES(3, '595984458752584', 'marchew', 2, 3.50);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Product VALUES(4, '454545487854523', 'mleko', 3, 3.00);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Product VALUES(5, '895547885224152', 'chleb', 1, 3.00);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Product VALUES(6, '365899565788554', 'pomarańcze', 2, 7.00);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Product VALUES(7, '569874521855247', 'pomidory', 2, 5.00);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Product VALUES(8, '964574785522696', 'jabłka', 2, 2.20);
+
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Client VALUES (1, 'K000000001');
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Client VALUES (2, 'K000000002');
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Client VALUES (3, 'K000000003');
+
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_User VALUES (1, 'P000000001');
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_User VALUES (2, 'P000000002');
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_User VALUES (3, 'P000000003');
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_User VALUES (4, 'P000000004');
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_User VALUES (5, 'P000000005');
+
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(1, 1, '2018-05-13 12:12:12', 0.00, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(2, 2, '2018-05-14 12:13:30', 0.00, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(3, 3, '2018-05-15 12:14:40', 0.00, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(4, 4, '2018-05-16 12:15:50', 0.00, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(5, 5, '2018-05-17 12:16:00', 0.00, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(6, 1, '2018-05-13 12:15:12', 0.00, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(7, 2, '2018-05-14 12:14:25', 0.00, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(8, 3, '2018-05-15 12:20:25', 0.00, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(9, 4, '2018-05-16 12:14:25', 0.00, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(10, 5, '2018-05-17 12:14:25', 0.00, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(11, 1, '2018-05-13 13:54:43', 0.00, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(12, 2, '2018-05-14 14:48:59', 0.00, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(13, 3, '2018-05-15 17:50:50', 0.00, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(14, 4, '2018-05-16 14:23:43', 0.00, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(15, 5, '2018-05-17 10:18:09', 0.00, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(16, 1, '2018-05-13 12:54:43', 0.00, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(17, 2, '2018-05-14 13:48:59', 0.00, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(18, 3, '2018-05-15 14:50:50', 0.00, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(19, 4, '2018-05-16 15:23:43', 0.00, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(20, 5, '2018-05-17 16:18:09', 0.00, 2);
+
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(1, 10.03, 1, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(2, 1.54, 2, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(3, 0.16, 3, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(4, 9.39, 4, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(5, 15.25, 5, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(6, 3.81, 6, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(7, 15.04, 7, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(8, 3.25, 8, 8);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(9, 13.82, 9, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(10, 14.61, 10, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(11, 16.01, 11, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(12, 15.92, 12, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(13, 19.04, 13, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(14, 12.27, 14, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(15, 17.04, 15, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(16, 13.22, 16, 8);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(17, 12.4, 17, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(18, 3.9, 18, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(19, 13.68, 19, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(20, 4.95, 20, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(21, 14.91, 1, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(22, 14.62, 2, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(23, 10.17, 3, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(24, 15.49, 4, 8);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(25, 15.03, 5, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(26, 18.05, 6, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(27, 4.52, 7, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(28, 3.04, 8, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(29, 2.62, 9, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(30, 18, 10, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(31, 3.18, 11, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(32, 9.78, 12, 8);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(33, 19.16, 13, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(34, 1.83, 14, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(35, 4.17, 15, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(36, 18.23, 16, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(37, 12.29, 17, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(38, 3.79, 18, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(39, 6.18, 19, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(40, 19.52, 20, 8);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(41, 4.12, 1, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(42, 8.63, 2, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(43, 15.63, 3, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(44, 15.74, 4, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(45, 17.35, 5, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(46, 3.57, 6, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(47, 11.43, 7, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(48, 1.36, 8, 8);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(49, 8.29, 9, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(50, 19.6, 10, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(51, 2.26, 11, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(52, 10.13, 12, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(53, 5.29, 13, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(54, 6.11, 14, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(55, 19.4, 15, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(56, 7.13, 16, 8);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(57, 14.63, 17, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(58, 5.31, 18, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(59, 15.87, 19, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(60, 3.55, 20, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(61, 15.79, 1, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(62, 4.31, 2, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(63, 13.62, 3, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem VALUES(64, 2.94, 4, 8);
+
+
+USE ZRODLO_POS
+GO
+
+WITH tmp AS 
+(
+	SELECT receiptId, sum(amount) AS suma
+	FROM ZrodloPos_ReceiptItem
+	GROUP BY receiptId
+)
+
+UPDATE ZrodloPos_Receipt SET totalCost = tmp.suma FROM ZrodloPos_Receipt r INNER JOIN tmp ON r.id = tmp.receiptId;
