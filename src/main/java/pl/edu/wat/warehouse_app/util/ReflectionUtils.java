@@ -18,7 +18,7 @@ public class ReflectionUtils {
         Field[] vSourceFields = pSource.getClass().getDeclaredFields();
 
         for(Field iSourceField: vSourceFields) {
-            if(iSourceField.getAnnotation(Id.class) != null)
+            if(iSourceField.getAnnotation(Id.class) != null || iSourceField.getName().equals("id"))
                 continue;
             String vSourceFieldName = iSourceField.getName();
             Field vTargetField = pTarget.getClass().getDeclaredField(vSourceFieldName);
@@ -39,7 +39,7 @@ public class ReflectionUtils {
         Field[] vSourceFields = pSource.getClass().getDeclaredFields();
 
         for(Field iSourceField: vSourceFields) {
-            if(iSourceField.getAnnotation(Id.class) != null)
+            if(iSourceField.getAnnotation(Id.class) != null || iSourceField.getName().equals("id"))
                 continue;
             String vSourceFieldName = iSourceField.getName();
             Field vTargetField = pTarget.getClass().getDeclaredField(vSourceFieldName);

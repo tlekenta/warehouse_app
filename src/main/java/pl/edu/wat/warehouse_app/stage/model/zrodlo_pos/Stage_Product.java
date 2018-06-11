@@ -15,6 +15,7 @@ import java.util.List;
 public class Stage_Product implements IStageEntity, IBusinessEntity {
 
     @Id
+    @GeneratedValue
     private Long id;
 
     private Long unitId;

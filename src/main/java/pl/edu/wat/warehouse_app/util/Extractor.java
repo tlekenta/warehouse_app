@@ -107,7 +107,7 @@ public class Extractor {
 
         while(vSourceObjects.size() > 0) {
             //3a) START
-            IBusinessEntity iSourceObject = (IBusinessEntity) vSourceObjects.getFirst();
+            IBusinessEntity iSourceObject = (IBusinessEntity) vSourceObjects.removeFirst();
             List vStageObjectsWithSameId = (List) vStageObjects //jak to nie walnie błędu to się zdziwię xD
                     .stream()
                     //nie jestem pewien czy filter() nie przefiltruje mi vStageObjects
