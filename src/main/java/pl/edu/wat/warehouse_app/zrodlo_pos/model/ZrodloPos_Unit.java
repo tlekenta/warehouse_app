@@ -1,9 +1,13 @@
 package pl.edu.wat.warehouse_app.zrodlo_pos.model;
 
+import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
+
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
-public class ZrodloPos_Unit {
+public class ZrodloPos_Unit implements IBusinessEntity {
     private Long id;
     private String unitName;
 
@@ -25,4 +29,7 @@ public class ZrodloPos_Unit {
         this.unitName = unitName;
     }
 
+    @Override public List getBusinessKey() {
+        return Collections.singletonList(unitName);
+    }
 }

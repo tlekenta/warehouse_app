@@ -1,9 +1,13 @@
 package pl.edu.wat.warehouse_app.zrodlo_pos.model;
 
+import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
+
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
-public class ZrodloPos_Product {
+public class ZrodloPos_Product implements IBusinessEntity {
     private Long id;
     private Long unitId;
     private String name;
@@ -55,4 +59,7 @@ public class ZrodloPos_Product {
         this.barcode = barcode;
     }
 
+    @Override public List getBusinessKey() {
+        return Collections.singletonList(barcode);
+    }
 }

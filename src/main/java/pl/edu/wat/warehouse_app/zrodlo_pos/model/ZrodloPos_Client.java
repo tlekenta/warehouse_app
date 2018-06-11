@@ -1,9 +1,13 @@
 package pl.edu.wat.warehouse_app.zrodlo_pos.model;
 
+import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
+
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
-public class ZrodloPos_Client {
+public class ZrodloPos_Client implements IBusinessEntity {
     private Long id;
     private String cardnumber;
 
@@ -23,5 +27,9 @@ public class ZrodloPos_Client {
 
     public void setCardnumber(String cardnumber) {
         this.cardnumber = cardnumber;
+    }
+
+    @Override public List getBusinessKey() {
+        return Collections.singletonList(cardnumber);
     }
 }

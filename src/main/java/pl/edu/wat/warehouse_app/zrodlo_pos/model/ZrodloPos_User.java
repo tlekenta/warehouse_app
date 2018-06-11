@@ -1,9 +1,13 @@
 package pl.edu.wat.warehouse_app.zrodlo_pos.model;
 
+import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
+
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
-public class ZrodloPos_User {
+public class ZrodloPos_User implements IBusinessEntity {
     private Long id;
     private String userNumber;
 
@@ -24,5 +28,8 @@ public class ZrodloPos_User {
     public void setUserNumber(String userNumber) {
         this.userNumber = userNumber;
     }
-    
+
+    @Override public List getBusinessKey() {
+        return Collections.singletonList(userNumber);
+    }
 }
