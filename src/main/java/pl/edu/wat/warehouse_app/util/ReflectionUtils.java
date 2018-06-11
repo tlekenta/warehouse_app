@@ -3,6 +3,7 @@ package pl.edu.wat.warehouse_app.util;
 import org.springframework.stereotype.Component;
 import pl.edu.wat.warehouse_app.util.annotation.TransformedField;
 
+import javax.persistence.Id;
 import java.lang.reflect.Field;
 
 @Component
@@ -14,10 +15,11 @@ public class ReflectionUtils {
      * @return false jeżeli obiekty się róznią, true w pp
      */
     public boolean compareFields(Object pSource, Object pTarget) throws NoSuchFieldException, IllegalAccessException {
-        //TODO: zrobić żeby pomijało pola oznaczone jako @Id
         Field[] vSourceFields = pSource.getClass().getDeclaredFields();
 
         for(Field iSourceField: vSourceFields) {
+            if(iSourceField.getAnnotation(Id.class) != null)
+                continue;
             String vSourceFieldName = iSourceField.getName();
             Field vTargetField = pTarget.getClass().getDeclaredField(vSourceFieldName);
 
@@ -33,11 +35,12 @@ public class ReflectionUtils {
     }
 
     public void rewriteFields(Object pSource, Object pTarget) throws NoSuchFieldException, IllegalAccessException {
-        //TODO: zrobić żeby pomijało pola oznaczone jako @Id
 
         Field[] vSourceFields = pSource.getClass().getDeclaredFields();
 
         for(Field iSourceField: vSourceFields) {
+            if(iSourceField.getAnnotation(Id.class) != null)
+                continue;
             String vSourceFieldName = iSourceField.getName();
             Field vTargetField = pTarget.getClass().getDeclaredField(vSourceFieldName);
 
