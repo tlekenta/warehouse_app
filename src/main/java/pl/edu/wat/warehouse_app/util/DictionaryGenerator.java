@@ -22,8 +22,8 @@ public class DictionaryGenerator {
 
     public void generateDateAndTimes() {
 
-        LocalDateTime firstDate = LocalDateTime.of(2018, 5, 1, 0, 0);
-        LocalDateTime lastDate = LocalDateTime.of(2018, 5, 31, 0, 0);
+        LocalDateTime firstDate = LocalDateTime.of(2018, 4, 28, 0, 0);
+        LocalDateTime lastDate = LocalDateTime.of(2018, 5, 7, 0, 0);
 
         Boolean flag = true;
 
