@@ -42,7 +42,7 @@ public class PracownikDimensionTransformer {
         List<Stage_Pracownik> newWorkers =
                 sourceWorkers.
                         stream().
-                        filter(worker -> (worker.getTimestampFrom().after(OST_IMPORT) || worker.getTimestampTo().after(OST_IMPORT))).
+                        filter(worker -> (worker.getTimestampFrom().after(OST_IMPORT) || (worker.getTimestampTo() != null && worker.getTimestampTo().after(OST_IMPORT)))).
                         collect(Collectors.toList());
 
         for(Stage_Pracownik newWorker: newWorkers) {

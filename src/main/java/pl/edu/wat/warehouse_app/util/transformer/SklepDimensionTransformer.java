@@ -48,7 +48,7 @@ public class SklepDimensionTransformer {
         List<Stage_Sklep> newShops =
                 sourceShops
                         .stream()
-                        .filter(sklep -> (sklep.getTimestampFrom().after(OST_IMPORT) || sklep.getTimestampTo().after(OST_IMPORT)))
+                        .filter(sklep -> (sklep.getTimestampFrom().after(OST_IMPORT) || (sklep.getTimestampTo() != null && sklep.getTimestampTo().after(OST_IMPORT))))
                         .collect(Collectors.toList());
 
         for(Stage_Sklep newShop: newShops) {

@@ -61,7 +61,7 @@ public class KlientDimensionTransformer {
         List<Stage_Klient> newClients =
                 sourceClients
                         .stream()
-                        .filter(klient -> (klient.getTimestampFrom().after(OST_IMPORT) || klient.getTimestampTo().after(OST_IMPORT)))
+                        .filter(klient -> (klient.getTimestampFrom().after(OST_IMPORT) || (klient.getTimestampTo() != null && klient.getTimestampTo().after(OST_IMPORT))))
                         .collect(Collectors.toList());
 
         for(Stage_Klient newClient: newClients) {

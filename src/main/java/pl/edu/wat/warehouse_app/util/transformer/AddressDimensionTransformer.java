@@ -35,7 +35,7 @@ public class AddressDimensionTransformer {
         List<Stage_Adres> newAddresses =
                 sourceAddresses
                         .stream()
-                        .filter(address -> (address.getTimestampFrom().after(OST_IMPORT) || address.getTimestampTo().after(OST_IMPORT)))
+                        .filter(address -> (address.getTimestampFrom().after(OST_IMPORT) || (address.getTimestampTo() != null && address.getTimestampTo().after(OST_IMPORT))))
                         .collect(Collectors.toList());
 
         for(Stage_Adres newAddress: newAddresses) {
