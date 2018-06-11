@@ -2,7 +2,8 @@ package pl.edu.wat.warehouse_app.util.transformer;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
+import pl.edu.wat.warehouse_app.metadata.model.LogImport;
+import pl.edu.wat.warehouse_app.metadata.repository.LogImportRepository;
 import pl.edu.wat.warehouse_app.stage.model.SourceToStageIdMap;
 import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Klient;
@@ -13,6 +14,7 @@ import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_AdresReposito
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_KlientRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_AdresRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_KlientRepository;
+import pl.edu.wat.warehouse_app.util.DbLogger;
 import pl.edu.wat.warehouse_app.util.ReflectionUtils;
 
 import java.sql.Timestamp;
@@ -38,8 +40,6 @@ public class KlientDimensionTransformer {
      TODO: poprawić transformacje klienta i adresu
      */
 
-    private static final Timestamp OST_IMPORT = new Timestamp(System.currentTimeMillis() - 100000);
-
     Stage_W_AdresRepository stage_w_adresRepository;
 
     Stage_W_KlientRepository stage_w_klientRepository;
@@ -52,16 +52,22 @@ public class KlientDimensionTransformer {
 
     StageToWarehouseIdMapRepository stageToWarehouseIdMapRepository;
 
+    DbLogger logger;
+
+    LogImportRepository logImportRepository;
+
     ReflectionUtils reflectionUtils;
 
     public void transform() throws IllegalAccessException {
         List<Stage_Klient> sourceClients = stage_klientRepository.findAll();
 
+        Timestamp lastImport = getLastImportTimestamp();
+
         //1.
         List<Stage_Klient> newClients =
                 sourceClients
                         .stream()
-                        .filter(klient -> (klient.getTimestampFrom().after(OST_IMPORT) || (klient.getTimestampTo() != null && klient.getTimestampTo().after(OST_IMPORT))))
+                        .filter(klient -> (klient.getTimestampFrom().after(lastImport) || (klient.getTimestampTo() != null && klient.getTimestampTo().after(lastImport))))
                         .collect(Collectors.toList());
 
         for(Stage_Klient newClient: newClients) {
@@ -78,6 +84,15 @@ public class KlientDimensionTransformer {
 
                 //2 1* b)
                 warehouseClient.setAdresId(getWarehouseAddressId(newClient.getAdresId()));
+
+                //2 2* a)
+                Stage_W_Klient lastWarehouseClient = stage_w_klientRepository.findByNumerKlientaAndTimestampToIsNull(newClient.getNumerKlienta());
+                if(null != lastWarehouseClient){
+                    //2 2* b)
+                    lastWarehouseClient.setTimestampTo(new Timestamp(System.currentTimeMillis()));
+                    stage_w_klientRepository.save(lastWarehouseClient);
+                }
+
                 stage_w_klientRepository.save(warehouseClient);
 
                 //2 1* c)
@@ -88,14 +103,10 @@ public class KlientDimensionTransformer {
                 idMap.setWarehouseTableName(warehouseClient.getClass().getSimpleName());
                 stageToWarehouseIdMapRepository.save(idMap);
 
-            } else {
-                //2 2* a)
-                warehouseClient = stage_w_klientRepository.findByNumerKlientaAndTimestampToIsNull(newClient.getNumerKlienta());
-                //2 2* b)
-                warehouseClient.setTimestampTo(new Timestamp(System.currentTimeMillis()));
-                stage_w_klientRepository.save(warehouseClient);
             }
         }
+
+        logger.logImport(Stage_W_Klient.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
 
     }
 
@@ -106,6 +117,11 @@ public class KlientDimensionTransformer {
         return stageToWarehouseIdMapRepository.
                 findByStageIdAndStageTableName(sourceAddressMap.getStageId(), sourceAddressMap.getStageTableName()).
                 getWarehouseId();
+    }
+
+    private Timestamp getLastImportTimestamp(){
+        LogImport logImport = logImportRepository.findTopByTableNameAndSuccessIsTrue(Stage_W_Klient.class.getSimpleName());
+        return (null== logImport)? new Timestamp(System.currentTimeMillis() - 100000) : logImport.getImportTime();
     }
 
 }

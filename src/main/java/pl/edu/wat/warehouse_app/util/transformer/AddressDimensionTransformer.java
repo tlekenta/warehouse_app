@@ -2,12 +2,15 @@ package pl.edu.wat.warehouse_app.util.transformer;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edu.wat.warehouse_app.metadata.model.LogImport;
+import pl.edu.wat.warehouse_app.metadata.repository.LogImportRepository;
 import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Adres;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.Stage_Adres;
 import pl.edu.wat.warehouse_app.stage.repository.StageToWarehouseIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_AdresRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_AdresRepository;
+import pl.edu.wat.warehouse_app.util.DbLogger;
 import pl.edu.wat.warehouse_app.util.ReflectionUtils;
 
 import java.sql.Timestamp;
@@ -28,14 +31,20 @@ public class AddressDimensionTransformer {
 
     StageToWarehouseIdMapRepository stageToWarehouseIdMapRepository;
 
+    DbLogger logger;
+
+    LogImportRepository logImportRepository;
+
     public void transform() throws IllegalAccessException {
         List<Stage_Adres> sourceAddresses = stage_adresRepository.findAll();
+
+        Timestamp lastImport = getLastImportTimestamp();
 
         //1.
         List<Stage_Adres> newAddresses =
                 sourceAddresses
                         .stream()
-                        .filter(address -> (address.getTimestampFrom().after(OST_IMPORT) || (address.getTimestampTo() != null && address.getTimestampTo().after(OST_IMPORT))))
+                        .filter(address -> (address.getTimestampFrom().after(lastImport) || (address.getTimestampTo() != null && address.getTimestampTo().after(lastImport))))
                         .collect(Collectors.toList());
 
         for(Stage_Adres newAddress: newAddresses) {
@@ -50,6 +59,13 @@ public class AddressDimensionTransformer {
                 //2 1* a) KONIEC
 
                 //2 1* b)
+                //2 2* a)
+
+                //2 2* b)
+
+                //TODO dokończyć, nie wiem jak to zrobić bo adres nie ma id biznesowego
+                //trzeba pewnie przez mapowanie idków jakoś wyciągnąć
+
                 stage_w_adresRepository.save(addressToSave);
 
                 StageToWarehouseIdMap idMap = new StageToWarehouseIdMap();
@@ -58,18 +74,18 @@ public class AddressDimensionTransformer {
                 idMap.setWarehouseId(addressToSave.getAdresId());
                 idMap.setWarehouseTableName(addressToSave.getClass().getSimpleName());
                 stageToWarehouseIdMapRepository.save(idMap);
-            } else {
-                //2 2* a)
-
-                //2 2* b)
-
-                //TODO dokończyć, nie wiem jak to zrobić bo adres nie ma id biznesowego
-                //trzeba pewnie przez mapowanie idków jakoś wyciągnąć
-
             }
 
         }
 
+        logger.logImport(Stage_W_Adres.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
+
     }
+
+    private Timestamp getLastImportTimestamp(){
+        LogImport logImport = logImportRepository.findTopByTableNameAndSuccessIsTrue(Stage_W_Adres.class.getSimpleName());
+        return (null== logImport)? new Timestamp(System.currentTimeMillis() - 100000) : logImport.getImportTime();
+    }
+
 
 }

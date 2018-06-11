@@ -2,8 +2,10 @@ package pl.edu.wat.warehouse_app.util;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edu.wat.warehouse_app.metadata.model.LogImport;
 import pl.edu.wat.warehouse_app.metadata.model.LogTable;
 import pl.edu.wat.warehouse_app.metadata.model.LogType;
+import pl.edu.wat.warehouse_app.metadata.repository.LogImportRepository;
 import pl.edu.wat.warehouse_app.metadata.repository.LogRepository;
 
 import java.sql.Timestamp;
@@ -13,6 +15,7 @@ import java.sql.Timestamp;
 public class DbLogger {
 
     LogRepository logRepository;
+    LogImportRepository logImportRepository;
 
     public void log(String message, Class entity, Class throwingClass) {
         saveMessage(message, entity, LogType.INFO, throwingClass);
@@ -34,6 +37,17 @@ public class DbLogger {
 
         logRepository.save(log);
 
+    }
+
+    public void logImport(String tableName, Timestamp importTimestamp, Boolean success) {
+        LogImport logImport = new LogImport(
+                null,
+                tableName,
+                success,
+                importTimestamp
+        );
+
+        logImportRepository.save(logImport);
     }
 
 }
