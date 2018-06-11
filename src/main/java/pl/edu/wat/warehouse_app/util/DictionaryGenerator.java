@@ -69,7 +69,6 @@ public class DictionaryGenerator {
         data.setDzien(dzien);
         data.setMiesiac(miesiac);
         data.setRok(rok);
-        data.setCreationTime(new Timestamp(System.currentTimeMillis()));
         dataRepository.save(data);
         return data;
     }
@@ -81,7 +80,6 @@ public class DictionaryGenerator {
         czas.setMinuta(minuta);
         czas.setSekunda(sekunda);
         czas.setDateTime(new Timestamp(stageData.getRok(), stageData.getMiesiac(), stageData.getDzien(), godzina, minuta, sekunda, 0));
-        czas.setCreationTime(new Timestamp(System.currentTimeMillis()));
         czasRepository.save(czas);
         return czas;
     }

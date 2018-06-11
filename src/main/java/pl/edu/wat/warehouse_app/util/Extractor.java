@@ -7,6 +7,7 @@ import net.sf.jsefa.csv.config.CsvConfiguration;
 import org.reflections.Reflections;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
 import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
 import pl.edu.wat.warehouse_app.stage.model.Stage_Dostawa;
 import pl.edu.wat.warehouse_app.stage.repository.Stage_DostawaRepository;
@@ -17,8 +18,10 @@ import pl.edu.wat.warehouse_app.util.converter.TimeStampConverter;
 import javax.persistence.Entity;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -79,17 +82,72 @@ public class Extractor {
         JpaRepository vSourceRepository = repositoryFactory.getSourceRepository(pClass);
         JpaRepository vStageRepository = repositoryFactory.getStageRepository(pClass);
 
-        List vSourceObjects = vSourceRepository.findAll();
+        /*
+        1. Pobierz wszystko ze źródła do listy
+        2. Pobierz wszytsko ze staga do listy
+        3. Dla każdego elementu w źródle
+            a) wyjmij z listy stagowej wszytskie elemnty o tym samym id biznesowym
+                1* Jeżeli nie ma żadnego elementu o takim id_biz:
+                    -utwórz nowy na podstawie obiektu źródłowego
+                    -nadaj nowe id główne
+                    -czas od ustaw na teraz, czas do na NULL
+                    -zapisz
+                2* Jeżeli jest (są):
+                    -znjadź taki, który czas do ma = NULL -> TODO: będzie problem gdy obiekt zostanie usunięty i ponownie dodany
+                    -porównaj te obiekty (compare fields z reflectionutils do tego będzie)
+                        a) jeżeli są takie same nie rób nic
+                        b) jeżeli są różne:
+                            -w tym obiekcie stagowym ustaw czas do na teraz
+                            -utwórz nowy obiekt stagowy z czasem od = teraz, do = NULL
+         4. Po pętli elementy, które ewentualnie pozostały są to obiekty, których nie ma teraz w źródle - ustaw czas do na teraz
+         */
 
-        for (Object iSourceObject : vSourceObjects) {
-            IStageEntity vTargetObject = stageEntityFactory.getStageEntity(iSourceObject);
+        LinkedList vSourceObjects = new LinkedList(vSourceRepository.findAll()); //1
+        LinkedList vStageObjects = new LinkedList(vStageRepository.findAll()); //2
 
-            reflectionUtils.rewriteFields(iSourceObject, vTargetObject);
+        while(vSourceObjects.size() > 0) {
+            //3a) START
+            IBusinessEntity iSourceObject = (IBusinessEntity) vSourceObjects.getFirst();
+            List vStageObjectsWithSameId = (List) vStageObjects //jak to nie walnie błędu to się zdziwię xD
+                    .stream()
+                    //nie jestem pewien czy filter() nie przefiltruje mi vStageObjects
+                    .filter(o -> ((IBusinessEntity) o).getBusinessKey().equals(iSourceObject.getBusinessKey()))
+                    .collect(Collectors.toList());
+            vStageObjects.removeAll(vStageObjectsWithSameId);
+            //3a) KONIEC
 
-            vTargetObject.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
-            vTargetObject.setTimestampTo(new Timestamp(System.currentTimeMillis()));
+            if(vStageObjectsWithSameId.size() == 0) {
+                //3a) 1*
+                IStageEntity newEntity = stageEntityFactory.getStageEntity(iSourceObject);
+                reflectionUtils.rewriteFields(iSourceObject, newEntity);
+                newEntity.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
+                newEntity.setTimestampTo(null);
+                vStageRepository.save(newEntity);
+            } else {
+                //3a) 2*
+                for(IStageEntity actualRecord: (List<IStageEntity>) vStageObjectsWithSameId) {
+                    if(actualRecord.getTimestampTo() == null) {
+                        if(reflectionUtils.compareFields(iSourceObject, actualRecord)) {
+                            //3a) 2*a)
+                        } else {
+                            //3a) 2*b)
+                            actualRecord.setTimestampTo(new Timestamp(System.currentTimeMillis()));
+                            IStageEntity newEntity = stageEntityFactory.getStageEntity(iSourceObject);
+                            reflectionUtils.rewriteFields(iSourceObject, newEntity);
+                            newEntity.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
+                            newEntity.setTimestampTo(null);
+                            vStageRepository.save(newEntity);
+                            vStageRepository.save(actualRecord);
+                        }
+                    }
+                }
 
-            vStageRepository.save(vTargetObject);
+            }
+        }
+        //4.
+        for(IStageEntity deletedObject: (List<IStageEntity>) vStageObjects) {
+            deletedObject.setTimestampTo(new Timestamp(System.currentTimeMillis()));
+            vStageRepository.save(deletedObject);
         }
 
     }

@@ -8,7 +8,32 @@ import java.lang.reflect.Field;
 @Component
 public class ReflectionUtils {
 
+    /**
+     * Porównuje proste typy w polach o takich samych nazwach. Wykorzystywanie ma sens tylko gdy obiekty są innych klas.
+     * Jeżeli pierwszy parametr ma więcej pól niż drugi - wywali błąd
+     * @return false jeżeli obiekty się róznią, true w pp
+     */
+    public boolean compareFields(Object pSource, Object pTarget) throws NoSuchFieldException, IllegalAccessException {
+        //TODO: zrobić żeby pomijało pola oznaczone jako @Id
+        Field[] vSourceFields = pSource.getClass().getDeclaredFields();
+
+        for(Field iSourceField: vSourceFields) {
+            String vSourceFieldName = iSourceField.getName();
+            Field vTargetField = pTarget.getClass().getDeclaredField(vSourceFieldName);
+
+            if(iSourceField.getType() == Double.TYPE && vTargetField.getType() == Float.class) {
+                if(!equalDoubleAndFloatFields(iSourceField, vTargetField, pSource, pTarget))
+                    return false;
+            } else {
+                if(!equalFields(iSourceField, vTargetField, pSource, pTarget))
+                    return false;
+            }
+        }
+        return true;
+    }
+
     public void rewriteFields(Object pSource, Object pTarget) throws NoSuchFieldException, IllegalAccessException {
+        //TODO: zrobić żeby pomijało pola oznaczone jako @Id
 
         Field[] vSourceFields = pSource.getClass().getDeclaredFields();
 
@@ -53,6 +78,7 @@ public class ReflectionUtils {
         }
     }
 
+    @Deprecated
     public boolean compareAndRewriteFields(Object pSource, Object pTarget) throws IllegalAccessException {
         boolean change = false;
         Field[] vSourceFields = pSource.getClass().getDeclaredFields();

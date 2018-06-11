@@ -8,4 +8,8 @@ public interface IStageEntity {
 
     void setTimestampTo(Timestamp pDate);
 
+    Timestamp getTimestampFrom();
+
+    Timestamp getTimestampTo();
+
 }
