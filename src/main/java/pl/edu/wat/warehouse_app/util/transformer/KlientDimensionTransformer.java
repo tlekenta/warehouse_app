@@ -10,13 +10,25 @@ import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_AdresReposito
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_KlientRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_AdresRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_KlientRepository;
+import pl.edu.wat.warehouse_app.util.ReflectionUtils;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class KlientDimensionTransformer {
+    /*
+    Ogólny algorytm dla transformerów: (w źródlanych tabelach stagowych mamy: czas od i czas do)
+    1. Weź z tabeli źródlanej te elementy w których czas od lub czas do jest większy niż czas ostatniego importu
+    TODO: zapisywanie czasu ostatniego importu do pliku (chyba wystarczy jak będzie to po prostu czas uruchomienia aplikacji)
+    2. Teraz mamy gwarancję, że takiego elementu nie ma w hurtowni więc dla każdego elementu z tych wybranych
+        a) przepisz pola pomijając Id główne i pozostałe id (w sumie się pomija bo przepisywane są tylko oznaczone pola)
+        b) uzupełnij klucze obce odpowiednimi wartościami idków z hurtowni
+     */
+
+    private static final Timestamp OST_IMPORT = new Timestamp(System.currentTimeMillis() - 100000);
 
     Stage_W_AdresRepository stage_w_adresRepository;
 
@@ -26,53 +38,33 @@ public class KlientDimensionTransformer {
 
     Stage_KlientRepository stage_klientRepository;
 
-    public void transform() {
+    ReflectionUtils reflectionUtils;
+
+    public void transform() throws IllegalAccessException {
         List<Stage_Klient> sourceClients = stage_klientRepository.findAll();
 
-        for(Stage_Klient sourceClient: sourceClients) {
+        //1.
+        List<Stage_Klient> newClients =
+                sourceClients
+                        .stream()
+                        .filter(klient -> (klient.getTimestampFrom().after(OST_IMPORT) || klient.getTimestampTo().after(OST_IMPORT)))
+                        .collect(Collectors.toList());
 
-            Stage_W_Klient warehouseClient = stage_w_klientRepository.findByNumerKlienta(sourceClient.getNumerKlienta());
+        for(Stage_Klient newClient: newClients) {
+            Stage_W_Klient warehouseClient = new Stage_W_Klient();
 
-            if(warehouseClient == null) {
-                //zrob nowego i zapisz
-                warehouseClient = new Stage_W_Klient(
-                        null,
-                        sourceClient.getNumerKlienta(),
-                        sourceClient.getImie(),
-                        sourceClient.getNazwisko(),
-                        sourceClient.getTelefon(),
-                        getWarehouseAddress(sourceClient.getAdresId()).getAdresId(),
-                        new Timestamp(System.currentTimeMillis()),
-                        new Timestamp(System.currentTimeMillis())
-                );
-                stage_w_klientRepository.save(warehouseClient);
-            } else {
-                //sprawdź czy coś się zmieniło, jeżeli tak to zaktualizauj, zaktualizuj datę importu i zapisz
-                boolean change = false;
+            //2a) START
+            reflectionUtils.transformFields(newClient, warehouseClient);
 
-                if(!warehouseClient.getImie().equals(sourceClient.getImie())) {
-                    change = true;
-                    warehouseClient.setImie(sourceClient.getImie());
-                }
-                if(!warehouseClient.getNazwisko().equals(sourceClient.getNazwisko())) {
-                    change = true;
-                    warehouseClient.setNazwisko(sourceClient.getNazwisko());
-                }
-                if(!warehouseClient.getNumerTelefonu().equals(sourceClient.getTelefon())) {
-                    change = true;
-                    warehouseClient.setNumerTelefonu(sourceClient.getTelefon());
-                }
-                if(!warehouseClient.getAdresId().equals(getWarehouseAddress(sourceClient.getAdresId()).getAdresId())) {
-                    change = true;
-                    warehouseClient.setAdresId(getWarehouseAddress(sourceClient.getAdresId()).getAdresId());
-                }
+            //przypuszczam, że timestamy się ładnie nie przepiszą
+            warehouseClient.setTimestampFrom(newClient.getTimestampFrom());
+            warehouseClient.setTimestampTo(newClient.getTimestampTo());
+            //2a) KONIEC
 
-                if(change) {
-                   warehouseClient.setTimestampTo(new Timestamp(System.currentTimeMillis()));
-                   stage_w_klientRepository.save(warehouseClient);
-                }
+            //2b)
+            warehouseClient.setAdresId(getWarehouseAddress(newClient.getAdresId()).getAdresId());
 
-            }
+            stage_w_klientRepository.save(warehouseClient);
         }
 
     }
