@@ -1,9 +1,9 @@
 package pl.edu.wat.warehouse_app.stage.model.warehouse;
 
 import lombok.Data;
-import pl.edu.wat.warehouse_app.warehouse.model.key.F_DostawaKey;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
@@ -12,7 +12,14 @@ import java.sql.Timestamp;
 public class Stage_F_Dostawa {
 
     @Id
-    private F_DostawaKey f_dostawaKey;
+    @GeneratedValue
+    private Long id;
+
+    //klucz biznesowy
+    private String nrDokumentuDostawy;
+
+    //klucz biznesowy
+    private Integer pozycjaDokumentu;
 
     private Long produktId;
 

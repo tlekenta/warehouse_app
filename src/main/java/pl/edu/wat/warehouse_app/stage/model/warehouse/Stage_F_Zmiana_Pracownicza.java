@@ -3,6 +3,7 @@ package pl.edu.wat.warehouse_app.stage.model.warehouse;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
@@ -11,6 +12,7 @@ import java.sql.Timestamp;
 public class Stage_F_Zmiana_Pracownicza {
 
     @Id
+    @GeneratedValue
     private Long zmianaId;
 
     private Long pracownikId;

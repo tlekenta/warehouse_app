@@ -4,6 +4,7 @@ import lombok.Data;
 import pl.edu.wat.warehouse_app.warehouse.model.key.F_ZwrotKey;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
@@ -12,7 +13,17 @@ import java.sql.Timestamp;
 public class Stage_F_Zwrot {
 
     @Id
-    private F_ZwrotKey f_zwrotKey;
+    @GeneratedValue
+    private Long id;
+
+    //klucz biznesowy
+    private String nrZwrotu;
+
+    //klucz biznesowy
+    private String numerParagonu;
+
+    //klucz biznesowy
+    private Integer pozycjaParagonu;
 
     private Long produktId;
 
