@@ -107,7 +107,7 @@ public class SklepDimensionTransformer {
 
     private Timestamp getLastImportTimestamp(){
         LogImport logImport = logImportRepository.findTopByTableNameAndSuccessIsTrue(Stage_W_Sklep.class.getSimpleName());
-        return (null== logImport)? new Timestamp(System.currentTimeMillis() - 100000) : logImport.getImportTime();
+        return (null== logImport)? new Timestamp(0) : logImport.getImportTime();
     }
 
 }

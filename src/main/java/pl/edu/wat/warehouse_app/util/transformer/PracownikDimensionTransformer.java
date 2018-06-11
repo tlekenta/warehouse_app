@@ -3,6 +3,7 @@ package pl.edu.wat.warehouse_app.util.transformer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.stage.model.SourceToStageIdMap;
+import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Adres;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Pracownik;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.Stage_Adres;
@@ -62,15 +63,29 @@ public class PracownikDimensionTransformer {
                 workerToSave.setTimestampTo(newWorker.getTimestampTo());
                 workerToSave.setTimestampFrom(newWorker.getTimestampFrom());
 
+                Stage_W_Pracownik lastWorker = stage_w_pracownikRepository.findByNumerPracownikaAndTimestampToIsNull(newWorker.getNumerPracownika());
+                if(lastWorker != null) {
+                    workerToSave.setTimestampTo(workerToSave.getTimestampTo());
+                    stage_w_pracownikRepository.save(workerToSave);
+                }
+
                 stage_w_pracownikRepository.save(workerToSave);
 
-            } else {
-                Stage_W_Pracownik workerToSave = stage_w_pracownikRepository.findByNumerPracownikaAndTimestampToIsNull(newWorker.getNumerPracownika());
-                workerToSave.setTimestampTo(workerToSave.getTimestampTo());
-                stage_w_pracownikRepository.save(workerToSave);
+                mapId(newWorker, workerToSave);
             }
         }
 
+    }
+
+    private void mapId(Stage_Pracownik newWorker, Stage_W_Pracownik workerToSave) {
+        StageToWarehouseIdMap idMap = new StageToWarehouseIdMap();
+
+        idMap.setStageId(newWorker.getId());
+        idMap.setStageTableName(newWorker.getClass().getSimpleName());
+        idMap.setWarehouseId(workerToSave.getPracownikId());
+        idMap.setWarehouseTableName(workerToSave.getClass().getSimpleName());
+
+        stageToWarehouseIdMapRepository.save(idMap);
     }
 
     private Long getWarehouseAddressId(Long sourceAddressId) {
