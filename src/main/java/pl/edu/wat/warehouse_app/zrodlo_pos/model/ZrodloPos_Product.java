@@ -59,7 +59,9 @@ public class ZrodloPos_Product implements IBusinessEntity {
         this.barcode = barcode;
     }
 
-    @Override public List getBusinessKey() {
+    @Override
+    @Transient
+    public List getBusinessKey() {
         return Collections.singletonList(barcode);
     }
 }

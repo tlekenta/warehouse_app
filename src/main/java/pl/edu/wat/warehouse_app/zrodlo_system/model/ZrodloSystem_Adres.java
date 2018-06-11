@@ -6,6 +6,7 @@ import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,7 +24,9 @@ public class ZrodloSystem_Adres implements IBusinessEntity {
 
     private Integer numerLokalu;
 
-    @Override public List getBusinessKey() {
+    @Override
+    @Transient
+    public List getBusinessKey() {
         return Arrays.asList(ulica, numerBudynku, numerLokalu);
     }
 }

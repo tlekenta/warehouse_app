@@ -69,7 +69,9 @@ public class ZrodloPos_ReceiptItem implements IBusinessEntity {
         this.amount = amount;
     }
 
-    @Override public List getBusinessKey() {
+    @Override
+    @Transient
+    public List getBusinessKey() {
         return Arrays.asList(reciptNumber, position);
     }
 }

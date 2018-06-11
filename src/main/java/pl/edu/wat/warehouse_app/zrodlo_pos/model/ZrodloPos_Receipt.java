@@ -70,7 +70,9 @@ public class ZrodloPos_Receipt implements IBusinessEntity {
         this.totalCost = totalCost;
     }
 
-    @Override public List getBusinessKey() {
+    @Override
+    @Transient
+    public List getBusinessKey() {
         return Collections.singletonList(reciptNumber);
     }
 }

@@ -25,7 +25,9 @@ public class ZrodloSystem_Sklep implements IBusinessEntity {
 
     private Long AdresID;
 
-    @Override public List getBusinessKey() {
+    @Override
+    @Transient
+    public List getBusinessKey() {
         return Collections.singletonList(NumerSklepu);
     }
 }

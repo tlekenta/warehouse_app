@@ -5,6 +5,7 @@ import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +27,9 @@ public class ZrodloSystem_ObecnoscWPracy implements IBusinessEntity {
 
     private Timestamp wyjscie;
 
-    @Override public List getBusinessKey() {
+    @Override
+    @Transient
+    public List getBusinessKey() {
         return Arrays.asList(numerPracownika, przybycie);
     }
 }

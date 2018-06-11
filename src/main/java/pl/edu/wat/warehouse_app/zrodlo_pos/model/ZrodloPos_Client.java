@@ -29,7 +29,9 @@ public class ZrodloPos_Client implements IBusinessEntity {
         this.cardnumber = cardnumber;
     }
 
-    @Override public List getBusinessKey() {
+    @Override
+    @Transient
+    public List getBusinessKey() {
         return Collections.singletonList(cardnumber);
     }
 }

@@ -29,7 +29,9 @@ public class ZrodloPos_User implements IBusinessEntity {
         this.userNumber = userNumber;
     }
 
-    @Override public List getBusinessKey() {
+    @Override
+    @Transient
+    public List getBusinessKey() {
         return Collections.singletonList(userNumber);
     }
 }

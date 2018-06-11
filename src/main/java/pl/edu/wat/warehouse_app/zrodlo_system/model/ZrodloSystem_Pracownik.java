@@ -34,7 +34,9 @@ public class ZrodloSystem_Pracownik implements IBusinessEntity {
     @Column(length = 50)
     private String Nazwisko;
 
-    @Override public List getBusinessKey() {
+    @Override
+    @Transient
+    public List getBusinessKey() {
         return Collections.singletonList(NumerPracownika);
     }
 }

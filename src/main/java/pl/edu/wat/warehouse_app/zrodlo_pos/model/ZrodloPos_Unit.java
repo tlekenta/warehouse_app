@@ -29,7 +29,9 @@ public class ZrodloPos_Unit implements IBusinessEntity {
         this.unitName = unitName;
     }
 
-    @Override public List getBusinessKey() {
+    @Override
+    @Transient
+    public List getBusinessKey() {
         return Collections.singletonList(unitName);
     }
 }
