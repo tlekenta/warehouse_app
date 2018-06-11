@@ -2,6 +2,7 @@ package pl.edu.wat.warehouse_app.util.transformer;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Adres;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Pracownik;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.Stage_Adres;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.Stage_Pracownik;
@@ -15,10 +16,13 @@ import pl.edu.wat.warehouse_app.util.ReflectionUtils;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class PracownikDimensionTransformer {
+
+    private static final Timestamp OST_IMPORT = new Timestamp(System.currentTimeMillis() - 100000);
 
     Stage_PracownikRepository stage_pracownikRepository;
 
@@ -35,51 +39,44 @@ public class PracownikDimensionTransformer {
     public void transform() throws IllegalAccessException {
         List<Stage_Pracownik> sourceWorkers = stage_pracownikRepository.findAll();
 
-        for(Stage_Pracownik sourceWorker: sourceWorkers) {
-            Stage_W_Pracownik warehouseWorker = stage_w_pracownikRepository.findByPesel(sourceWorker.getPesel());
-            Stage_Adres sourceAddress = stage_adresRepository.findOne(sourceWorker.getAdresID());
-            Long warehouseAddressId = stage_w_adresRepository.findByUlicaAndNumerDomuAndNumerMieszkaniaAndKodPocztowyAndMiastoAndPoczta(
+        List<Stage_Pracownik> newWorkers =
+                sourceWorkers.
+                        stream().
+                        filter(worker -> (worker.getTimestampFrom().after(OST_IMPORT) || worker.getTimestampTo().after(OST_IMPORT))).
+                        collect(Collectors.toList());
+
+        for(Stage_Pracownik newWorker: newWorkers) {
+            if(newWorker.getTimestampTo() == null) {
+                Stage_W_Pracownik workerToSave = new Stage_W_Pracownik();
+
+                reflectionUtils.transformFields(newWorker, workerToSave);
+
+                workerToSave.setAdresId(getWarehouseAddress(newWorker.getAdresID()).getAdresId());
+
+                workerToSave.setTimestampTo(newWorker.getTimestampTo());
+                workerToSave.setTimestampFrom(newWorker.getTimestampFrom());
+
+                stage_w_pracownikRepository.save(workerToSave);
+
+            } else {
+                Stage_W_Pracownik workerToSave = stage_w_pracownikRepository.findByNumerPracownikaAndTimestampToIsNull(newWorker.getNumerPracownika());
+                workerToSave.setTimestampTo(workerToSave.getTimestampTo());
+                stage_w_pracownikRepository.save(workerToSave);
+            }
+        }
+
+    }
+
+    private Stage_W_Adres getWarehouseAddress(Long sourceAddressId) {
+        Stage_Adres sourceAddress = stage_adresRepository.findOne(sourceAddressId);
+        return stage_w_adresRepository.findByUlicaAndNumerDomuAndNumerMieszkaniaAndKodPocztowyAndMiastoAndPoczta(
                 sourceAddress.getUlica(),
                 sourceAddress.getNumerBudynku(),
                 sourceAddress.getNumerLokalu(),
                 sourceAddress.getKodPocztowy(),
                 sourceAddress.getMiasto(),
                 sourceAddress.getPoczta()
-            ).getAdresId();
-
-            if(warehouseAddressId == null) {
-                logger.error(MessageFormat.format("W hurtowni nie istnieje adres: ul. {0} {1} m. {2}",
-                        sourceAddress.getUlica(),
-                        sourceAddress.getNumerBudynku(),
-                        sourceAddress.getNumerLokalu()), sourceAddress.getClass(), this.getClass());
-            }
-
-            if(warehouseWorker == null) {
-                warehouseWorker = new Stage_W_Pracownik();
-
-                reflectionUtils.transformFields(sourceWorker, warehouseWorker);
-
-                warehouseWorker.setAdresId(warehouseAddressId);
-
-                warehouseWorker.setTimestampTo(new Timestamp(System.currentTimeMillis()));
-                warehouseWorker.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
-
-                stage_w_pracownikRepository.save(warehouseWorker);
-
-            } else {
-                if(reflectionUtils.compareAndRewriteFields(sourceWorker, warehouseWorker)) {
-                    warehouseWorker.setTimestampTo(new Timestamp(System.currentTimeMillis()));
-                    stage_w_pracownikRepository.save(warehouseWorker);
-                }
-
-                if(warehouseWorker.getAdresId() != null && !warehouseWorker.getAdresId().equals(warehouseAddressId)) {
-                    warehouseWorker.setAdresId(warehouseAddressId);
-                    warehouseWorker.setTimestampTo(new Timestamp(System.currentTimeMillis()));
-                    stage_w_pracownikRepository.save(warehouseWorker);
-                }
-            }
-
-        }
+        );
 
     }
 
