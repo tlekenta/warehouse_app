@@ -7,6 +7,7 @@ import pl.edu.wat.warehouse_app.util.annotation.TransformedField;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 import java.util.Collections;
@@ -17,6 +18,7 @@ import java.util.List;
 public class Stage_Sklep implements IStageEntity, IBusinessEntity {
 
     @Id
+    @GeneratedValue
     private Long Id;
 
     @Column(length = 10)

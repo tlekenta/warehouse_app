@@ -5,6 +5,7 @@ import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
 import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import java.util.List;
 public class Stage_ObecnoscWPracy implements IStageEntity, IBusinessEntity {
 
     @Id
+    @GeneratedValue
     private Long Id;
 
     private Long pracownikId;
