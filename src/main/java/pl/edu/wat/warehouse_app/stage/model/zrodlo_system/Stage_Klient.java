@@ -1,16 +1,19 @@
 package pl.edu.wat.warehouse_app.stage.model.zrodlo_system;
 
 import lombok.Data;
+import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
 import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Data
-public class Stage_Klient implements IStageEntity {
+public class Stage_Klient implements IStageEntity, IBusinessEntity {
 
     @Id
     private Long Id;
@@ -33,4 +36,7 @@ public class Stage_Klient implements IStageEntity {
 
     private Timestamp timestampTo;
 
+    @Override public List getBusinessKey() {
+        return Collections.singletonList(NumerKlienta);
+    }
 }
