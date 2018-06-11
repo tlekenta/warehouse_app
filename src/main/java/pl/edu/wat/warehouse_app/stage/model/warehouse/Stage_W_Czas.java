@@ -25,8 +25,6 @@ public class Stage_W_Czas {
 
     private Integer minuta;
 
-    private Integer sekunda;
-
     private Timestamp timestampFrom;
 
     private Timestamp timestampTo;

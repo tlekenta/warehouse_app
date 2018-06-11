@@ -55,9 +55,7 @@ public class DictionaryGenerator {
     private void createTimeForDay(Stage_W_Data dataDimension) {
         for (int godz = 0; godz < 24; godz++) {
             for (int min = 0; min < 60; min++) {
-                for (int sek = 0; sek < 60; sek++) {
-                    createTime(dataDimension, godz, min, sek);
-                }
+                    createTime(dataDimension, godz, min);
             }
         }
     }
@@ -69,17 +67,18 @@ public class DictionaryGenerator {
         data.setDzien(dzien);
         data.setMiesiac(miesiac);
         data.setRok(rok);
+        data.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
         dataRepository.save(data);
         return data;
     }
 
-    private Stage_W_Czas createTime(Stage_W_Data stageData, int godzina, int minuta, int sekunda) {
+    private Stage_W_Czas createTime(Stage_W_Data stageData, int godzina, int minuta) {
         Stage_W_Czas czas = new Stage_W_Czas();
         czas.setDataId(stageData.getDataId());
         czas.setGodzina(godzina);
         czas.setMinuta(minuta);
-        czas.setSekunda(sekunda);
-        czas.setDateTime(new Timestamp(stageData.getRok(), stageData.getMiesiac(), stageData.getDzien(), godzina, minuta, sekunda, 0));
+        czas.setDateTime(new Timestamp(stageData.getRok(), stageData.getMiesiac(), stageData.getDzien(), godzina, minuta, 0, 0));
+        czas.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
         czasRepository.save(czas);
         return czas;
     }

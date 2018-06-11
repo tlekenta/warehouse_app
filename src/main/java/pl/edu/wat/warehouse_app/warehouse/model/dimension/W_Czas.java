@@ -23,6 +23,4 @@ public class W_Czas {
 
     private Integer minuta;
 
-    private Integer sekunda;
-
 }
