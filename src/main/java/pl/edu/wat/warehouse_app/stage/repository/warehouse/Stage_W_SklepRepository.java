@@ -5,6 +5,6 @@ import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Sklep;
 
 public interface Stage_W_SklepRepository extends JpaRepository<Stage_W_Sklep, Long> {
 
-    Stage_W_Sklep findByNumerSklepu(String numerSklepu);
+    Stage_W_Sklep findByNumerSklepuAndTimestampToIsNull(String numerSklepu);
 
 }

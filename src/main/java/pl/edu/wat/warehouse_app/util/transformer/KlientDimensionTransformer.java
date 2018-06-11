@@ -90,7 +90,7 @@ public class KlientDimensionTransformer {
 
             } else {
                 //2 2* a)
-                warehouseClient = stage_w_klientRepository.findByNumerKlienta(newClient.getNumerKlienta());
+                warehouseClient = stage_w_klientRepository.findByNumerKlientaAndTimestampToIsNull(newClient.getNumerKlienta());
                 //2 2* b)
                 warehouseClient.setTimestampTo(new Timestamp(System.currentTimeMillis()));
                 stage_w_klientRepository.save(warehouseClient);

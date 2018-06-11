@@ -77,7 +77,7 @@ public class SklepDimensionTransformer {
 
             } else {
                 //2 2* a)
-                warehouseShop = stage_w_sklepRepository.findByNumerSklepu(newShop.getNumerSklepu());
+                warehouseShop = stage_w_sklepRepository.findByNumerSklepuAndTimestampToIsNull(newShop.getNumerSklepu());
                 //2 2* b)
                 warehouseShop.setTimestampTo(new Timestamp(System.currentTimeMillis()));
                 stage_w_sklepRepository.save(warehouseShop);
