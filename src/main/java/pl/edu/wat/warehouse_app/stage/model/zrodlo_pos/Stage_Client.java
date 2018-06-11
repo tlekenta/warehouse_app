@@ -14,6 +14,7 @@ import java.util.List;
 public class Stage_Client implements IStageEntity, IBusinessEntity {
 
     @Id
+    @GeneratedValue
     private Long id;
 
     private String cardnumber;

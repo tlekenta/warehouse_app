@@ -9,7 +9,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
 import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
+import pl.edu.wat.warehouse_app.stage.model.SourceToStageIdMap;
 import pl.edu.wat.warehouse_app.stage.model.Stage_Dostawa;
+import pl.edu.wat.warehouse_app.stage.repository.SourceToStageIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.Stage_DostawaRepository;
 import pl.edu.wat.warehouse_app.util.converter.FloatConverter;
 import pl.edu.wat.warehouse_app.util.converter.IntegerConverter;
@@ -34,6 +36,8 @@ public class Extractor {
     StageEntityFactory stageEntityFactory;
 
     ReflectionUtils reflectionUtils;
+
+    SourceToStageIdMapRepository sourceToStageIdMapRepository;
 
     public void extractZrodloPos() throws IllegalAccessException, NoSuchFieldException {
         Reflections vReflections = new Reflections("pl.edu.wat.warehouse_app.zrodlo_pos.model");
@@ -92,6 +96,7 @@ public class Extractor {
                     -nadaj nowe id główne
                     -czas od ustaw na teraz, czas do na NULL
                     -zapisz
+                    -po zapisie zmapuj id źródłowe na id stagowe
                 2* Jeżeli jest (są):
                     -znjadź taki, który czas do ma = NULL -> TODO: będzie problem gdy obiekt zostanie usunięty i ponownie dodany
                     -porównaj te obiekty (compare fields z reflectionutils do tego będzie)
@@ -99,6 +104,7 @@ public class Extractor {
                         b) jeżeli są różne:
                             -w tym obiekcie stagowym ustaw czas do na teraz
                             -utwórz nowy obiekt stagowy z czasem od = teraz, do = NULL
+                            -po zapisie zmapuj id źródłowe na id stagowe
          4. Po pętli elementy, które ewentualnie pozostały są to obiekty, których nie ma teraz w źródle - ustaw czas do na teraz
          */
 
@@ -123,6 +129,12 @@ public class Extractor {
                 newEntity.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
                 newEntity.setTimestampTo(null);
                 vStageRepository.save(newEntity);
+                SourceToStageIdMap idMap = new SourceToStageIdMap();
+                idMap.setSourceId(iSourceObject.getId());
+                idMap.setSourceTableName(iSourceObject.getClass().getSimpleName());
+                idMap.setStageId(((IBusinessEntity)newEntity).getId());
+                idMap.setStageTableName(newEntity.getClass().getSimpleName());
+                sourceToStageIdMapRepository.save(idMap);
             } else {
                 //3a) 2*
                 for(IStageEntity actualRecord: (List<IStageEntity>) vStageObjectsWithSameId) {
@@ -138,6 +150,12 @@ public class Extractor {
                             newEntity.setTimestampTo(null);
                             vStageRepository.save(newEntity);
                             vStageRepository.save(actualRecord);
+                            SourceToStageIdMap idMap = new SourceToStageIdMap();
+                            idMap.setSourceId(iSourceObject.getId());
+                            idMap.setSourceTableName(iSourceObject.getClass().getSimpleName());
+                            idMap.setStageId(((IBusinessEntity)newEntity).getId());
+                            idMap.setStageTableName(newEntity.getClass().getSimpleName());
+                            sourceToStageIdMapRepository.save(idMap);
                         }
                     }
                 }
