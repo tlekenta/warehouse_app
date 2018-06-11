@@ -30,8 +30,8 @@ INSERT INTO ZrodloSystem_Pracownik(id, NumerPracownika,Pesel,Telefon,TypPracowni
 
 
 INSERT INTO ZrodloSystem_Klient(id, NumerKlienta,Telefon,AdresID,Imie,Nazwisko) VALUES (1, 'K000000001','821-312-312',8,'Piotr','Polak');
-INSERT INTO ZrodloSystem_Klient(id, NumerKlienta,Telefon,AdresID,Imie,Nazwisko) VALUES (2, 'K000000001','321-312-312',9,'Beata','Tyśkiewicz');
-INSERT INTO ZrodloSystem_Klient(id, NumerKlienta,Telefon,AdresID,Imie,Nazwisko) VALUES (3, 'K000000001','221-312-321',10,'Łukasz','Małachowski');
+INSERT INTO ZrodloSystem_Klient(id, NumerKlienta,Telefon,AdresID,Imie,Nazwisko) VALUES (2, 'K000000002','321-312-312',9,'Beata','Tyśkiewicz');
+INSERT INTO ZrodloSystem_Klient(id, NumerKlienta,Telefon,AdresID,Imie,Nazwisko) VALUES (3, 'K000000003','221-312-321',10,'Łukasz','Małachowski');
 
 
 INSERT INTO ZrodloSystem_ObecnoscWpracy(id, PracownikId,SklepId,Przybycie,Wyjscie, numerPracownika) VALUES (1, 1,1,'2018-04-28 19:00','2018-04-28 03:00', 'P000000001');
