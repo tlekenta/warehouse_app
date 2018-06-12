@@ -2,7 +2,6 @@ package pl.edu.wat.warehouse_app.util.transformer;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.edu.wat.warehouse_app.metadata.model.LogImport;
 import pl.edu.wat.warehouse_app.metadata.repository.LogImportRepository;
 import pl.edu.wat.warehouse_app.stage.model.SourceToStageIdMap;
 import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
@@ -61,7 +60,7 @@ public class KlientDimensionTransformer {
     public void transform() throws IllegalAccessException {
         List<Stage_Klient> sourceClients = stage_klientRepository.findAll();
 
-        Timestamp lastImport = getLastImportTimestamp();
+        Timestamp lastImport = logger.getLastImportTimestamp(Stage_W_Klient.class.getSimpleName());
 
         //1.
         List<Stage_Klient> newClients =
@@ -119,9 +118,5 @@ public class KlientDimensionTransformer {
                 getWarehouseId();
     }
 
-    private Timestamp getLastImportTimestamp(){
-        LogImport logImport = logImportRepository.findTopByTableNameAndSuccessIsTrue(Stage_W_Klient.class.getSimpleName());
         return (null== logImport)? new Timestamp(0) : logImport.getImportTime();
-    }
-
 }

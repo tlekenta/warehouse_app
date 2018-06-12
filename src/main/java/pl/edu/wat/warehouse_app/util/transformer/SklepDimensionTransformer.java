@@ -2,7 +2,6 @@ package pl.edu.wat.warehouse_app.util.transformer;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.edu.wat.warehouse_app.metadata.model.LogImport;
 import pl.edu.wat.warehouse_app.metadata.repository.LogImportRepository;
 import pl.edu.wat.warehouse_app.stage.model.SourceToStageIdMap;
 import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
@@ -48,7 +47,7 @@ public class SklepDimensionTransformer {
     public void transform() throws IllegalAccessException {
         List<Stage_Sklep> sourceShops = stage_sklepRepository.findAll();
 
-        Timestamp lastImport = getLastImportTimestamp();
+        Timestamp lastImport = logger.getLastImportTimestamp(Stage_W_Sklep.class.getSimpleName());
 
         //1.
         List<Stage_Sklep> newShops =
@@ -105,10 +104,5 @@ public class SklepDimensionTransformer {
                 getWarehouseId();
     }
 
-    //TODO pobierac ImportTimestamp z DbLoggera
-    private Timestamp getLastImportTimestamp(){
-        LogImport logImport = logImportRepository.findTopByTableNameAndSuccessIsTrue(Stage_W_Sklep.class.getSimpleName());
         return (null== logImport)? new Timestamp(0) : logImport.getImportTime();
-    }
-
 }
