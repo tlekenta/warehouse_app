@@ -80,6 +80,4 @@ public class AddressDimensionTransformer {
         logger.logImport(Stage_W_Adres.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
 
     }
-
-        return (null== logImport)? new Timestamp(0) : logImport.getImportTime();
 }

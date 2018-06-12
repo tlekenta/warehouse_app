@@ -117,6 +117,4 @@ public class KlientDimensionTransformer {
                 findByStageIdAndStageTableName(sourceAddressMap.getStageId(), sourceAddressMap.getStageTableName()).
                 getWarehouseId();
     }
-
-        return (null== logImport)? new Timestamp(0) : logImport.getImportTime();
 }
