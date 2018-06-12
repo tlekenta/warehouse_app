@@ -26,7 +26,6 @@ public class KlientDimensionTransformer {
     /*
     Ogólny algorytm dla transformerów: (w źródlanych tabelach stagowych mamy: czas od i czas do)
     1. Weź z tabeli źródlanej te elementy w których czas od lub czas do jest większy niż czas ostatniego importu
-    TODO: zapisywanie czasu ostatniego importu do pliku (chyba wystarczy jak będzie to po prostu czas uruchomienia aplikacji)
     2. Gówno mamy nie gwarancję (gwarancję tego, że obiektu nie ma w hurtowni). Mamy gwarancję, że obiekt został zakutualizowany od ostatniego ładowania.
         1* Jeżeli nowy obiekt ma nullową date do to znaczy, że jest nowy, wtedy:
             a) przepisz pola pomijając Id główne i pozostałe id (w sumie się pomija bo przepisywane są tylko oznaczone pola)
@@ -35,8 +34,6 @@ public class KlientDimensionTransformer {
         2* Jeżeli ma nie nullową, to znaczy,że się zmienił jego stan obowiązywania, wtedy:
             a) wyciągnij taki sam obiekt z bazy (po id biznesowym ??? czy może uznajemy, że id w stage_hurtownia jest takie samo jak w hurtowni ???)
             b) przepisz do niego datę do i zapisz
-
-     TODO: poprawić transformacje klienta i adresu
      */
 
     Stage_W_AdresRepository stage_w_adresRepository;
@@ -102,6 +99,13 @@ public class KlientDimensionTransformer {
                 idMap.setWarehouseTableName(warehouseClient.getClass().getSimpleName());
                 stageToWarehouseIdMapRepository.save(idMap);
 
+            } else {
+                //musi kurde być
+                Stage_W_Klient lastWarehouseClient = stage_w_klientRepository.findByNumerKlientaAndTimestampToIsNull(newClient.getNumerKlienta());
+                if(null != lastWarehouseClient){
+                    lastWarehouseClient.setTimestampTo(new Timestamp(System.currentTimeMillis()));
+                    stage_w_klientRepository.save(lastWarehouseClient);
+                }
             }
         }
 
