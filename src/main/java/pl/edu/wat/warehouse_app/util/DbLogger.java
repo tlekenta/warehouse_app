@@ -113,8 +113,8 @@ public class DbLogger {
     }
 
     public Timestamp getLastImportTimestamp(String className){
-        LogImport logImport = logImportRepository.findTopByTableNameAndSuccessIsTrue(className);
-        return (null== logImport)? new Timestamp(System.currentTimeMillis() - 100000) : logImport.getImportTime();
+        Timestamp logImport = logImportRepository.findLastTimestampForTable(className);
+        return (null== logImport)? new Timestamp(0) : logImport;
     }
 
     public void logImport(String tableName, Timestamp importTimestamp, Boolean success) {
