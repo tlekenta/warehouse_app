@@ -7,6 +7,7 @@ import pl.edu.wat.warehouse_app.util.annotation.TransformedField;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
@@ -17,7 +18,7 @@ import java.sql.Timestamp;
 public class Stage_W_Produkt {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long produktId;
 
     @TransformedField(name = "prod_nazwa")

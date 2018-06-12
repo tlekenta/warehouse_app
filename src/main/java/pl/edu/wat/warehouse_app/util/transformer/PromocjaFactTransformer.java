@@ -2,10 +2,12 @@ package pl.edu.wat.warehouse_app.util.transformer;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
 import pl.edu.wat.warehouse_app.stage.model.Stage_Promocja;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_F_Promocja;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Data;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Produkt;
+import pl.edu.wat.warehouse_app.stage.repository.StageToWarehouseIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.Stage_PromocjaRepository;
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_F_PromocjaRepository;
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_DataRepository;
@@ -15,6 +17,7 @@ import pl.edu.wat.warehouse_app.util.ReflectionUtils;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -26,6 +29,8 @@ public class PromocjaFactTransformer {
     Stage_F_PromocjaRepository stage_f_promocjaRepository;
     Stage_W_DataRepository stage_w_dataRepository;
     Stage_W_ProductRepository stage_w_productRepository;
+    StageToWarehouseIdMapRepository stageToWarehouseIdMapRepository;
+
 
     DbLogger logger;
 
@@ -33,32 +38,75 @@ public class PromocjaFactTransformer {
 
         List<Stage_Promocja> sourceSales = stage_promocjaRepository.findAll();
 
-        for(Stage_Promocja sourceSale: sourceSales) {
 
-            Stage_F_Promocja newSale = new Stage_F_Promocja();
+        Timestamp lastImport = logger.getLastImportTimestamp(Stage_F_Promocja.class.getSimpleName());
 
-            newSale.setTimestampFrom(sourceSale.getTimestampFrom());
-            newSale.setProcentObnizki(sourceSale.getProcentPromocji());
+        //1.
+        List<Stage_Promocja> newSourceSales =
+                sourceSales
+                        .stream()
+                        .filter(sale -> (sale.getTimestampFrom().after(lastImport) || (sale.getTimestampTo() != null && sale.getTimestampTo().after(lastImport))))
+                        .collect(Collectors.toList());
 
-            Timestamp saleDataDataPromocjiDo = sourceSale.getDataPromocjiDo();
-            Timestamp saleDataDataPromocjiOd = sourceSale.getDataPromocjiOd();
+        for(Stage_Promocja sourceSale: newSourceSales) {
 
-            Stage_W_Data saleDateFrom = stage_w_dataRepository.findByRokAndMiesiacAndDzien(saleDataDataPromocjiOd.getYear() + 1900, saleDataDataPromocjiOd.getMonth()+1, saleDataDataPromocjiOd.getDate());
-            Stage_W_Data saleDateTo = stage_w_dataRepository.findByRokAndMiesiacAndDzien(saleDataDataPromocjiDo.getYear() + 1900, saleDataDataPromocjiDo.getMonth()+1, saleDataDataPromocjiDo.getDate());
+            Stage_F_Promocja factSale = new Stage_F_Promocja();
+            if (sourceSale.getTimestampTo() == null) {
 
-            newSale.setDataKoncowaId(saleDateTo.getDataId());
-            newSale.setDataPoczatkowaId(saleDateFrom.getDataId());
+                //2 1* a) START
+                reflectionUtils.transformFields(sourceSale, factSale);
 
-            Stage_W_Produkt produkt = stage_w_productRepository.findByKodKreskowy(sourceSale.getKodKreskowy());
+                //przypuszczam, że timestamy się ładnie nie przepiszą
+                factSale.setTimestampFrom(sourceSale.getTimestampFrom());
+                factSale.setTimestampTo(sourceSale.getTimestampTo());
+                //2 1* a) KONIEC
 
-            newSale.setProduktId(produkt.getProduktId());
+                //2 1* b)
+                factSale.setDataPoczatkowaId(getDataId(sourceSale.getDataPromocjiOd()));
+                factSale.setDataKoncowaId(getDataId(sourceSale.getDataPromocjiDo()));
 
-            stage_f_promocjaRepository.save(newSale);
+                factSale.setProduktId(getProductId(sourceSale.getKodKreskowy()));
+
+                //2 2* a)
+                checkForWarehouseEntity(factSale);
+
+                stage_f_promocjaRepository.save(factSale);
+
+                //2 1* c)
+                StageToWarehouseIdMap idMap = new StageToWarehouseIdMap();
+                idMap.setStageId(sourceSale.getId());
+                idMap.setStageTableName(sourceSale.getClass().getSimpleName());
+                idMap.setWarehouseId(factSale.getPromocjaId());
+                idMap.setWarehouseTableName(factSale.getClass().getSimpleName());
+                stageToWarehouseIdMapRepository.save(idMap);
+            } else {
+                //musi kurde być
+                checkForWarehouseEntity(factSale);
+            }
 
         }
 
         logger.logImport(Stage_F_Promocja.class.getSimpleName(),new Timestamp(System.currentTimeMillis()), true);
     }
 
+
+    private void checkForWarehouseEntity(Stage_F_Promocja factSale) {
+        Stage_F_Promocja lastWarehouseSupply = stage_f_promocjaRepository.findByProduktIdAndLpAndTimestampToIsNull(factSale.getProduktId(),factSale.getLp());
+        if (null != lastWarehouseSupply) {
+            //2 2* b)
+            lastWarehouseSupply.setTimestampTo(new Timestamp(System.currentTimeMillis()));
+            stage_f_promocjaRepository.save(lastWarehouseSupply);
+        }
+    }
+
+    private Long getProductId(String kodKreskowy) {
+        Stage_W_Produkt produkt = stage_w_productRepository.findByKodKreskowyAndTimestampToIsNull(kodKreskowy);
+        return produkt.getProduktId();
+    }
+
+    private Long getDataId(Timestamp timestamp) {
+        Stage_W_Data data = stage_w_dataRepository.findByRokAndMiesiacAndDzien(timestamp.getYear() + 1900, timestamp.getMonth() + 1, timestamp.getDate());
+        return data.getDataId();
+    }
 }
 

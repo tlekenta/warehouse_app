@@ -1,10 +1,10 @@
 package pl.edu.wat.warehouse_app.stage.model.warehouse;
 
 import lombok.Data;
-import pl.edu.wat.warehouse_app.warehouse.model.key.F_ZwrotKey;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 public class Stage_F_Zwrot {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
     //klucz biznesowy

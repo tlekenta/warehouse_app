@@ -3,6 +3,7 @@ package pl.edu.wat.warehouse_app.stage.model;
 import lombok.Data;
 import net.sf.jsefa.csv.annotation.CsvDataType;
 import net.sf.jsefa.csv.annotation.CsvField;
+import pl.edu.wat.warehouse_app.util.annotation.TransformedField;
 import pl.edu.wat.warehouse_app.util.converter.IntegerConverter;
 import pl.edu.wat.warehouse_app.util.converter.TimeStampConverter;
 
@@ -21,9 +22,11 @@ public class Stage_Promocja {
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
+    @TransformedField(name = "liczba_porz")
     @CsvField(pos = 1, converterType = IntegerConverter.class)
     private Integer lp;
 
+    @TransformedField(name = "procent_obnizki")
     @CsvField(pos = 2, converterType = IntegerConverter.class)
     private Integer procentPromocji;
 

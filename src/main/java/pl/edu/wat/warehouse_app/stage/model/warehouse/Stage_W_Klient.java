@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 public class Stage_W_Klient {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long klientId;
 
     @Column(length = 10)

@@ -26,6 +26,10 @@ public class WarehouseAppApplication implements CommandLineRunner {
     @Autowired
     SklepDimensionTransformer sklepDimensionTransformer;
     @Autowired
+    PromocjaFactTransformer promocjaFactTransformer;
+    @Autowired
+    DostawaFactTransformer dostawaFactTransformer;
+    @Autowired
     DictionaryGenerator dictionaryGenerator;
     @Autowired
     DbLogger logger;
@@ -48,6 +52,9 @@ public class WarehouseAppApplication implements CommandLineRunner {
         klientDimensionTransformer.transform();
         productDimensionTransformer.transform();
         sklepDimensionTransformer.transform();
+        promocjaFactTransformer.transform();
+        dostawaFactTransformer.transform();
+
 
         logger.logStage();
         logger.logWarehouse();

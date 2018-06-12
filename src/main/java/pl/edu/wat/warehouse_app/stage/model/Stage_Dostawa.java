@@ -3,6 +3,7 @@ package pl.edu.wat.warehouse_app.stage.model;
 import lombok.Data;
 import net.sf.jsefa.csv.annotation.CsvDataType;
 import net.sf.jsefa.csv.annotation.CsvField;
+import pl.edu.wat.warehouse_app.util.annotation.TransformedField;
 import pl.edu.wat.warehouse_app.util.converter.FloatConverter;
 import pl.edu.wat.warehouse_app.util.converter.IntegerConverter;
 import pl.edu.wat.warehouse_app.util.converter.TimeStampConverter;
@@ -22,13 +23,16 @@ public class Stage_Dostawa {
     @CsvField(pos = 1, converterType = IntegerConverter.class)
     private Integer lp;
 
+    @TransformedField(name = "pozycja_dokumentu")
     @CsvField(pos = 2, converterType = IntegerConverter.class)
     private Integer pozycjaFaktury;
 
+    @TransformedField(name = "numer_dokumentu")
     @Column(length = 100)
     @CsvField(pos = 3)
     private String numerFaktury;
 
+    @TransformedField(name = "dostawca")
     @Column(length = 100)
     @CsvField(pos = 4)
     private String dostawca;
@@ -37,12 +41,15 @@ public class Stage_Dostawa {
     @CsvField(pos = 5)
     private String kodKreskowy;
 
+    @TransformedField(name = "sztuki")
     @CsvField(pos = 6, converterType = IntegerConverter.class)
     private Integer liczba;
 
+    @TransformedField(name = "cena_jedn")
     @CsvField(pos = 7, converterType = FloatConverter.class)
     private Float cenaJednostkowa;
 
+    @TransformedField(name = "cena_brutto")
     @CsvField(pos = 8, converterType = FloatConverter.class)
     private Float kwota;
 

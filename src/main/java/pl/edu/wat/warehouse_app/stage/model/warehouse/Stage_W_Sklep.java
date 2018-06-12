@@ -3,10 +3,7 @@ package pl.edu.wat.warehouse_app.stage.model.warehouse;
 import lombok.Data;
 import pl.edu.wat.warehouse_app.util.annotation.TransformedField;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Data
@@ -14,7 +11,7 @@ import java.sql.Timestamp;
 public class Stage_W_Sklep {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long sklepId;
 
     @TransformedField(name = "sklep_nazwa")
