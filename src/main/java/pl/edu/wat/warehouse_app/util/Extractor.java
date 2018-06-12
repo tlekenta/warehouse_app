@@ -129,12 +129,7 @@ public class Extractor {
                 newEntity.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
                 newEntity.setTimestampTo(null);
                 vStageRepository.save(newEntity);
-                SourceToStageIdMap idMap = new SourceToStageIdMap();
-                idMap.setSourceId(iSourceObject.getId());
-                idMap.setSourceTableName(iSourceObject.getClass().getSimpleName());
-                idMap.setStageId(((IBusinessEntity)newEntity).getId());
-                idMap.setStageTableName(newEntity.getClass().getSimpleName());
-                sourceToStageIdMapRepository.save(idMap);
+                mapId(iSourceObject, (IBusinessEntity) newEntity);
             } else {
                 //3a) 2*
                 for(IStageEntity actualRecord: (List<IStageEntity>) vStageObjectsWithSameId) {
@@ -150,12 +145,7 @@ public class Extractor {
                             newEntity.setTimestampTo(null);
                             vStageRepository.save(newEntity);
                             vStageRepository.save(actualRecord);
-                            SourceToStageIdMap idMap = new SourceToStageIdMap();
-                            idMap.setSourceId(iSourceObject.getId());
-                            idMap.setSourceTableName(iSourceObject.getClass().getSimpleName());
-                            idMap.setStageId(((IBusinessEntity)newEntity).getId());
-                            idMap.setStageTableName(newEntity.getClass().getSimpleName());
-                            sourceToStageIdMapRepository.save(idMap);
+                            mapId(iSourceObject, (IBusinessEntity) newEntity);
                         }
                     }
                 }
@@ -170,6 +160,22 @@ public class Extractor {
             }
         }
 
+    }
+
+    private void mapId(IBusinessEntity iSourceObject, IBusinessEntity newEntity) {
+        SourceToStageIdMap oldMap = sourceToStageIdMapRepository
+                .findBySourceIdAndSourceTableName(iSourceObject.getId(), iSourceObject.getClass().getSimpleName());
+
+        if(oldMap != null) {
+            sourceToStageIdMapRepository.delete(oldMap);
+        }
+
+        SourceToStageIdMap idMap = new SourceToStageIdMap();
+        idMap.setSourceId(iSourceObject.getId());
+        idMap.setSourceTableName(iSourceObject.getClass().getSimpleName());
+        idMap.setStageId(newEntity.getId());
+        idMap.setStageTableName(newEntity.getClass().getSimpleName());
+        sourceToStageIdMapRepository.save(idMap);
     }
 
 }
