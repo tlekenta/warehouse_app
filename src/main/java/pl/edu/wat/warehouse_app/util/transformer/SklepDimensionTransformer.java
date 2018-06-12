@@ -87,6 +87,12 @@ public class SklepDimensionTransformer {
                 idMap.setWarehouseTableName(warehouseShop.getClass().getSimpleName());
                 stageToWarehouseIdMapRepository.save(idMap);
 
+            } else {
+                Stage_W_Sklep lastWarehouseShop = stage_w_sklepRepository.findByNumerSklepuAndTimestampToIsNull(newShop.getNumerSklepu());
+                if(null != lastWarehouseShop) {
+                    lastWarehouseShop.setTimestampTo(new Timestamp(System.currentTimeMillis()));
+                    stage_w_sklepRepository.save(lastWarehouseShop);
+                }
             }
         }
 
