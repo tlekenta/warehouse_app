@@ -5,6 +5,6 @@ import pl.edu.wat.warehouse_app.stage.model.Stage_Promocja;
 
 public interface Stage_PromocjaRepository extends JpaRepository<Stage_Promocja, Long> {
 
-    Stage_Promocja findByKodKreskowyAndLp(String kodKreskowy, Integer lp);
+    Stage_Promocja findByKodKreskowyAndLpAndTimestampToIsNull(String kodKreskowy, Integer lp);
 
 }

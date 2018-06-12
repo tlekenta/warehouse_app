@@ -8,6 +8,7 @@ import pl.edu.wat.warehouse_app.util.converter.TimeStampConverter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
@@ -17,7 +18,7 @@ import java.sql.Timestamp;
 public class Stage_Promocja {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
     @CsvField(pos = 1, converterType = IntegerConverter.class)
@@ -33,7 +34,7 @@ public class Stage_Promocja {
     private Timestamp dataPromocjiOd;
 
     @CsvField(pos = 5, converterType = TimeStampConverter.class)
-    private Timestamp dataDataPromocjiDo;
+    private Timestamp dataPromocjiDo;
 
     private Timestamp timestampFrom;
 

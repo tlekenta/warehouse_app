@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 public class Stage_Dostawa {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
     @CsvField(pos = 1, converterType = IntegerConverter.class)

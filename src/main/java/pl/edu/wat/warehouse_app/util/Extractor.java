@@ -11,6 +11,8 @@ import pl.edu.wat.warehouse_app.stage.model.*;
 import pl.edu.wat.warehouse_app.stage.repository.SourceToStageIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.Stage_DostawaRepository;
 import pl.edu.wat.warehouse_app.stage.repository.Stage_PromocjaRepository;
+import pl.edu.wat.warehouse_app.util.comparator.StageDostawaComparator;
+import pl.edu.wat.warehouse_app.util.comparator.StagePromocjaComparator;
 import pl.edu.wat.warehouse_app.util.converter.FloatConverter;
 import pl.edu.wat.warehouse_app.util.converter.IntegerConverter;
 import pl.edu.wat.warehouse_app.util.converter.TimeStampConverter;
@@ -39,6 +41,10 @@ public class Extractor {
 
     SourceToStageIdMapRepository sourceToStageIdMapRepository;
 
+    StagePromocjaComparator stagePromocjaComparator;
+
+    StageDostawaComparator stageDostawaComparator;
+
     DbLogger logger;
 
     public void extractZrodloPos() throws IllegalAccessException, NoSuchFieldException {
@@ -60,29 +66,39 @@ public class Extractor {
     }
 
     public void extractDostawa() {
-        dostawaRepository.deleteAll();
+        try {
+            Deserializer deserializer = getDeserializer(Stage_Dostawa.class);
+            InputStreamReader fileReader = getFileReader("HD_Dostawy");
 
-        Deserializer deserializer = getDeserializer();
-        InputStreamReader fileReader = getFileReader("HD_Dostawy");
+            deserializer.open(fileReader);
 
-        deserializer.open(fileReader);
+            while (deserializer.hasNext()) {
+                Stage_Dostawa dostawa = deserializer.next();
+                dostawa.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
 
-        while (deserializer.hasNext()) {
-            Stage_Dostawa dostawa = deserializer.next();
-            dostawa.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
-            dostawaRepository.save(dostawa);
+                Stage_Dostawa dostawaWStagu = dostawaRepository.getByNumerFakturyAndPozycjaFakturyAndTimestampToIsNull(dostawa.getNumerFaktury(), dostawa.getPozycjaFaktury());
+
+                if (null != dostawaWStagu) {
+                    if (!stageDostawaComparator.modelsEqual(dostawa, dostawaWStagu)) {
+                        dostawaWStagu.setTimestampTo(dostawa.getTimestampFrom());
+                        dostawaRepository.save(dostawaWStagu);
+                        dostawaRepository.save(dostawa);
+                    }
+                } else {
+                    dostawaRepository.save(dostawa);
+                }
+            }
+
+            deserializer.close(true);
+            logger.logImport(Stage_Dostawa.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
+        } catch (Exception e) {
+            logger.logImport(Stage_Dostawa.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), false);
         }
-
-        deserializer.close(true);
-        logger.logImport(Stage_Dostawa.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
     }
 
     public void extractPromocja() {
         try {
-            //Usuwane wszystkie rekordy w Stage
-            promocjaRepository.deleteAll();
-
-            Deserializer deserializer = getDeserializer();
+            Deserializer deserializer = getDeserializer(Stage_Promocja.class);
             InputStreamReader fileReader = getFileReader("HD_Promocje");
 
             deserializer.open(fileReader);
@@ -91,7 +107,18 @@ public class Extractor {
                 //Dodawane wszystkie obiekty wygenerowane z pliku
                 Stage_Promocja promocja = deserializer.next();
                 promocja.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
-                promocjaRepository.save(promocja);
+
+                Stage_Promocja promocjaWStagu = promocjaRepository.findByKodKreskowyAndLpAndTimestampToIsNull(promocja.getKodKreskowy(), promocja.getLp());
+
+                if (null != promocjaWStagu) {
+                    if (!stagePromocjaComparator.modelsEqual(promocja, promocjaWStagu)) {
+                        promocjaRepository.save(promocja);
+                        promocjaWStagu.setTimestampTo(promocja.getTimestampFrom());
+                        promocjaRepository.save(promocjaWStagu);
+                    }
+                } else {
+                    promocjaRepository.save(promocja);
+                }
             }
             deserializer.close(true);
             logger.logImport(Stage_Dostawa.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
@@ -100,13 +127,13 @@ public class Extractor {
         }
     }
 
-    private Deserializer getDeserializer() {
+    private Deserializer getDeserializer(Class pClass) {
         CsvConfiguration config = new CsvConfiguration();
         config.setFieldDelimiter(';');
         config.getSimpleTypeConverterProvider().registerConverterType(Float.class, FloatConverter.class);
         config.getSimpleTypeConverterProvider().registerConverterType(Timestamp.class, TimeStampConverter.class);
         config.getSimpleTypeConverterProvider().registerConverterType(Integer.class, IntegerConverter.class);
-        return CsvIOFactory.createFactory(config, Stage_Dostawa.class).createDeserializer();
+        return CsvIOFactory.createFactory(config, pClass).createDeserializer();
     }
 
     private InputStreamReader getFileReader(String fileName) {
