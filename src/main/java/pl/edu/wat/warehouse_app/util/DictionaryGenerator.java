@@ -23,7 +23,7 @@ public class DictionaryGenerator {
     public void generateDateAndTimes() {
 
         LocalDateTime firstDate = LocalDateTime.of(2018, 4, 28, 0, 0);
-        LocalDateTime lastDate = LocalDateTime.of(2018, 5, 7, 0, 0);
+        LocalDateTime lastDate = LocalDateTime.of(2018, 5, 3, 0, 0);
 
         Boolean flag = true;
 
@@ -77,7 +77,7 @@ public class DictionaryGenerator {
         czas.setDataId(stageData.getDataId());
         czas.setGodzina(godzina);
         czas.setMinuta(minuta);
-        czas.setDateTime(new Timestamp(stageData.getRok(), stageData.getMiesiac(), stageData.getDzien(), godzina, minuta, 0, 0));
+        czas.setDateTime(new Timestamp(stageData.getRok() - 1900, stageData.getMiesiac() - 1, stageData.getDzien(), godzina, minuta, 0, 0));
         czas.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
         czasRepository.save(czas);
         return czas;
