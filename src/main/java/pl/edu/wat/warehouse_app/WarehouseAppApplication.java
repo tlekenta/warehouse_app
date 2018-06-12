@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import pl.edu.wat.warehouse_app.util.DbLogger;
 import pl.edu.wat.warehouse_app.util.DictionaryGenerator;
 import pl.edu.wat.warehouse_app.util.Extractor;
+import pl.edu.wat.warehouse_app.util.loader.Loader;
 import pl.edu.wat.warehouse_app.util.transformer.*;
 
 
@@ -33,6 +34,8 @@ public class WarehouseAppApplication implements CommandLineRunner {
     DictionaryGenerator dictionaryGenerator;
     @Autowired
     DbLogger logger;
+    @Autowired
+    Loader loader;
 
     public static void main(String[] args) {
         SpringApplication.run(WarehouseAppApplication.class, args);
@@ -55,8 +58,10 @@ public class WarehouseAppApplication implements CommandLineRunner {
         promocjaFactTransformer.transform();
         dostawaFactTransformer.transform();
 
-
         logger.logStage();
+
+        loader.loadWarehouse();
+
         logger.logWarehouse();
     }
 }
