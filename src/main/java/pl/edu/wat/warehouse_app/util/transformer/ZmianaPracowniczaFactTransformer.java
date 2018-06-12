@@ -53,11 +53,14 @@ public class ZmianaPracowniczaFactTransformer {
     DbLogger logger;
 
     public void transform() {
+
+        Timestamp lastImport = logger.getLastImportTimestamp(Stage_F_Zmiana_Pracownicza.class.getSimpleName());
+
         List<Stage_ObecnoscWPracy> noweObecnosci =
                 stage_obecnoscWPracyRepository.
                         findAll().
                         stream().
-                        filter(obecnosc -> obecnosc.getTimestampFrom().after(new Timestamp(0))).
+                        filter(obecnosc -> obecnosc.getTimestampFrom().after(lastImport)).
                         collect(Collectors.toList());
 
         for(Stage_ObecnoscWPracy nowaObecnosc: noweObecnosci) {
@@ -71,6 +74,9 @@ public class ZmianaPracowniczaFactTransformer {
 
             stage_f_zmiana_pracowniczaRepository.save(zmianaToSave);
         }
+
+        logger.logImport(Stage_F_Zmiana_Pracownicza.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
+
     }
 
     private Long getWarehouseShopId(Long sourceShopId) {
