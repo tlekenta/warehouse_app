@@ -3,9 +3,13 @@ package pl.edu.wat.warehouse_app.util;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
+import pl.edu.wat.warehouse_app.stage.model.Stage_Dostawa;
+import pl.edu.wat.warehouse_app.stage.model.Stage_Promocja;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.*;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_pos.*;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.*;
+import pl.edu.wat.warehouse_app.stage.repository.Stage_DostawaRepository;
+import pl.edu.wat.warehouse_app.stage.repository.Stage_PromocjaRepository;
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.*;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_pos.*;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.*;
@@ -48,6 +52,9 @@ public class RepositoryFactory {
     private Stage_PracownikRepository stage_pracownikRepository;
     private Stage_SklepRepository stage_sklepRepository;
     private Stage_TypPracownikaRepository stage_typPracownikaRepository;
+
+    private Stage_DostawaRepository stage_dostawaRepository;
+    private Stage_PromocjaRepository stage_promocjaRepository;
 
     private Stage_W_AdresRepository stage_w_adresRepository;
     private Stage_W_CzasRepository stage_w_czasRepository;
@@ -131,6 +138,10 @@ public class RepositoryFactory {
             return stage_sklepRepository;
         } else if (pClass == Stage_TypPracownika.class) {
             return stage_typPracownikaRepository;
+        } else if (pClass == Stage_Promocja.class) {
+            return stage_promocjaRepository;
+        } else if (pClass == Stage_Dostawa.class) {
+            return stage_dostawaRepository;
         } else if (pClass == Stage_W_Adres.class) {
             return stage_w_adresRepository;
         } else if (pClass == Stage_W_Czas.class) {

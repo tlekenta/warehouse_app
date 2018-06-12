@@ -7,12 +7,10 @@ import net.sf.jsefa.csv.config.CsvConfiguration;
 import org.reflections.Reflections;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
-import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
-import pl.edu.wat.warehouse_app.stage.model.SourceToStageIdMap;
-import pl.edu.wat.warehouse_app.stage.model.Stage_Dostawa;
+import pl.edu.wat.warehouse_app.stage.model.*;
 import pl.edu.wat.warehouse_app.stage.repository.SourceToStageIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.Stage_DostawaRepository;
+import pl.edu.wat.warehouse_app.stage.repository.Stage_PromocjaRepository;
 import pl.edu.wat.warehouse_app.util.converter.FloatConverter;
 import pl.edu.wat.warehouse_app.util.converter.IntegerConverter;
 import pl.edu.wat.warehouse_app.util.converter.TimeStampConverter;
@@ -33,11 +31,15 @@ public class Extractor {
 
     Stage_DostawaRepository dostawaRepository;
 
+    Stage_PromocjaRepository promocjaRepository;
+
     StageEntityFactory stageEntityFactory;
 
     ReflectionUtils reflectionUtils;
 
     SourceToStageIdMapRepository sourceToStageIdMapRepository;
+
+    DbLogger logger;
 
     public void extractZrodloPos() throws IllegalAccessException, NoSuchFieldException {
         Reflections vReflections = new Reflections("pl.edu.wat.warehouse_app.zrodlo_pos.model");
@@ -58,29 +60,59 @@ public class Extractor {
     }
 
     public void extractDostawa() {
+        dostawaRepository.deleteAll();
+
+        Deserializer deserializer = getDeserializer();
+        InputStreamReader fileReader = getFileReader("HD_Dostawy");
+
+        deserializer.open(fileReader);
+
+        while (deserializer.hasNext()) {
+            Stage_Dostawa dostawa = deserializer.next();
+            dostawa.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
+            dostawaRepository.save(dostawa);
+        }
+
+        deserializer.close(true);
+        logger.logImport(Stage_Dostawa.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
+    }
+
+    public void extractPromocja() {
+        try {
+            //Usuwane wszystkie rekordy w Stage
+            promocjaRepository.deleteAll();
+
+            Deserializer deserializer = getDeserializer();
+            InputStreamReader fileReader = getFileReader("HD_Promocje");
+
+            deserializer.open(fileReader);
+
+            while (deserializer.hasNext()) {
+                //Dodawane wszystkie obiekty wygenerowane z pliku
+                Stage_Promocja promocja = deserializer.next();
+                promocja.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
+                promocjaRepository.save(promocja);
+            }
+            deserializer.close(true);
+            logger.logImport(Stage_Dostawa.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
+        } catch (Exception $e) {
+            logger.logImport(Stage_Dostawa.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), false);
+        }
+    }
+
+    private Deserializer getDeserializer() {
         CsvConfiguration config = new CsvConfiguration();
         config.setFieldDelimiter(';');
         config.getSimpleTypeConverterProvider().registerConverterType(Float.class, FloatConverter.class);
         config.getSimpleTypeConverterProvider().registerConverterType(Timestamp.class, TimeStampConverter.class);
         config.getSimpleTypeConverterProvider().registerConverterType(Integer.class, IntegerConverter.class);
-
-
-        Deserializer deserializer = CsvIOFactory.createFactory(config, Stage_Dostawa.class).createDeserializer();
-        InputStreamReader fileReader = new InputStreamReader(this.getClass().getResourceAsStream("./HD_Dostawy.csv"));
-        deserializer.open(fileReader);
-
-        while (deserializer.hasNext()) {
-            Stage_Dostawa dostawa = deserializer.next();
-
-            Stage_Dostawa test = dostawaRepository.getByNumerFakturyAndPozycjaFaktury(dostawa.getNumerFaktury(), dostawa.getPozycjaFaktury());
-            if (null == test) {
-                dostawa.setTimestampFrom(new Timestamp(System.currentTimeMillis()));
-                dostawa.setTimestampTo(new Timestamp(System.currentTimeMillis()));
-                dostawaRepository.save(dostawa);
-            }
-        }
-        deserializer.close(true);
+        return CsvIOFactory.createFactory(config, Stage_Dostawa.class).createDeserializer();
     }
+
+    private InputStreamReader getFileReader(String fileName) {
+        return new InputStreamReader(this.getClass().getResourceAsStream("./" + fileName + ".csv"));
+    }
+
 
     private void extract(Class pClass) throws IllegalAccessException, NoSuchFieldException {
         JpaRepository vSourceRepository = repositoryFactory.getSourceRepository(pClass);
@@ -111,7 +143,7 @@ public class Extractor {
         LinkedList vSourceObjects = new LinkedList(vSourceRepository.findAll()); //1
         LinkedList vStageObjects = new LinkedList(vStageRepository.findAll()); //2
 
-        while(vSourceObjects.size() > 0) {
+        while (vSourceObjects.size() > 0) {
             //3a) START
             IBusinessEntity iSourceObject = (IBusinessEntity) vSourceObjects.removeFirst();
             List vStageObjectsWithSameId = (List) vStageObjects //jak to nie walnie błędu to się zdziwię xD
@@ -122,7 +154,7 @@ public class Extractor {
             vStageObjects.removeAll(vStageObjectsWithSameId);
             //3a) KONIEC
 
-            if(vStageObjectsWithSameId.size() == 0) {
+            if (vStageObjectsWithSameId.size() == 0) {
                 //3a) 1*
                 IStageEntity newEntity = stageEntityFactory.getStageEntity(iSourceObject);
                 reflectionUtils.rewriteFields(iSourceObject, newEntity);
@@ -132,14 +164,14 @@ public class Extractor {
                 SourceToStageIdMap idMap = new SourceToStageIdMap();
                 idMap.setSourceId(iSourceObject.getId());
                 idMap.setSourceTableName(iSourceObject.getClass().getSimpleName());
-                idMap.setStageId(((IBusinessEntity)newEntity).getId());
+                idMap.setStageId(((IBusinessEntity) newEntity).getId());
                 idMap.setStageTableName(newEntity.getClass().getSimpleName());
                 sourceToStageIdMapRepository.save(idMap);
             } else {
                 //3a) 2*
-                for(IStageEntity actualRecord: (List<IStageEntity>) vStageObjectsWithSameId) {
-                    if(actualRecord.getTimestampTo() == null) {
-                        if(reflectionUtils.compareFields(iSourceObject, actualRecord)) {
+                for (IStageEntity actualRecord : (List<IStageEntity>) vStageObjectsWithSameId) {
+                    if (actualRecord.getTimestampTo() == null) {
+                        if (reflectionUtils.compareFields(iSourceObject, actualRecord)) {
                             //3a) 2*a)
                         } else {
                             //3a) 2*b)
@@ -153,7 +185,7 @@ public class Extractor {
                             SourceToStageIdMap idMap = new SourceToStageIdMap();
                             idMap.setSourceId(iSourceObject.getId());
                             idMap.setSourceTableName(iSourceObject.getClass().getSimpleName());
-                            idMap.setStageId(((IBusinessEntity)newEntity).getId());
+                            idMap.setStageId(((IBusinessEntity) newEntity).getId());
                             idMap.setStageTableName(newEntity.getClass().getSimpleName());
                             sourceToStageIdMapRepository.save(idMap);
                         }
@@ -163,7 +195,7 @@ public class Extractor {
             }
         }
         //4.
-        for(IStageEntity deletedObject: (List<IStageEntity>) vStageObjects) {
+        for (IStageEntity deletedObject : (List<IStageEntity>) vStageObjects) {
             deletedObject.setTimestampTo(new Timestamp(System.currentTimeMillis()));
             vStageRepository.save(deletedObject);
         }

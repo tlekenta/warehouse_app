@@ -7,6 +7,8 @@ import pl.edu.wat.warehouse_app.metadata.repository.LogImportRepository;
 import pl.edu.wat.warehouse_app.metadata.repository.LogRepository;
 import pl.edu.wat.warehouse_app.metadata.repository.LogStageRepository;
 import pl.edu.wat.warehouse_app.metadata.repository.LogWarehouseRepository;
+import pl.edu.wat.warehouse_app.stage.model.Stage_Dostawa;
+import pl.edu.wat.warehouse_app.stage.model.Stage_Promocja;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.*;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_pos.*;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.*;
@@ -88,6 +90,8 @@ public class DbLogger {
                 Stage_Pracownik.class,
                 Stage_Sklep.class,
                 Stage_TypPracownika.class,
+                Stage_Dostawa.class,
+                Stage_Promocja.class,
                 Stage_W_Adres.class,
                 Stage_W_Czas.class,
                 Stage_W_Data.class,

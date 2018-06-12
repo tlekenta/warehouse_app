@@ -16,6 +16,7 @@ public class PromocjaFactTransformer {
 
     public void transform() throws IllegalAccessException {
         // TODO transformowanie faktu Promocja
+        //Trzeba sprawdzić czy dodawany obiekt już nie istnieje.
     }
 
 }
