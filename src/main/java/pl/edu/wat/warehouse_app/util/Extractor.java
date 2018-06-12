@@ -164,8 +164,10 @@ public class Extractor {
         }
         //4.
         for(IStageEntity deletedObject: (List<IStageEntity>) vStageObjects) {
-            deletedObject.setTimestampTo(new Timestamp(System.currentTimeMillis()));
-            vStageRepository.save(deletedObject);
+            if(deletedObject.getTimestampTo() == null) {
+                deletedObject.setTimestampTo(new Timestamp(System.currentTimeMillis()));
+                vStageRepository.save(deletedObject);
+            }
         }
 
     }

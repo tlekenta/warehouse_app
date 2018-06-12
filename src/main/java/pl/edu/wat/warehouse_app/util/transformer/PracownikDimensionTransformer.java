@@ -70,13 +70,20 @@ public class PracownikDimensionTransformer {
 
                 Stage_W_Pracownik lastWorker = stage_w_pracownikRepository.findByNumerPracownikaAndTimestampToIsNull(newWorker.getNumerPracownika());
                 if(lastWorker != null) {
-                    workerToSave.setTimestampTo(workerToSave.getTimestampTo());
-                    stage_w_pracownikRepository.save(workerToSave);
+                    lastWorker.setTimestampTo(new Timestamp(System.currentTimeMillis()));
+                    stage_w_pracownikRepository.save(lastWorker);
                 }
 
                 stage_w_pracownikRepository.save(workerToSave);
 
                 mapId(newWorker, workerToSave);
+            } else {
+                //ten els też musi być bo inaczej nie będzie obsłużone usuwanie pracowników
+                Stage_W_Pracownik lastWorker = stage_w_pracownikRepository.findByNumerPracownikaAndTimestampToIsNull(newWorker.getNumerPracownika());
+                if(lastWorker != null) {
+                    lastWorker.setTimestampTo(new Timestamp(System.currentTimeMillis()));
+                    stage_w_pracownikRepository.save(lastWorker);
+                }
             }
         }
 
@@ -105,8 +112,8 @@ public class PracownikDimensionTransformer {
     }
 
     private Timestamp getLastImportTimestamp(){
-        LogImport logImport = logImportRepository.findTopByTableNameAndSuccessIsTrue(Stage_W_Pracownik.class.getSimpleName());
-        return (null== logImport)? new Timestamp(0) : logImport.getImportTime();
+        Timestamp logImport = logImportRepository.findLastTimestampForTable(Stage_W_Pracownik.class.getSimpleName());
+        return (null== logImport)? new Timestamp(0) : logImport;
     }
 
 }
