@@ -3,6 +3,7 @@ package pl.edu.wat.warehouse_app.stage.model.warehouse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,16 +11,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class TMP_W_Data {
+public class TMP_W_Data implements IBusinessEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long dataId;
+    private Long id;
 
     private Date data;
 
@@ -35,4 +37,8 @@ public class TMP_W_Data {
 
     private Timestamp timestampTo;
 
+    @Override
+    public List getBusinessKey() {
+        return null;
+    }
 }

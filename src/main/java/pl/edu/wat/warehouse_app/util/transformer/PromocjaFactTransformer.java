@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
 import pl.edu.wat.warehouse_app.stage.model.Stage_Promocja;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_F_Promocja;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Data;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Produkt;
 import pl.edu.wat.warehouse_app.stage.repository.StageToWarehouseIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.Stage_PromocjaRepository;
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_F_PromocjaRepository;
@@ -14,6 +12,7 @@ import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_DataRepository;
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_ProductRepository;
 import pl.edu.wat.warehouse_app.util.DbLogger;
 import pl.edu.wat.warehouse_app.util.ReflectionUtils;
+import pl.edu.wat.warehouse_app.util.helpers.WarehouseIdsGetter;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -33,6 +32,7 @@ public class PromocjaFactTransformer {
 
 
     DbLogger logger;
+    WarehouseIdsGetter warehouseIdsGetter;
 
     public void transform() throws IllegalAccessException {
 
@@ -62,10 +62,10 @@ public class PromocjaFactTransformer {
                 //2 1* a) KONIEC
 
                 //2 1* b)
-                factSale.setDataPoczatkowaId(getDataId(sourceSale.getDataPromocjiOd()));
-                factSale.setDataKoncowaId(getDataId(sourceSale.getDataPromocjiDo()));
+                factSale.setDataPoczatkowaId(warehouseIdsGetter.getWarehouseDataId(sourceSale.getDataPromocjiOd()));
+                factSale.setDataKoncowaId(warehouseIdsGetter.getWarehouseDataId(sourceSale.getDataPromocjiDo()));
 
-                factSale.setProduktId(getProductId(sourceSale.getKodKreskowy()));
+                factSale.setProduktId(warehouseIdsGetter.getWarehouseProductId(sourceSale.getKodKreskowy()));
 
                 //2 2* a)
                 checkForWarehouseEntity(factSale);
@@ -76,7 +76,7 @@ public class PromocjaFactTransformer {
                 StageToWarehouseIdMap idMap = new StageToWarehouseIdMap();
                 idMap.setStageId(sourceSale.getId());
                 idMap.setStageTableName(sourceSale.getClass().getSimpleName());
-                idMap.setWarehouseId(factSale.getPromocjaId());
+                idMap.setWarehouseId(factSale.getId());
                 idMap.setWarehouseTableName(factSale.getClass().getSimpleName());
                 stageToWarehouseIdMapRepository.save(idMap);
             } else {
@@ -99,14 +99,5 @@ public class PromocjaFactTransformer {
         }
     }
 
-    private Long getProductId(String kodKreskowy) {
-        TMP_W_Produkt produkt = tmp_w_productRepository.findByKodKreskowyAndTimestampToIsNull(kodKreskowy);
-        return produkt.getProduktId();
-    }
-
-    private Long getDataId(Timestamp timestamp) {
-        TMP_W_Data data = tmp_w_dataRepository.findByRokAndMiesiacAndDzien(timestamp.getYear() + 1900, timestamp.getMonth() + 1, timestamp.getDate());
-        return data.getDataId();
-    }
 }
 

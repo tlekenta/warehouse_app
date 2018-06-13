@@ -74,7 +74,7 @@ public class DictionaryGenerator {
 
     private TMP_W_Czas createTime(TMP_W_Data stageData, int godzina, int minuta) {
         TMP_W_Czas czas = new TMP_W_Czas();
-        czas.setDataId(stageData.getDataId());
+        czas.setDataId(stageData.getId());
         czas.setGodzina(godzina);
         czas.setMinuta(minuta);
         czas.setDateTime(new Timestamp(stageData.getRok() - 1900, stageData.getMiesiac() - 1, stageData.getDzien(), godzina, minuta, 0, 0));

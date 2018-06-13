@@ -3,6 +3,7 @@ package pl.edu.wat.warehouse_app.stage.model.warehouse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
 import pl.edu.wat.warehouse_app.util.annotation.TransformedField;
 
 import javax.persistence.Entity;
@@ -10,16 +11,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class TMP_W_Produkt {
+public class TMP_W_Produkt implements IBusinessEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long produktId;
+    private Long id;
 
     @TransformedField(name = "prod_nazwa")
     private String nazwa;
@@ -34,4 +36,8 @@ public class TMP_W_Produkt {
 
     private Timestamp timestampTo;
 
+    @Override
+    public List getBusinessKey() {
+        return null;
+    }
 }

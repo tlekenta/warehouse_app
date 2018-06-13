@@ -1,18 +1,20 @@
 package pl.edu.wat.warehouse_app.stage.model.warehouse;
 
 import lombok.Data;
+import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
 import pl.edu.wat.warehouse_app.util.annotation.TransformedField;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Entity
-public class TMP_W_Sklep {
+public class TMP_W_Sklep implements IBusinessEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long sklepId;
+    private Long id;
 
     @TransformedField(name = "sklep_nazwa")
     private String nazwa;
@@ -30,4 +32,8 @@ public class TMP_W_Sklep {
 
     private Timestamp timestampTo;
 
+    @Override
+    public List getBusinessKey() {
+        return null;
+    }
 }

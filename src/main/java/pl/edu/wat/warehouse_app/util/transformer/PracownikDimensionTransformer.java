@@ -3,7 +3,6 @@ package pl.edu.wat.warehouse_app.util.transformer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.metadata.repository.LogImportRepository;
-import pl.edu.wat.warehouse_app.stage.model.SourceToStageIdMap;
 import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Pracownik;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.Stage_Pracownik;
@@ -15,6 +14,7 @@ import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_AdresReposi
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_PracownikRepository;
 import pl.edu.wat.warehouse_app.util.DbLogger;
 import pl.edu.wat.warehouse_app.util.ReflectionUtils;
+import pl.edu.wat.warehouse_app.util.helpers.WarehouseIdsGetter;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -40,12 +40,14 @@ public class PracownikDimensionTransformer {
 
     DbLogger logger;
 
+    WarehouseIdsGetter warehouseIdsGetter;
+
     LogImportRepository logImportRepository;
 
     public void transform() throws IllegalAccessException {
         List<Stage_Pracownik> sourceWorkers = stage_pracownikRepository.findAll();
 
-        Timestamp lastImport = getLastImportTimestamp();
+        Timestamp lastImport = logger.getLastImportTimestamp(TMP_W_Pracownik.class.getSimpleName());
 
         List<Stage_Pracownik> newWorkers =
                 sourceWorkers.
@@ -59,7 +61,7 @@ public class PracownikDimensionTransformer {
 
                 reflectionUtils.transformFields(newWorker, workerToSave);
 
-                workerToSave.setAdresId(getWarehouseAddressId(newWorker.getAdresID()));
+                workerToSave.setAdresId(warehouseIdsGetter.getWarehouseAddressId(newWorker.getAdresID()));
 
                 workerToSave.setTimestampTo(newWorker.getTimestampTo());
                 workerToSave.setTimestampFrom(newWorker.getTimestampFrom());
@@ -92,24 +94,10 @@ public class PracownikDimensionTransformer {
 
         idMap.setStageId(newWorker.getId());
         idMap.setStageTableName(newWorker.getClass().getSimpleName());
-        idMap.setWarehouseId(workerToSave.getPracownikId());
+        idMap.setWarehouseId(workerToSave.getId());
         idMap.setWarehouseTableName(workerToSave.getClass().getSimpleName());
 
         stageToWarehouseIdMapRepository.save(idMap);
-    }
-
-    private Long getWarehouseAddressId(Long sourceAddressId) {
-        SourceToStageIdMap sourceAddressMap = sourceToStageIdMapRepository.
-                findBySourceIdAndSourceTableName(sourceAddressId, "ZrodloSystem_Adres");
-
-        return stageToWarehouseIdMapRepository.
-                findByStageIdAndStageTableName(sourceAddressMap.getStageId(), sourceAddressMap.getStageTableName()).
-                getWarehouseId();
-    }
-
-    private Timestamp getLastImportTimestamp(){
-        Timestamp logImport = logImportRepository.findLastTimestampForTable(TMP_W_Pracownik.class.getSimpleName());
-        return (null== logImport)? new Timestamp(0) : logImport;
     }
 
 }

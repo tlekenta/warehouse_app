@@ -70,7 +70,7 @@ public class AddressDimensionTransformer {
                 StageToWarehouseIdMap idMap = new StageToWarehouseIdMap();
                 idMap.setStageId(newAddress.getId());
                 idMap.setStageTableName(newAddress.getClass().getSimpleName());
-                idMap.setWarehouseId(addressToSave.getAdresId());
+                idMap.setWarehouseId(addressToSave.getId());
                 idMap.setWarehouseTableName(addressToSave.getClass().getSimpleName());
                 stageToWarehouseIdMapRepository.save(idMap);
             }

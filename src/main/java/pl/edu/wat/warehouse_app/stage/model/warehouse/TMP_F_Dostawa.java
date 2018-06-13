@@ -1,6 +1,7 @@
 package pl.edu.wat.warehouse_app.stage.model.warehouse;
 
 import lombok.Data;
+import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
 import pl.edu.wat.warehouse_app.util.annotation.TransformedField;
 
 import javax.persistence.Entity;
@@ -8,10 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Entity
-public class TMP_F_Dostawa {
+public class TMP_F_Dostawa implements IBusinessEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
@@ -49,4 +51,8 @@ public class TMP_F_Dostawa {
 
     private Timestamp timestampTo;
 
+    @Override
+    public List getBusinessKey() {
+        return null;
+    }
 }
