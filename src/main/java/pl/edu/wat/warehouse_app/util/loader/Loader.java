@@ -134,48 +134,55 @@ public class Loader {
             Utworzyć adnotację, która będzie na klucze obce, jako parametr będzie nazwa tabeli klucza obcego, dzięki niej będę wyciągał z mapy odpowiednie idki hurtowniane
              */
 
-            JpaRepository stageRepository = repositoryFactory.getStageRepositoryByStageClass(clazz);
-            JpaRepository warehouseRepository = repositoryFactory.getWarehouseRepositoryByTmpClass(clazz);
+            try {
+                JpaRepository stageRepository = repositoryFactory.getStageRepositoryByStageClass(clazz);
+                JpaRepository warehouseRepository = repositoryFactory.getWarehouseRepositoryByTmpClass(clazz);
 
-            List<IStageEntity> allStageObjects = (List<IStageEntity>) stageRepository.findAll();
+                List<IStageEntity> allStageObjects = (List<IStageEntity>) stageRepository.findAll();
 
-            Timestamp lastImport = logger.getLastImportTimestamp(clazz.getSimpleName() + "_warehouse");
+                Timestamp lastImport = logger.getLastImportTimestamp(clazz.getSimpleName() + "_warehouse");
 
-            List<IStageEntity> updatedStageObjects = allStageObjects
-                    .stream()
-                    .filter(obj -> obj.getTimestampFrom().after(lastImport) || (obj.getTimestampTo() != null && obj.getTimestampTo().after(lastImport)))
-                    .collect(Collectors.toList());
+                List<IStageEntity> updatedStageObjects = allStageObjects
+                        .stream()
+                        .filter(obj -> obj.getTimestampFrom().after(lastImport) || (obj.getTimestampTo() != null && obj.getTimestampTo().after(lastImport)))
+                        .collect(Collectors.toList());
 
-            for(IStageEntity updatedStageObject: updatedStageObjects) {
-                TmpToWarehouseIdMap idMap = tmpToWarehouseIdMapRepository
-                        .findByTmpIdAndTmpTableName(((IBusinessEntity) updatedStageObject).getId(), updatedStageObject.getClass().getSimpleName());
+                for (IStageEntity updatedStageObject : updatedStageObjects) {
+                    TmpToWarehouseIdMap idMap = tmpToWarehouseIdMapRepository
+                            .findByTmpIdAndTmpTableName(((IBusinessEntity) updatedStageObject).getId(), updatedStageObject.getClass().getSimpleName());
 
-                if(idMap == null) {
-                    //utwórz nową encję, przepisz pola + przy pomocy mapowania ustaw odpowiednie idki dla kluczy obcych + utwórz mapowanie
-                    Object warehouseToSave = warehouseEntityFactory.getWarehouseEntity(updatedStageObject.getClass());
-                    reflectionUtils.rewriteFields(updatedStageObject, warehouseToSave);
-                    updateExternalId(updatedStageObject, warehouseToSave);
+                    if (idMap == null) {
+                        //utwórz nową encję, przepisz pola + przy pomocy mapowania ustaw odpowiednie idki dla kluczy obcych + utwórz mapowanie
+                        Object warehouseToSave = warehouseEntityFactory.getWarehouseEntity(updatedStageObject.getClass());
+                        reflectionUtils.rewriteFields(updatedStageObject, warehouseToSave);
+                        updateExternalId(updatedStageObject, warehouseToSave);
 
-                    warehouseRepository.save(warehouseToSave);
+                        warehouseRepository.save(warehouseToSave);
 
-                    idMap = new TmpToWarehouseIdMap();
+                        idMap = new TmpToWarehouseIdMap();
 
-                    idMap.setTmpId(((IBusinessEntity) updatedStageObject).getId());
-                    idMap.setTmpTableName(updatedStageObject.getClass().getSimpleName());
-                    idMap.setWarehouseId(((IBusinessEntity)warehouseToSave).getId());
-                    idMap.setWarehouseTableName(warehouseToSave.getClass().getSimpleName());
+                        idMap.setTmpId(((IBusinessEntity) updatedStageObject).getId());
+                        idMap.setTmpTableName(updatedStageObject.getClass().getSimpleName());
+                        idMap.setWarehouseId(((IBusinessEntity) warehouseToSave).getId());
+                        idMap.setWarehouseTableName(warehouseToSave.getClass().getSimpleName());
 
-                    tmpToWarehouseIdMapRepository.save(idMap);
+                        tmpToWarehouseIdMapRepository.save(idMap);
 
-                } else {
-                    //wyciągnij po id (tym z mapy) obiekt z hurtowni, przepisz timestamp to + zakutalizuj idki dla kluczy obcych
-                    //aktualizacja tutaj kluczy obcych niema sensu (obiekt w tym miejscu na pewno nie został zaktualizowany)
+                    } else {
+                        //wyciągnij po id (tym z mapy) obiekt z hurtowni, przepisz timestamp to + zakutalizuj idki dla kluczy obcych
+                        //aktualizacja tutaj kluczy obcych niema sensu (obiekt w tym miejscu na pewno nie został zaktualizowany)
+                        Object actualWarehouseObject = warehouseRepository.getOne(idMap.getWarehouseId());
+                        ((IStageEntity) actualWarehouseObject).setTimestampTo(new Timestamp(System.currentTimeMillis()));
+                        warehouseRepository.save(actualWarehouseObject);
+                    }
                 }
+
+
+                logger.logImport(clazz.getSimpleName() + "_warehouse", new Timestamp(System.currentTimeMillis()), true);
+
+            } catch (Exception e) {
+                logger.logImport(clazz.getSimpleName() + "_warehouse", new Timestamp(System.currentTimeMillis()), false);
             }
-
-
-            logger.logImport(clazz.getSimpleName() + "_warehouse", new Timestamp(System.currentTimeMillis()), true);
-
         }
 
     }
