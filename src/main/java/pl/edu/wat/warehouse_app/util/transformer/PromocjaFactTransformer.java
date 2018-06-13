@@ -4,14 +4,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
 import pl.edu.wat.warehouse_app.stage.model.Stage_Promocja;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_F_Promocja;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Data;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Produkt;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_F_Promocja;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Data;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Produkt;
 import pl.edu.wat.warehouse_app.stage.repository.StageToWarehouseIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.Stage_PromocjaRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_F_PromocjaRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_DataRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_ProductRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_F_PromocjaRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_DataRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_ProductRepository;
 import pl.edu.wat.warehouse_app.util.DbLogger;
 import pl.edu.wat.warehouse_app.util.ReflectionUtils;
 
@@ -26,9 +26,9 @@ public class PromocjaFactTransformer {
     ReflectionUtils reflectionUtils;
 
     Stage_PromocjaRepository stage_promocjaRepository;
-    Stage_F_PromocjaRepository stage_f_promocjaRepository;
-    Stage_W_DataRepository stage_w_dataRepository;
-    Stage_W_ProductRepository stage_w_productRepository;
+    TMP_F_PromocjaRepository tmp_f_promocjaRepository;
+    TMP_W_DataRepository tmp_w_dataRepository;
+    TMP_W_ProductRepository tmp_w_productRepository;
     StageToWarehouseIdMapRepository stageToWarehouseIdMapRepository;
 
 
@@ -39,7 +39,7 @@ public class PromocjaFactTransformer {
         List<Stage_Promocja> sourceSales = stage_promocjaRepository.findAll();
 
 
-        Timestamp lastImport = logger.getLastImportTimestamp(Stage_F_Promocja.class.getSimpleName());
+        Timestamp lastImport = logger.getLastImportTimestamp(TMP_F_Promocja.class.getSimpleName());
 
         //1.
         List<Stage_Promocja> newSourceSales =
@@ -50,7 +50,7 @@ public class PromocjaFactTransformer {
 
         for(Stage_Promocja sourceSale: newSourceSales) {
 
-            Stage_F_Promocja factSale = new Stage_F_Promocja();
+            TMP_F_Promocja factSale = new TMP_F_Promocja();
             if (sourceSale.getTimestampTo() == null) {
 
                 //2 1* a) START
@@ -70,7 +70,7 @@ public class PromocjaFactTransformer {
                 //2 2* a)
                 checkForWarehouseEntity(factSale);
 
-                stage_f_promocjaRepository.save(factSale);
+                tmp_f_promocjaRepository.save(factSale);
 
                 //2 1* c)
                 StageToWarehouseIdMap idMap = new StageToWarehouseIdMap();
@@ -86,26 +86,26 @@ public class PromocjaFactTransformer {
 
         }
 
-        logger.logImport(Stage_F_Promocja.class.getSimpleName(),new Timestamp(System.currentTimeMillis()), true);
+        logger.logImport(TMP_F_Promocja.class.getSimpleName(),new Timestamp(System.currentTimeMillis()), true);
     }
 
 
-    private void checkForWarehouseEntity(Stage_F_Promocja factSale) {
-        Stage_F_Promocja lastWarehouseSupply = stage_f_promocjaRepository.findByProduktIdAndLpAndTimestampToIsNull(factSale.getProduktId(),factSale.getLp());
+    private void checkForWarehouseEntity(TMP_F_Promocja factSale) {
+        TMP_F_Promocja lastWarehouseSupply = tmp_f_promocjaRepository.findByProduktIdAndLpAndTimestampToIsNull(factSale.getProduktId(),factSale.getLp());
         if (null != lastWarehouseSupply) {
             //2 2* b)
             lastWarehouseSupply.setTimestampTo(new Timestamp(System.currentTimeMillis()));
-            stage_f_promocjaRepository.save(lastWarehouseSupply);
+            tmp_f_promocjaRepository.save(lastWarehouseSupply);
         }
     }
 
     private Long getProductId(String kodKreskowy) {
-        Stage_W_Produkt produkt = stage_w_productRepository.findByKodKreskowyAndTimestampToIsNull(kodKreskowy);
+        TMP_W_Produkt produkt = tmp_w_productRepository.findByKodKreskowyAndTimestampToIsNull(kodKreskowy);
         return produkt.getProduktId();
     }
 
     private Long getDataId(Timestamp timestamp) {
-        Stage_W_Data data = stage_w_dataRepository.findByRokAndMiesiacAndDzien(timestamp.getYear() + 1900, timestamp.getMonth() + 1, timestamp.getDate());
+        TMP_W_Data data = tmp_w_dataRepository.findByRokAndMiesiacAndDzien(timestamp.getYear() + 1900, timestamp.getMonth() + 1, timestamp.getDate());
         return data.getDataId();
     }
 }

@@ -92,18 +92,18 @@ public class DbLogger {
                 Stage_TypPracownika.class,
                 Stage_Dostawa.class,
                 Stage_Promocja.class,
-                Stage_W_Adres.class,
-                Stage_W_Czas.class,
-                Stage_W_Data.class,
-                Stage_W_Klient.class,
-                Stage_W_Pracownik.class,
-                Stage_W_Produkt.class,
-                Stage_W_Sklep.class,
-                Stage_F_Dostawa.class,
-                Stage_F_Promocja.class,
-                Stage_F_Sprzedaz.class,
-                Stage_F_Zmiana_Pracownicza.class,
-                Stage_F_Zwrot.class
+                TMP_W_Adres.class,
+                TMP_W_Czas.class,
+                TMP_W_Data.class,
+                TMP_W_Klient.class,
+                TMP_W_Pracownik.class,
+                TMP_W_Produkt.class,
+                TMP_W_Sklep.class,
+                TMP_F_Dostawa.class,
+                TMP_F_Promocja.class,
+                TMP_F_Sprzedaz.class,
+                TMP_F_Zmiana_Pracownicza.class,
+                TMP_F_Zwrot.class
         };
         for (Class stageTable:stageTables) {
             LogStage log = new LogStage(

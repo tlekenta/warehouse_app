@@ -2,19 +2,15 @@ package pl.edu.wat.warehouse_app.util.transformer;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.edu.wat.warehouse_app.metadata.model.LogImport;
 import pl.edu.wat.warehouse_app.metadata.repository.LogImportRepository;
 import pl.edu.wat.warehouse_app.stage.model.SourceToStageIdMap;
 import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Adres;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Klient;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Pracownik;
-import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.Stage_Adres;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Pracownik;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.Stage_Pracownik;
 import pl.edu.wat.warehouse_app.stage.repository.SourceToStageIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.StageToWarehouseIdMapRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_AdresRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_PracownikRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_AdresRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_PracownikRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_AdresRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_PracownikRepository;
 import pl.edu.wat.warehouse_app.util.DbLogger;
@@ -30,11 +26,11 @@ public class PracownikDimensionTransformer {
 
     Stage_PracownikRepository stage_pracownikRepository;
 
-    Stage_W_PracownikRepository stage_w_pracownikRepository;
+    TMP_W_PracownikRepository tmp_w_pracownikRepository;
 
     Stage_AdresRepository stage_adresRepository;
 
-    Stage_W_AdresRepository stage_w_adresRepository;
+    TMP_W_AdresRepository tmp_w_adresRepository;
 
     ReflectionUtils reflectionUtils;
 
@@ -59,7 +55,7 @@ public class PracownikDimensionTransformer {
 
         for(Stage_Pracownik newWorker: newWorkers) {
             if(newWorker.getTimestampTo() == null) {
-                Stage_W_Pracownik workerToSave = new Stage_W_Pracownik();
+                TMP_W_Pracownik workerToSave = new TMP_W_Pracownik();
 
                 reflectionUtils.transformFields(newWorker, workerToSave);
 
@@ -68,30 +64,30 @@ public class PracownikDimensionTransformer {
                 workerToSave.setTimestampTo(newWorker.getTimestampTo());
                 workerToSave.setTimestampFrom(newWorker.getTimestampFrom());
 
-                Stage_W_Pracownik lastWorker = stage_w_pracownikRepository.findByNumerPracownikaAndTimestampToIsNull(newWorker.getNumerPracownika());
+                TMP_W_Pracownik lastWorker = tmp_w_pracownikRepository.findByNumerPracownikaAndTimestampToIsNull(newWorker.getNumerPracownika());
                 if(lastWorker != null) {
                     lastWorker.setTimestampTo(new Timestamp(System.currentTimeMillis()));
-                    stage_w_pracownikRepository.save(lastWorker);
+                    tmp_w_pracownikRepository.save(lastWorker);
                 }
 
-                stage_w_pracownikRepository.save(workerToSave);
+                tmp_w_pracownikRepository.save(workerToSave);
 
                 mapId(newWorker, workerToSave);
             } else {
                 //ten els też musi być bo inaczej nie będzie obsłużone usuwanie pracowników
-                Stage_W_Pracownik lastWorker = stage_w_pracownikRepository.findByNumerPracownikaAndTimestampToIsNull(newWorker.getNumerPracownika());
+                TMP_W_Pracownik lastWorker = tmp_w_pracownikRepository.findByNumerPracownikaAndTimestampToIsNull(newWorker.getNumerPracownika());
                 if(lastWorker != null) {
                     lastWorker.setTimestampTo(new Timestamp(System.currentTimeMillis()));
-                    stage_w_pracownikRepository.save(lastWorker);
+                    tmp_w_pracownikRepository.save(lastWorker);
                 }
             }
         }
 
-        logger.logImport(Stage_W_Pracownik.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
+        logger.logImport(TMP_W_Pracownik.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
 
     }
 
-    private void mapId(Stage_Pracownik newWorker, Stage_W_Pracownik workerToSave) {
+    private void mapId(Stage_Pracownik newWorker, TMP_W_Pracownik workerToSave) {
         StageToWarehouseIdMap idMap = new StageToWarehouseIdMap();
 
         idMap.setStageId(newWorker.getId());
@@ -112,7 +108,7 @@ public class PracownikDimensionTransformer {
     }
 
     private Timestamp getLastImportTimestamp(){
-        Timestamp logImport = logImportRepository.findLastTimestampForTable(Stage_W_Pracownik.class.getSimpleName());
+        Timestamp logImport = logImportRepository.findLastTimestampForTable(TMP_W_Pracownik.class.getSimpleName());
         return (null== logImport)? new Timestamp(0) : logImport;
     }
 

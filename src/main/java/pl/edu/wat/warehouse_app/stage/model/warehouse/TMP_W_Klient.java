@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Stage_W_Klient {
+public class TMP_W_Klient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)

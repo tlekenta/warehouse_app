@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.metadata.repository.LogImportRepository;
 import pl.edu.wat.warehouse_app.stage.model.SourceToStageIdMap;
 import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Sklep;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Sklep;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.Stage_Sklep;
 import pl.edu.wat.warehouse_app.stage.repository.SourceToStageIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.StageToWarehouseIdMapRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_AdresRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_SklepRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_AdresRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_SklepRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_AdresRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_SklepRepository;
 import pl.edu.wat.warehouse_app.util.DbLogger;
@@ -28,11 +28,11 @@ public class SklepDimensionTransformer {
 
     Stage_SklepRepository stage_sklepRepository;
 
-    Stage_W_SklepRepository stage_w_sklepRepository;
+    TMP_W_SklepRepository tmp_w_sklepRepository;
 
     Stage_AdresRepository stage_adresRepository;
 
-    Stage_W_AdresRepository stage_w_adresRepository;
+    TMP_W_AdresRepository tmp_w_adresRepository;
 
     SourceToStageIdMapRepository sourceToStageIdMapRepository;
 
@@ -47,7 +47,7 @@ public class SklepDimensionTransformer {
     public void transform() throws IllegalAccessException {
         List<Stage_Sklep> sourceShops = stage_sklepRepository.findAll();
 
-        Timestamp lastImport = logger.getLastImportTimestamp(Stage_W_Sklep.class.getSimpleName());
+        Timestamp lastImport = logger.getLastImportTimestamp(TMP_W_Sklep.class.getSimpleName());
 
         //1.
         List<Stage_Sklep> newShops =
@@ -57,7 +57,7 @@ public class SklepDimensionTransformer {
                         .collect(Collectors.toList());
 
         for(Stage_Sklep newShop: newShops) {
-            Stage_W_Sklep warehouseShop = new Stage_W_Sklep();
+            TMP_W_Sklep warehouseShop = new TMP_W_Sklep();
 
             if(newShop.getTimestampTo() == null) {
                 //2 1* a) START
@@ -71,13 +71,13 @@ public class SklepDimensionTransformer {
                 //2 1* b)
                 warehouseShop.setAdresId(getWarehouseAddressId(newShop.getAdresID()));
                 //2 2* a)
-                Stage_W_Sklep lastWarehouseShop = stage_w_sklepRepository.findByNumerSklepuAndTimestampToIsNull(newShop.getNumerSklepu());
+                TMP_W_Sklep lastWarehouseShop = tmp_w_sklepRepository.findByNumerSklepuAndTimestampToIsNull(newShop.getNumerSklepu());
                 //2 2* b)
                 if(null != lastWarehouseShop) {
                     lastWarehouseShop.setTimestampTo(new Timestamp(System.currentTimeMillis()));
-                    stage_w_sklepRepository.save(lastWarehouseShop);
+                    tmp_w_sklepRepository.save(lastWarehouseShop);
                 }
-                stage_w_sklepRepository.save(warehouseShop);
+                tmp_w_sklepRepository.save(warehouseShop);
 
                 //2 1* c)
                 StageToWarehouseIdMap idMap = new StageToWarehouseIdMap();
@@ -88,15 +88,15 @@ public class SklepDimensionTransformer {
                 stageToWarehouseIdMapRepository.save(idMap);
 
             } else {
-                Stage_W_Sklep lastWarehouseShop = stage_w_sklepRepository.findByNumerSklepuAndTimestampToIsNull(newShop.getNumerSklepu());
+                TMP_W_Sklep lastWarehouseShop = tmp_w_sklepRepository.findByNumerSklepuAndTimestampToIsNull(newShop.getNumerSklepu());
                 if(null != lastWarehouseShop) {
                     lastWarehouseShop.setTimestampTo(new Timestamp(System.currentTimeMillis()));
-                    stage_w_sklepRepository.save(lastWarehouseShop);
+                    tmp_w_sklepRepository.save(lastWarehouseShop);
                 }
             }
         }
 
-        logger.logImport(Stage_W_Sklep.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
+        logger.logImport(TMP_W_Sklep.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
 
     }
 

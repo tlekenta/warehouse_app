@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Stage_W_Data {
+public class TMP_W_Data {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)

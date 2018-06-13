@@ -1,7 +1,6 @@
 package pl.edu.wat.warehouse_app.stage.model.warehouse;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,20 +10,19 @@ import java.sql.Timestamp;
 
 @Data
 @Entity
-@NoArgsConstructor
-public class Stage_W_Czas {
+public class TMP_F_Zmiana_Pracownicza {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long czasId;
+    private Long zmianaId;
 
-    private Timestamp dateTime;
+    private Long pracownikId;
 
-    private Long dataId;
+    private Long dataRozpoczeciaId;
 
-    private Integer godzina;
+    private Long dataZakonczeniaId;
 
-    private Integer minuta;
+    private Long sklepId;
 
     private Timestamp timestampFrom;
 
