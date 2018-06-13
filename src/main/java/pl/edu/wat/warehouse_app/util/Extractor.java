@@ -52,7 +52,7 @@ public class Extractor {
         Set<Class<?>> vClasses = vReflections.getTypesAnnotatedWith(Entity.class);
 
         for (Class iClass : vClasses) {
-            extract(iClass);
+            extractAndLogImport(iClass);
         }
     }
 
@@ -61,7 +61,7 @@ public class Extractor {
         Set<Class<?>> vClasses = vReflections.getTypesAnnotatedWith(Entity.class);
 
         for (Class iClass : vClasses) {
-            extract(iClass);
+            extractAndLogImport(iClass);
         }
     }
 
@@ -121,9 +121,9 @@ public class Extractor {
                 }
             }
             deserializer.close(true);
-            logger.logImport(Stage_Dostawa.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
+            logger.logImport(Stage_Promocja.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
         } catch (Exception $e) {
-            logger.logImport(Stage_Dostawa.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), false);
+            logger.logImport(Stage_Promocja.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), false);
         }
     }
 
@@ -140,6 +140,14 @@ public class Extractor {
         return new InputStreamReader(this.getClass().getResourceAsStream("./" + fileName + ".csv"));
     }
 
+    private void extractAndLogImport(Class pClass){
+        try {
+            extract(pClass);
+            logger.logImport(pClass.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
+        } catch (Exception e) {
+            logger.logImport(pClass.getSimpleName(), new Timestamp(System.currentTimeMillis()), false);
+        }
+    }
 
     private void extract(Class pClass) throws IllegalAccessException, NoSuchFieldException {
         JpaRepository vSourceRepository = repositoryFactory.getSourceRepository(pClass);
@@ -212,8 +220,8 @@ public class Extractor {
             }
         }
         //4.
-        for(IStageEntity deletedObject: (List<IStageEntity>) vStageObjects) {
-            if(deletedObject.getTimestampTo() == null) {
+        for (IStageEntity deletedObject : (List<IStageEntity>) vStageObjects) {
+            if (deletedObject.getTimestampTo() == null) {
                 deletedObject.setTimestampTo(new Timestamp(System.currentTimeMillis()));
                 vStageRepository.save(deletedObject);
             }
@@ -225,7 +233,7 @@ public class Extractor {
         SourceToStageIdMap oldMap = sourceToStageIdMapRepository
                 .findBySourceIdAndSourceTableName(iSourceObject.getId(), iSourceObject.getClass().getSimpleName());
 
-        if(oldMap != null) {
+        if (oldMap != null) {
             sourceToStageIdMapRepository.delete(oldMap);
         }
 
