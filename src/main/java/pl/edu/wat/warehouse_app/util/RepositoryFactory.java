@@ -272,4 +272,45 @@ public class RepositoryFactory {
         throw new UnsupportedOperationException("Nieobsługiwana encja: " + pClass.getName());
     }
 
+    public JpaRepository getWarehouseRepositoryByTmpClass(Class pClass) {
+        if (TMP_W_Adres.class == pClass) {
+            return w_adresRepository;
+        }
+        if (TMP_W_Czas.class == pClass) {
+            return w_czasRepository;
+        }
+        if (TMP_W_Data.class == pClass) {
+            return w_dataRepository;
+        }
+        if (TMP_W_Klient.class == pClass) {
+            return w_klientRepository;
+        }
+        if (TMP_W_Pracownik.class == pClass) {
+            return w_pracownikRepository;
+        }
+        if (TMP_W_Produkt.class == pClass) {
+            return w_produktRepository;
+        }
+        if (TMP_W_Sklep.class == pClass) {
+            return w_sklepRepository;
+        }
+        if (TMP_F_Dostawa.class == pClass) {
+            return f_dostawaRepository;
+        }
+        if (TMP_F_Promocja.class == pClass) {
+            return f_promocjaRepository;
+        }
+        if (TMP_F_Sprzedaz.class == pClass) {
+            return f_sprzedazRepository;
+        }
+        if (TMP_F_Zmiana_Pracownicza.class == pClass) {
+            return f_zmianaPracowniczaRepository;
+        }
+        if (TMP_F_Zwrot.class == pClass) {
+            return f_zwrotRepository;
+        }
+
+        throw new UnsupportedOperationException("Nieobsługiwana encja: " + pClass.getName());
+    }
+
 }

@@ -1,17 +1,21 @@
 package pl.edu.wat.warehouse_app.warehouse.model.dimension;
 
 import lombok.Data;
+import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Entity
-public class W_Sklep {
+public class W_Sklep implements IBusinessEntity {
 
     @Id
+    @GeneratedValue
     private Long id;
 
     private String nazwa;
@@ -28,4 +32,8 @@ public class W_Sklep {
     private Timestamp timestampTo;
 
 
+    @Override
+    public List getBusinessKey() {
+        return null;
+    }
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
+import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
 import pl.edu.wat.warehouse_app.util.annotation.TransformedField;
 
 import javax.persistence.Entity;
@@ -17,7 +18,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class TMP_W_Produkt implements IBusinessEntity {
+public class TMP_W_Produkt implements IBusinessEntity, IStageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)

@@ -2,6 +2,7 @@ package pl.edu.wat.warehouse_app.stage.model.warehouse;
 
 import lombok.Data;
 import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
+import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
 import pl.edu.wat.warehouse_app.util.annotation.TransformedField;
 
 import javax.persistence.Entity;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class TMP_F_Dostawa implements IBusinessEntity {
+public class TMP_F_Dostawa implements IBusinessEntity, IStageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)

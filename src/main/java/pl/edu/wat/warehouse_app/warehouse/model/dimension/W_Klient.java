@@ -1,13 +1,15 @@
 package pl.edu.wat.warehouse_app.warehouse.model.dimension;
 
 import lombok.Data;
+import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Entity
-public class W_Klient {
+public class W_Klient implements IBusinessEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
@@ -28,4 +30,8 @@ public class W_Klient {
 
     private Timestamp timestampTo;
 
+    @Override
+    public List getBusinessKey() {
+        return null;
+    }
 }
