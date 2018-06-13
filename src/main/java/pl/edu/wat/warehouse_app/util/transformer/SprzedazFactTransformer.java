@@ -30,15 +30,15 @@ public class SprzedazFactTransformer {
     2. Dla każdego nowego paragonu pobrać jego elmenty (nie trzeba sprawdzać czy elemnty są nowe bo paragon jest nowy)
         * w Stage_ReciptItem reciptId jest ustawione na złe id -> skorzystać z mapowania source do stage
     3. Dla każdego paragonu pobrać id pracownika i id sklepu
-        * Skorzystać z mapowania source do stage i potem z stage do warehouse (będę wtedy miał idki z tabel Stage_W_*)
+        * Skorzystać z mapowania source do stage i potem z stage do warehouse (będę wtedy miał idki z tabel TMP_W_*)
     3. Dla każdego elementu paragonu stworzyć fakt sprzedaży
     */
 
-    Stage_W_ProductRepository stage_w_productRepository;
+    TMP_W_ProductRepository TMP_W_productRepository;
 
-    Stage_W_SklepRepository stage_w_sklepRepository;
+    TMP_W_SklepRepository TMP_W_sklepRepository;
 
-    Stage_W_PracownikRepository stage_w_pracownikRepository;
+    TMP_W_PracownikRepository TMP_W_pracownikRepository;
 
     Stage_ReceiptRepository stage_receiptRepository;
 
@@ -46,9 +46,9 @@ public class SprzedazFactTransformer {
 
     Stage_ProductRepository stage_productRepository;
 
-    Stage_F_Zmiana_PracowniczaRepository stage_f_zmiana_pracowniczaRepository;
+    TMP_F_Zmiana_PracowniczaRepository TMP_F_zmiana_pracowniczaRepository;
 
-    Stage_F_SprzedazRepository stage_f_sprzedazRepository;
+    TMP_F_SprzedazRepository TMP_F_sprzedazRepository;
 
     ReflectionUtils reflectionUtils;
 
@@ -58,11 +58,11 @@ public class SprzedazFactTransformer {
 
     StageToWarehouseIdMapRepository stageToWarehouseIdMapRepository;
 
-    Stage_W_CzasRepository stage_w_czasRepository;
+    TMP_W_CzasRepository TMP_W_czasRepository;
 
     public void transform() throws IllegalAccessException {
 
-        Timestamp lastImport = logger.getLastImportTimestamp(Stage_F_Sprzedaz.class.getSimpleName());
+        Timestamp lastImport = logger.getLastImportTimestamp(TMP_F_Sprzedaz.class.getSimpleName());
 
         List<Stage_Receipt> stageReceipts = stage_receiptRepository.findAll();
 
@@ -77,16 +77,16 @@ public class SprzedazFactTransformer {
             Long workerId = getWarehouseWorkerId(newRecipt.getUserId());
 
             newRecipt.getDate().setSeconds(0);
-            Stage_W_Czas czasZakupu = stage_w_czasRepository.findByDateTime(newRecipt.getDate());
+            TMP_W_Czas czasZakupu = TMP_W_czasRepository.findByDateTime(newRecipt.getDate());
 
             Long shopId = getShopId(czasZakupu, workerId);
 
             List<Stage_ReceiptItem> receiptItems = stage_receiptItemRepository.findByReciptNumber(newRecipt.getReciptNumber());
 
             for(Stage_ReceiptItem receiptItem: receiptItems) {
-                Stage_W_Produkt produkt = getProdukt(receiptItem.getProductId(), newRecipt, czasZakupu);
+                TMP_W_Produkt produkt = getProdukt(receiptItem.getProductId(), newRecipt, czasZakupu);
 
-                Stage_F_Sprzedaz sprzedaz = new Stage_F_Sprzedaz();
+                TMP_F_Sprzedaz sprzedaz = new TMP_F_Sprzedaz();
 
                 if(produkt != null) {
                     sprzedaz.setCenaJednostkowa(produkt.getCenaJednostkowa());
@@ -103,14 +103,14 @@ public class SprzedazFactTransformer {
 
                 sprzedaz.setTimestampFrom(receiptItem.getTimestampFrom());
 
-                stage_f_sprzedazRepository.save(sprzedaz);
+                TMP_F_sprzedazRepository.save(sprzedaz);
             }
 
 
         }
     }
 
-    private Long getShopId(Stage_W_Czas czasZakupu, Long workerId) {
+    private Long getShopId(TMP_W_Czas czasZakupu, Long workerId) {
         //chcę znaleźć sklep po dacie zakupu i id pracownika
         /*
         1. Wyciągnąć wzystkie zmiany dla czasu zakupu
@@ -118,13 +118,13 @@ public class SprzedazFactTransformer {
         3. Jeżeli nie ma to null
          */
 
-        List<Stage_F_Zmiana_Pracownicza> zmianyPracownicze = stage_f_zmiana_pracowniczaRepository.findAll();
+        List<TMP_F_Zmiana_Pracownicza> zmianyPracownicze = TMP_F_zmiana_pracowniczaRepository.findAll();
 
-        List<Stage_F_Zmiana_Pracownicza> przefiltrowaneZmiany = new LinkedList<>();
+        List<TMP_F_Zmiana_Pracownicza> przefiltrowaneZmiany = new LinkedList<>();
 
-        for(Stage_F_Zmiana_Pracownicza zmiana: zmianyPracownicze) {
-            Stage_W_Czas poczatekZmiany = stage_w_czasRepository.getOne(zmiana.getDataRozpoczeciaId());
-            Stage_W_Czas koniecZmiany = stage_w_czasRepository.getOne(zmiana.getDataZakonczeniaId());
+        for(TMP_F_Zmiana_Pracownicza zmiana: zmianyPracownicze) {
+            TMP_W_Czas poczatekZmiany = TMP_W_czasRepository.getOne(zmiana.getDataRozpoczeciaId());
+            TMP_W_Czas koniecZmiany = TMP_W_czasRepository.getOne(zmiana.getDataZakonczeniaId());
 
         }
 
@@ -140,16 +140,16 @@ public class SprzedazFactTransformer {
                 getWarehouseId();
     }
 
-    private Stage_W_Produkt getProdukt(Long sourceProductId, Stage_Receipt receipt, Stage_W_Czas czasZakupu) {
+    private TMP_W_Produkt getProdukt(Long sourceProductId, Stage_Receipt receipt, TMP_W_Czas czasZakupu) {
         SourceToStageIdMap sourceProductMap = sourceToStageIdMapRepository.
                 findBySourceIdAndSourceTableName(sourceProductId, "ZrodloPos_Product");
 
         String barcode = stage_productRepository.findById(sourceProductMap.getStageId()).getBarcode();
 
         //chcę wyciągnąć produkt, który obowiązywał w momencie sprzedazy lub najbardziej aktualny jeżeli takiego nie ma
-        List<Stage_W_Produkt> w_produkts = stage_w_productRepository.findByKodKreskowy(barcode);
+        List<TMP_W_Produkt> w_produkts = TMP_W_productRepository.findByKodKreskowy(barcode);
 
-        List<Stage_W_Produkt> filtredProducts = w_produkts
+        List<TMP_W_Produkt> filtredProducts = w_produkts
                 .stream()
                 .filter(produkt -> czasZakupu.getDateTime().after(produkt.getTimestampFrom()) && czasZakupu.getDateTime().before(produkt.getTimestampTo()))
                 .collect(Collectors.toList());
@@ -157,7 +157,7 @@ public class SprzedazFactTransformer {
         if(filtredProducts.size() == 1) {
             return filtredProducts.get(0);
         } else {
-            return stage_w_productRepository.findByKodKreskowyAndTimestampToIsNull(barcode);
+            return TMP_W_productRepository.findByKodKreskowyAndTimestampToIsNull(barcode);
         }
 
     }

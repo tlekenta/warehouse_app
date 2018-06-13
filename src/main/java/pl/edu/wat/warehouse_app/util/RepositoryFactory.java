@@ -173,29 +173,29 @@ public class RepositoryFactory {
 
     public JpaRepository getStageRepositoryByWarehouseClass(Class pClass) {
         if (pClass == W_Adres.class) {
-            return stage_w_adresRepository;
+            return tmp_w_adresRepository;
         } else if (pClass == W_Czas.class) {
-            return stage_w_czasRepository;
+            return tmp_w_czasRepository;
         } else if (pClass == W_Data.class) {
-            return stage_w_dataRepository;
+            return tmp_w_dataRepository;
         } else if (pClass == W_Klient.class) {
-            return stage_w_klientRepository;
+            return tmp_w_klientRepository;
         } else if (pClass == W_Pracownik.class) {
-            return stage_w_pracownikRepository;
+            return tmp_w_pracownikRepository;
         } else if (pClass == W_Produkt.class) {
-            return stage_w_produktRepository;
+            return tmp_w_produktRepository;
         } else if (pClass == W_Sklep.class) {
-            return stage_w_sklepRepository;
+            return tmp_w_sklepRepository;
         } else if (pClass == F_Dostawa.class) {
-            return stage_f_dostawaRepository;
+            return tmp_f_dostawaRepository;
         } else if (pClass == F_Promocja.class) {
-            return stage_f_promocjaRepository;
+            return tmp_f_promocjaRepository;
         } else if (pClass == F_Sprzedaz.class) {
-            return stage_f_sprzedazRepository;
+            return tmp_f_sprzedazRepository;
         } else if (pClass == F_Zmiana_Pracownicza.class) {
-            return stage_f_zmianaPracowniczaRepository;
+            return tmp_f_zmianaPracowniczaRepository;
         } else if (pClass == F_Zwrot.class) {
-            return stage_f_zwrotRepository;
+            return tmp_f_zwrotRepository;
         } else {
             throw new UnsupportedOperationException("Nieobsługiwana encja: " + pClass.getName());
         }
