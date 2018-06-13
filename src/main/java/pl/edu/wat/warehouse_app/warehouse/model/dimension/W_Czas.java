@@ -14,7 +14,7 @@ public class W_Czas {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long czasId;
+    private Long id;
 
     private Timestamp dateTime;
 

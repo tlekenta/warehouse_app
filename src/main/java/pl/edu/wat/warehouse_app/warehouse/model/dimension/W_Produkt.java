@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 public class W_Produkt {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long produktId;
+    private Long id;
 
     private String nazwa;
 

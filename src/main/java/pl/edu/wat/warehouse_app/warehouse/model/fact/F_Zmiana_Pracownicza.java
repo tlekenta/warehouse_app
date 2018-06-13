@@ -15,7 +15,7 @@ public class F_Zmiana_Pracownicza {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long zmianaId;
+    private Long id;
 
     private Long pracownikId;
 

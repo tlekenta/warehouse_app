@@ -11,7 +11,7 @@ public class W_Adres {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long adresId;
+    private Long id;
 
     private String ulica;
 

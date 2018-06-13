@@ -11,7 +11,7 @@ public class W_Klient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long klientId;
+    private Long id;
 
     @Column(length = 10)
     private String numerKlienta;

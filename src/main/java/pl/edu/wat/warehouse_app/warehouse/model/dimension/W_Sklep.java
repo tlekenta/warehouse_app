@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 public class W_Sklep {
 
     @Id
-    private Long sklepId;
+    private Long id;
 
     private String nazwa;
 

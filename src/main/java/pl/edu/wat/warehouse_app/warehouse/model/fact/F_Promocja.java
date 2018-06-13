@@ -14,7 +14,7 @@ public class F_Promocja {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long promocjaId;
+    private Long id;
 
     private Integer lp;
 

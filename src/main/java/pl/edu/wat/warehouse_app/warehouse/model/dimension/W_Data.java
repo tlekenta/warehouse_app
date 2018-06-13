@@ -15,7 +15,7 @@ public class W_Data {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long dataId;
+    private Long id;
 
     private Date data;
 
