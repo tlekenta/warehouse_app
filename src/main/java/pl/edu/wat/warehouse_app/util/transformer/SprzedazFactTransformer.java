@@ -3,8 +3,10 @@ package pl.edu.wat.warehouse_app.util.transformer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.stage.model.SourceToStageIdMap;
-import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.*;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_F_Sprzedaz;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_F_Zmiana_Pracownicza;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Czas;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Produkt;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_pos.Stage_Receipt;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_pos.Stage_ReceiptItem;
 import pl.edu.wat.warehouse_app.stage.repository.SourceToStageIdMapRepository;
@@ -90,10 +92,10 @@ public class SprzedazFactTransformer {
 
                 if(produkt != null) {
                     sprzedaz.setCenaJednostkowa(produkt.getCenaJednostkowa());
-                    sprzedaz.setProduktId(produkt.getProduktId());
+                    sprzedaz.setProduktId(produkt.getId());
                 }
 
-                sprzedaz.setCzasId(czasZakupu.getCzasId());
+                sprzedaz.setCzasId(czasZakupu.getId());
                 sprzedaz.setNumerParagonu(receiptItem.getReciptNumber());
                 sprzedaz.setPozycjaPragonu(receiptItem.getPosition());
 
