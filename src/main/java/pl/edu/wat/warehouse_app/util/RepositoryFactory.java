@@ -56,18 +56,18 @@ public class RepositoryFactory {
     private Stage_DostawaRepository stage_dostawaRepository;
     private Stage_PromocjaRepository stage_promocjaRepository;
 
-    private Stage_W_AdresRepository stage_w_adresRepository;
-    private Stage_W_CzasRepository stage_w_czasRepository;
-    private Stage_W_DataRepository stage_w_dataRepository;
-    private Stage_W_KlientRepository stage_w_klientRepository;
-    private Stage_W_PracownikRepository stage_w_pracownikRepository;
-    private Stage_W_ProductRepository stage_w_produktRepository;
-    private Stage_W_SklepRepository stage_w_sklepRepository;
-    private Stage_F_DostawaRepository stage_f_dostawaRepository;
-    private Stage_F_PromocjaRepository stage_f_promocjaRepository;
-    private Stage_F_SprzedazRepository stage_f_sprzedazRepository;
-    private Stage_F_Zmiana_PracowniczaRepository stage_f_zmianaPracowniczaRepository;
-    private Stage_F_ZwrotRepository stage_f_zwrotRepository;
+    private TMP_W_AdresRepository tmp_w_adresRepository;
+    private TMP_W_CzasRepository tmp_w_czasRepository;
+    private TMP_W_DataRepository tmp_w_dataRepository;
+    private TMP_W_KlientRepository tmp_w_klientRepository;
+    private TMP_W_PracownikRepository tmp_w_pracownikRepository;
+    private TMP_W_ProductRepository tmp_w_produktRepository;
+    private TMP_W_SklepRepository tmp_w_sklepRepository;
+    private TMP_F_DostawaRepository tmp_f_dostawaRepository;
+    private TMP_F_PromocjaRepository tmp_f_promocjaRepository;
+    private TMP_F_SprzedazRepository tmp_f_sprzedazRepository;
+    private TMP_F_Zmiana_PracowniczaRepository tmp_f_zmianaPracowniczaRepository;
+    private TMP_F_ZwrotRepository tmp_f_zwrotRepository;
 
     private ZrodloPos_ClientRepository zrodloPos_clientRepository;
     private ZrodloPos_ProductRepository zrodloPos_productRepository;
@@ -142,30 +142,30 @@ public class RepositoryFactory {
             return stage_promocjaRepository;
         } else if (pClass == Stage_Dostawa.class) {
             return stage_dostawaRepository;
-        } else if (pClass == Stage_W_Adres.class) {
-            return stage_w_adresRepository;
-        } else if (pClass == Stage_W_Czas.class) {
-            return stage_w_czasRepository;
-        } else if (pClass == Stage_W_Data.class) {
-            return stage_w_dataRepository;
-        } else if (pClass == Stage_W_Klient.class) {
-            return stage_w_klientRepository;
-        } else if (pClass == Stage_W_Pracownik.class) {
-            return stage_w_pracownikRepository;
-        } else if (pClass == Stage_W_Produkt.class) {
-            return stage_w_produktRepository;
-        } else if (pClass == Stage_W_Sklep.class) {
-            return stage_w_sklepRepository;
-        } else if (pClass == Stage_F_Dostawa.class) {
-            return stage_f_dostawaRepository;
-        } else if (pClass == Stage_F_Promocja.class) {
-            return stage_f_promocjaRepository;
-        } else if (pClass == Stage_F_Sprzedaz.class) {
-            return stage_f_sprzedazRepository;
-        } else if (pClass == Stage_F_Zmiana_Pracownicza.class) {
-            return stage_f_zmianaPracowniczaRepository;
-        } else if (pClass == Stage_F_Zwrot.class) {
-            return stage_f_zwrotRepository;
+        } else if (pClass == TMP_W_Adres.class) {
+            return tmp_w_adresRepository;
+        } else if (pClass == TMP_W_Czas.class) {
+            return tmp_w_czasRepository;
+        } else if (pClass == TMP_W_Data.class) {
+            return tmp_w_dataRepository;
+        } else if (pClass == TMP_W_Klient.class) {
+            return tmp_w_klientRepository;
+        } else if (pClass == TMP_W_Pracownik.class) {
+            return tmp_w_pracownikRepository;
+        } else if (pClass == TMP_W_Produkt.class) {
+            return tmp_w_produktRepository;
+        } else if (pClass == TMP_W_Sklep.class) {
+            return tmp_w_sklepRepository;
+        } else if (pClass == TMP_F_Dostawa.class) {
+            return tmp_f_dostawaRepository;
+        } else if (pClass == TMP_F_Promocja.class) {
+            return tmp_f_promocjaRepository;
+        } else if (pClass == TMP_F_Sprzedaz.class) {
+            return tmp_f_sprzedazRepository;
+        } else if (pClass == TMP_F_Zmiana_Pracownicza.class) {
+            return tmp_f_zmianaPracowniczaRepository;
+        } else if (pClass == TMP_F_Zwrot.class) {
+            return tmp_f_zwrotRepository;
         } else {
             throw new UnsupportedOperationException("Nieobsługiwana encja: " + pClass.getName());
         }

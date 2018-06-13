@@ -1,29 +1,32 @@
 package pl.edu.wat.warehouse_app.warehouse.model.fact;
 
 import lombok.Data;
-import pl.edu.wat.warehouse_app.warehouse.model.dimension.W_Data;
-import pl.edu.wat.warehouse_app.warehouse.model.dimension.W_Produkt;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import java.sql.Timestamp;
 
 @Data
 @Entity
 public class F_Promocja {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long promocjaId;
 
-    @ManyToOne
-    private W_Produkt produktId;
+    private Integer lp;
 
-    @ManyToOne
-    private W_Data dataPoczatkowaId;
+    private Long produktId;
 
-    @ManyToOne
-    private W_Data dataKoncowaId;
+    private Long dataPoczatkowaId;
+
+    private Long dataKoncowaId;
 
     private Integer procentObnizki;
 
+    private Timestamp timestampFrom;
+
+    private Timestamp timestampTo;
 }

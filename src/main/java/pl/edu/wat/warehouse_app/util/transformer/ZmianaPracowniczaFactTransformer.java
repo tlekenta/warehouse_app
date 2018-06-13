@@ -3,17 +3,15 @@ package pl.edu.wat.warehouse_app.util.transformer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.stage.model.SourceToStageIdMap;
-import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_F_Zmiana_Pracownicza;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Czas;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Pracownik;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_F_Zmiana_Pracownicza;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Czas;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.Stage_ObecnoscWPracy;
 import pl.edu.wat.warehouse_app.stage.repository.SourceToStageIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.StageToWarehouseIdMapRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_F_Zmiana_PracowniczaRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_CzasRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_PracownikRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_SklepRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_F_Zmiana_PracowniczaRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_CzasRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_PracownikRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_SklepRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_ObecnoscWPracyRepository;
 import pl.edu.wat.warehouse_app.util.DbLogger;
 import pl.edu.wat.warehouse_app.util.ReflectionUtils;
@@ -34,15 +32,15 @@ public class ZmianaPracowniczaFactTransformer {
     Zakładam, że ten fakt nie może się zdezaktualizować, że usunięcie zmiany  albo zmiany sklepu/prcownika/dat nie mają sensu
      */
 
-    Stage_W_PracownikRepository stage_w_pracownikRepository;
+    TMP_W_PracownikRepository tmp_w_pracownikRepository;
 
-    Stage_W_SklepRepository stage_w_sklepRepository;
+    TMP_W_SklepRepository tmp_w_sklepRepository;
 
     Stage_ObecnoscWPracyRepository stage_obecnoscWPracyRepository;
 
-    Stage_W_CzasRepository stage_w_czasRepository;
+    TMP_W_CzasRepository tmp_w_czasRepository;
 
-    Stage_F_Zmiana_PracowniczaRepository stage_f_zmiana_pracowniczaRepository;
+    TMP_F_Zmiana_PracowniczaRepository tmp_f_zmiana_pracowniczaRepository;
 
     SourceToStageIdMapRepository sourceToStageIdMapRepository;
 
@@ -54,7 +52,7 @@ public class ZmianaPracowniczaFactTransformer {
 
     public void transform() {
 
-        Timestamp lastImport = logger.getLastImportTimestamp(Stage_F_Zmiana_Pracownicza.class.getSimpleName());
+        Timestamp lastImport = logger.getLastImportTimestamp(TMP_F_Zmiana_Pracownicza.class.getSimpleName());
 
         List<Stage_ObecnoscWPracy> noweObecnosci =
                 stage_obecnoscWPracyRepository.
@@ -64,7 +62,7 @@ public class ZmianaPracowniczaFactTransformer {
                         collect(Collectors.toList());
 
         for(Stage_ObecnoscWPracy nowaObecnosc: noweObecnosci) {
-            Stage_F_Zmiana_Pracownicza zmianaToSave = new Stage_F_Zmiana_Pracownicza();
+            TMP_F_Zmiana_Pracownicza zmianaToSave = new TMP_F_Zmiana_Pracownicza();
 
             zmianaToSave.setPracownikId(getWarehouseWorkerId(nowaObecnosc.getPracownikId()));
             zmianaToSave.setSklepId(getWarehouseShopId(nowaObecnosc.getSklepId()));
@@ -72,10 +70,10 @@ public class ZmianaPracowniczaFactTransformer {
             zmianaToSave.setDataZakonczeniaId(getTimeId(nowaObecnosc.getWyjscie()));
             zmianaToSave.setTimestampFrom(nowaObecnosc.getTimestampFrom());
 
-            stage_f_zmiana_pracowniczaRepository.save(zmianaToSave);
+            tmp_f_zmiana_pracowniczaRepository.save(zmianaToSave);
         }
 
-        logger.logImport(Stage_F_Zmiana_Pracownicza.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
+        logger.logImport(TMP_F_Zmiana_Pracownicza.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
 
     }
 
@@ -99,7 +97,7 @@ public class ZmianaPracowniczaFactTransformer {
 
     private Long getTimeId(Timestamp time) {
         time.setSeconds(0);
-        Stage_W_Czas byDateTime = stage_w_czasRepository.findByDateTime(time);
+        TMP_W_Czas byDateTime = tmp_w_czasRepository.findByDateTime(time);
         return byDateTime.getCzasId();
     }
 

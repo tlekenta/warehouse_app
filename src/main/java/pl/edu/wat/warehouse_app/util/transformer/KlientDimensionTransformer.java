@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.metadata.repository.LogImportRepository;
 import pl.edu.wat.warehouse_app.stage.model.SourceToStageIdMap;
 import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Klient;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Klient;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.Stage_Klient;
 import pl.edu.wat.warehouse_app.stage.repository.SourceToStageIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.StageToWarehouseIdMapRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_AdresRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_KlientRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_AdresRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_KlientRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_AdresRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_KlientRepository;
 import pl.edu.wat.warehouse_app.util.DbLogger;
@@ -36,9 +36,9 @@ public class KlientDimensionTransformer {
             b) przepisz do niego datę do i zapisz
      */
 
-    Stage_W_AdresRepository stage_w_adresRepository;
+    TMP_W_AdresRepository tmp_w_adresRepository;
 
-    Stage_W_KlientRepository stage_w_klientRepository;
+    TMP_W_KlientRepository tmp_w_klientRepository;
 
     Stage_AdresRepository stage_adresRepository;
 
@@ -57,7 +57,7 @@ public class KlientDimensionTransformer {
     public void transform() throws IllegalAccessException {
         List<Stage_Klient> sourceClients = stage_klientRepository.findAll();
 
-        Timestamp lastImport = logger.getLastImportTimestamp(Stage_W_Klient.class.getSimpleName());
+        Timestamp lastImport = logger.getLastImportTimestamp(TMP_W_Klient.class.getSimpleName());
 
         //1.
         List<Stage_Klient> newClients =
@@ -67,7 +67,7 @@ public class KlientDimensionTransformer {
                         .collect(Collectors.toList());
 
         for(Stage_Klient newClient: newClients) {
-            Stage_W_Klient warehouseClient = new Stage_W_Klient();
+            TMP_W_Klient warehouseClient = new TMP_W_Klient();
 
             if(newClient.getTimestampTo() == null) {
                 //2 1* a) START
@@ -82,14 +82,14 @@ public class KlientDimensionTransformer {
                 warehouseClient.setAdresId(getWarehouseAddressId(newClient.getAdresId()));
 
                 //2 2* a)
-                Stage_W_Klient lastWarehouseClient = stage_w_klientRepository.findByNumerKlientaAndTimestampToIsNull(newClient.getNumerKlienta());
+                TMP_W_Klient lastWarehouseClient = tmp_w_klientRepository.findByNumerKlientaAndTimestampToIsNull(newClient.getNumerKlienta());
                 if(null != lastWarehouseClient){
                     //2 2* b)
                     lastWarehouseClient.setTimestampTo(new Timestamp(System.currentTimeMillis()));
-                    stage_w_klientRepository.save(lastWarehouseClient);
+                    tmp_w_klientRepository.save(lastWarehouseClient);
                 }
 
-                stage_w_klientRepository.save(warehouseClient);
+                tmp_w_klientRepository.save(warehouseClient);
 
                 //2 1* c)
                 StageToWarehouseIdMap idMap = new StageToWarehouseIdMap();
@@ -101,15 +101,15 @@ public class KlientDimensionTransformer {
 
             } else {
                 //musi kurde być
-                Stage_W_Klient lastWarehouseClient = stage_w_klientRepository.findByNumerKlientaAndTimestampToIsNull(newClient.getNumerKlienta());
+                TMP_W_Klient lastWarehouseClient = tmp_w_klientRepository.findByNumerKlientaAndTimestampToIsNull(newClient.getNumerKlienta());
                 if(null != lastWarehouseClient){
                     lastWarehouseClient.setTimestampTo(new Timestamp(System.currentTimeMillis()));
-                    stage_w_klientRepository.save(lastWarehouseClient);
+                    tmp_w_klientRepository.save(lastWarehouseClient);
                 }
             }
         }
 
-        logger.logImport(Stage_W_Klient.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
+        logger.logImport(TMP_W_Klient.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
 
     }
 

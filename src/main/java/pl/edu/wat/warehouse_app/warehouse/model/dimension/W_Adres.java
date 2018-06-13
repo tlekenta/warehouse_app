@@ -2,15 +2,15 @@ package pl.edu.wat.warehouse_app.warehouse.model.dimension;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Data
 @Entity
 public class W_Adres {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long adresId;
 
     private String ulica;
@@ -25,5 +25,9 @@ public class W_Adres {
     private String miasto;
 
     private String poczta;
+
+    private Timestamp timestampFrom;
+
+    private Timestamp timestampTo;
 
 }

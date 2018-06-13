@@ -2,10 +2,10 @@ package pl.edu.wat.warehouse_app.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Czas;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Data;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_CzasRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_DataRepository;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Czas;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Data;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_CzasRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_DataRepository;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 public class DictionaryGenerator {
 
     @Autowired
-    Stage_W_DataRepository dataRepository;
+    TMP_W_DataRepository dataRepository;
     @Autowired
-    Stage_W_CzasRepository czasRepository;
+    TMP_W_CzasRepository czasRepository;
 
     public void generateDateAndTimes() {
 
@@ -40,7 +40,7 @@ public class DictionaryGenerator {
             } else if (miesiac < 10) {
                 kwartal = 3;
             }
-            Stage_W_Data dataDimension = createDate(date, rok, kwartal, miesiac, dzien);
+            TMP_W_Data dataDimension = createDate(date, rok, kwartal, miesiac, dzien);
 
             createTimeForDay(dataDimension);
 
@@ -52,7 +52,7 @@ public class DictionaryGenerator {
         }
     }
 
-    private void createTimeForDay(Stage_W_Data dataDimension) {
+    private void createTimeForDay(TMP_W_Data dataDimension) {
         for (int godz = 0; godz < 24; godz++) {
             for (int min = 0; min < 60; min++) {
                     createTime(dataDimension, godz, min);
@@ -60,8 +60,8 @@ public class DictionaryGenerator {
         }
     }
 
-    private Stage_W_Data createDate(Date date, int rok, int kwartal, int miesiac, int dzien) {
-        Stage_W_Data data = new Stage_W_Data();
+    private TMP_W_Data createDate(Date date, int rok, int kwartal, int miesiac, int dzien) {
+        TMP_W_Data data = new TMP_W_Data();
         data.setData(date);
         data.setKwartal(kwartal);
         data.setDzien(dzien);
@@ -72,8 +72,8 @@ public class DictionaryGenerator {
         return data;
     }
 
-    private Stage_W_Czas createTime(Stage_W_Data stageData, int godzina, int minuta) {
-        Stage_W_Czas czas = new Stage_W_Czas();
+    private TMP_W_Czas createTime(TMP_W_Data stageData, int godzina, int minuta) {
+        TMP_W_Czas czas = new TMP_W_Czas();
         czas.setDataId(stageData.getDataId());
         czas.setGodzina(godzina);
         czas.setMinuta(minuta);

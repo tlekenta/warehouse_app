@@ -1,31 +1,32 @@
 package pl.edu.wat.warehouse_app.warehouse.model.fact;
 
 import lombok.Data;
-import pl.edu.wat.warehouse_app.warehouse.model.dimension.W_Data;
-import pl.edu.wat.warehouse_app.warehouse.model.dimension.W_Pracownik;
-import pl.edu.wat.warehouse_app.warehouse.model.dimension.W_Sklep;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import java.sql.Timestamp;
 
 @Data
 @Entity
 public class F_Zmiana_Pracownicza {
 
+
     @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long zmianaId;
 
-    @ManyToOne
-    private W_Pracownik pracownikId;
+    private Long pracownikId;
 
-    @ManyToOne
-    private W_Data dataRozpoczeciaId;
+    private Long dataRozpoczeciaId;
 
-    @ManyToOne
-    private W_Data dataZakonczeniaId;
+    private Long dataZakonczeniaId;
 
-    @ManyToOne
-    private W_Sklep sklepId;
+    private Long sklepId;
+
+    private Timestamp timestampFrom;
+
+    private Timestamp timestampTo;
 
 }

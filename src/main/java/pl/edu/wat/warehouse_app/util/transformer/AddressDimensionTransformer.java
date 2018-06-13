@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.metadata.repository.LogImportRepository;
 import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Adres;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Adres;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.Stage_Adres;
 import pl.edu.wat.warehouse_app.stage.repository.StageToWarehouseIdMapRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_AdresRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_AdresRepository;
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_AdresRepository;
 import pl.edu.wat.warehouse_app.util.DbLogger;
 import pl.edu.wat.warehouse_app.util.ReflectionUtils;
@@ -24,7 +24,7 @@ public class AddressDimensionTransformer {
 
     Stage_AdresRepository stage_adresRepository;
 
-    Stage_W_AdresRepository stage_w_adresRepository;
+    TMP_W_AdresRepository tmp_w_adresRepository;
 
     ReflectionUtils reflectionUtils;
 
@@ -37,7 +37,7 @@ public class AddressDimensionTransformer {
     public void transform() throws IllegalAccessException {
         List<Stage_Adres> sourceAddresses = stage_adresRepository.findAll();
 
-        Timestamp lastImport = logger.getLastImportTimestamp(Stage_W_Adres.class.getSimpleName());
+        Timestamp lastImport = logger.getLastImportTimestamp(TMP_W_Adres.class.getSimpleName());
 
         //1.
         List<Stage_Adres> newAddresses =
@@ -47,7 +47,7 @@ public class AddressDimensionTransformer {
                         .collect(Collectors.toList());
 
         for(Stage_Adres newAddress: newAddresses) {
-            Stage_W_Adres addressToSave = new Stage_W_Adres();
+            TMP_W_Adres addressToSave = new TMP_W_Adres();
 
             if(newAddress.getTimestampTo() == null) {
                 //2 1* a) START
@@ -65,7 +65,7 @@ public class AddressDimensionTransformer {
                 //TODO dokończyć, nie wiem jak to zrobić bo adres nie ma id biznesowego
                 //trzeba pewnie przez mapowanie idków jakoś wyciągnąć
 
-                stage_w_adresRepository.save(addressToSave);
+                tmp_w_adresRepository.save(addressToSave);
 
                 StageToWarehouseIdMap idMap = new StageToWarehouseIdMap();
                 idMap.setStageId(newAddress.getId());
@@ -77,7 +77,7 @@ public class AddressDimensionTransformer {
 
         }
 
-        logger.logImport(Stage_W_Adres.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
+        logger.logImport(TMP_W_Adres.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
 
     }
 }

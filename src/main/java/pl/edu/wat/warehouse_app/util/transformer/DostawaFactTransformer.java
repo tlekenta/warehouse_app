@@ -4,15 +4,15 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
 import pl.edu.wat.warehouse_app.stage.model.Stage_Dostawa;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_F_Dostawa;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Data;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.Stage_W_Produkt;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_F_Dostawa;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Data;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Produkt;
 import pl.edu.wat.warehouse_app.stage.repository.StageToWarehouseIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.Stage_DostawaRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_F_DostawaRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_DataRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_ProductRepository;
-import pl.edu.wat.warehouse_app.stage.repository.warehouse.Stage_W_SklepRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_F_DostawaRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_DataRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_ProductRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_SklepRepository;
 import pl.edu.wat.warehouse_app.util.DbLogger;
 import pl.edu.wat.warehouse_app.util.ReflectionUtils;
 
@@ -28,10 +28,10 @@ public class DostawaFactTransformer {
     ReflectionUtils reflectionUtils;
 
     Stage_DostawaRepository stage_dostawaRepository;
-    Stage_W_DataRepository stage_w_dataRepository;
-    Stage_W_ProductRepository stage_w_productRepository;
-    Stage_W_SklepRepository stage_w_sklepRepository;
-    Stage_F_DostawaRepository stage_f_dostawaRepository;
+    TMP_W_DataRepository tmp_w_dataRepository;
+    TMP_W_ProductRepository tmp_w_productRepository;
+    TMP_W_SklepRepository tmp_w_sklepRepository;
+    TMP_F_DostawaRepository tmp_f_dostawaRepository;
 
     StageToWarehouseIdMapRepository stageToWarehouseIdMapRepository;
 
@@ -42,7 +42,7 @@ public class DostawaFactTransformer {
         List<Stage_Dostawa> sourceSupplies = stage_dostawaRepository.findAll();
 
 
-        Timestamp lastImport = logger.getLastImportTimestamp(Stage_F_Dostawa.class.getSimpleName());
+        Timestamp lastImport = logger.getLastImportTimestamp(TMP_F_Dostawa.class.getSimpleName());
 
         //1.
         List<Stage_Dostawa> newSourceSupplies =
@@ -53,7 +53,7 @@ public class DostawaFactTransformer {
 
         for (Stage_Dostawa sourceSupply : newSourceSupplies) {
 
-            Stage_F_Dostawa factSupply = new Stage_F_Dostawa();
+            TMP_F_Dostawa factSupply = new TMP_F_Dostawa();
             if (sourceSupply.getTimestampTo() == null) {
 
                 //2 1* a) START
@@ -73,7 +73,7 @@ public class DostawaFactTransformer {
                 //2 2* a)
                 checkForWarehouseEntity(factSupply);
 
-                stage_f_dostawaRepository.save(factSupply);
+                tmp_f_dostawaRepository.save(factSupply);
 
                 //2 1* c)
                 StageToWarehouseIdMap idMap = new StageToWarehouseIdMap();
@@ -89,25 +89,25 @@ public class DostawaFactTransformer {
 
         }
 
-        logger.logImport(Stage_F_Dostawa.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
+        logger.logImport(TMP_F_Dostawa.class.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
     }
 
-    private void checkForWarehouseEntity(Stage_F_Dostawa factSupply) {
-        Stage_F_Dostawa lastWarehouseSupply = stage_f_dostawaRepository.findByNrDokumentuDostawyAndPozycjaDokumentuAndTimestampToIsNull(factSupply.getNrDokumentuDostawy(),factSupply.getPozycjaDokumentu());
+    private void checkForWarehouseEntity(TMP_F_Dostawa factSupply) {
+        TMP_F_Dostawa lastWarehouseSupply = tmp_f_dostawaRepository.findByNrDokumentuDostawyAndPozycjaDokumentuAndTimestampToIsNull(factSupply.getNrDokumentuDostawy(),factSupply.getPozycjaDokumentu());
         if (null != lastWarehouseSupply) {
             //2 2* b)
             lastWarehouseSupply.setTimestampTo(new Timestamp(System.currentTimeMillis()));
-            stage_f_dostawaRepository.save(lastWarehouseSupply);
+            tmp_f_dostawaRepository.save(lastWarehouseSupply);
         }
     }
 
     private Long getProductId(String kodKreskowy) {
-        Stage_W_Produkt produkt = stage_w_productRepository.findByKodKreskowyAndTimestampToIsNull(kodKreskowy);
+        TMP_W_Produkt produkt = tmp_w_productRepository.findByKodKreskowyAndTimestampToIsNull(kodKreskowy);
         return produkt.getProduktId();
     }
 
     private Long getDataId(Timestamp timestamp) {
-        Stage_W_Data data = stage_w_dataRepository.findByRokAndMiesiacAndDzien(timestamp.getYear() + 1900, timestamp.getMonth() + 1, timestamp.getDate());
+        TMP_W_Data data = tmp_w_dataRepository.findByRokAndMiesiacAndDzien(timestamp.getYear() + 1900, timestamp.getMonth() + 1, timestamp.getDate());
         return data.getDataId();
     }
 

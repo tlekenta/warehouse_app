@@ -8,28 +8,22 @@ import java.sql.Timestamp;
 
 @Data
 @Entity
-public class Stage_W_Pracownik {
+public class TMP_W_Sklep {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
-    private Long pracownikId;
+    private Long sklepId;
 
-    @TransformedField(name = "prac_nr")
-    private String numerPracownika;
-
-    @TransformedField(name = "prac_imie")
-    private String imie;
-
-    @TransformedField(name = "prac_nazwisko")
-    private String nazwisko;
+    @TransformedField(name = "sklep_nazwa")
+    private String nazwa;
 
     private Long adresId;
 
     @Column(length = 11)
-    @TransformedField(name = "prac_pesel")
-    private String pesel;
+    @TransformedField(name = "sklep_nr")
+    private String numerSklepu;
 
-    @TransformedField(name = "prac_tel")
+    @TransformedField(name = "sklep_tel")
     private String telefon;
 
     private Timestamp timestampFrom;

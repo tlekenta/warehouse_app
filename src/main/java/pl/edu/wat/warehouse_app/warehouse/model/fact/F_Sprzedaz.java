@@ -1,34 +1,34 @@
 package pl.edu.wat.warehouse_app.warehouse.model.fact;
 
 import lombok.Data;
-import pl.edu.wat.warehouse_app.warehouse.model.dimension.W_Czas;
-import pl.edu.wat.warehouse_app.warehouse.model.dimension.W_Pracownik;
-import pl.edu.wat.warehouse_app.warehouse.model.dimension.W_Produkt;
-import pl.edu.wat.warehouse_app.warehouse.model.dimension.W_Sklep;
-import pl.edu.wat.warehouse_app.warehouse.model.key.F_SprzedazKey;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import java.sql.Timestamp;
 
 @Data
 @Entity
 public class F_Sprzedaz {
 
     @Id
-    private F_SprzedazKey f_sprzedazKey;
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    private Long id;
 
-    @ManyToOne
-    private W_Produkt produktId;
+    //klucz biznesowy
+    private String numerParagonu;
 
-    @ManyToOne
-    private W_Pracownik pracownikId;
+    //klucz biznesowy
+    private Integer pozycjaPragonu;
 
-    @ManyToOne
-    private W_Czas czasId;
+    private Long produktId;
 
-    @ManyToOne
-    private W_Sklep sklepId;
+    private Long pracownikId;
+
+    private Long czasId;
+
+    private Long sklepId;
 
     private Integer liczbaSztuk;
 
@@ -37,5 +37,9 @@ public class F_Sprzedaz {
     private Integer stawkaVat;
 
     private Float cenaBrutto;
+
+    private Timestamp timestampFrom;
+
+    private Timestamp timestampTo;
 
 }

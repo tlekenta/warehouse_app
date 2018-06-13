@@ -1,7 +1,6 @@
 package pl.edu.wat.warehouse_app.stage.model.warehouse;
 
 import lombok.Data;
-import pl.edu.wat.warehouse_app.util.annotation.TransformedField;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,38 +10,32 @@ import java.sql.Timestamp;
 
 @Data
 @Entity
-public class Stage_F_Dostawa {
+public class TMP_F_Sprzedaz {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
 
     //klucz biznesowy
-    @TransformedField(name = "numer_dokumentu")
-    private String nrDokumentuDostawy;
+    private String numerParagonu;
 
     //klucz biznesowy
-    @TransformedField(name = "pozycja_dokumentu")
-    private Integer pozycjaDokumentu;
+    private Integer pozycjaPragonu;
 
     private Long produktId;
 
-    private Long dataDostawyId;
+    private Long pracownikId;
 
-    private Long dataZaplatyId;
+    private Long czasId;
 
     private Long sklepId;
 
-    @TransformedField(name = "dostawca")
-    private String dostawca;
-
-    @TransformedField(name = "sztuki")
     private Integer liczbaSztuk;
 
-    @TransformedField(name = "cena_jedn")
     private Float cenaJednostkowa;
 
-    @TransformedField(name = "cena_brutto")
+    private Integer stawkaVat;
+
     private Float cenaBrutto;
 
     private Timestamp timestampFrom;
