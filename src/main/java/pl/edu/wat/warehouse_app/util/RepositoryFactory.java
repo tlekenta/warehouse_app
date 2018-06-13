@@ -45,6 +45,7 @@ public class RepositoryFactory {
     private Stage_ReceiptRepository stage_reciptRepository;
     private Stage_UnitRepository stage_unitRepository;
     private Stage_UserRepository stage_userRepository;
+    private Stage_ZwrotRepository stage_zwrotRepository;
 
     private Stage_AdresRepository stage_adresRepository;
     private Stage_KlientRepository stage_klientRepository;
@@ -75,6 +76,7 @@ public class RepositoryFactory {
     private ZrodloPos_ReceiptRepository zrodloPos_reciptRepository;
     private ZrodloPos_UnitRepository zrodloPos_unitRepository;
     private ZrodloPos_UserRepository zrodloPos_userRepository;
+    private ZrodloPos_ZwrotRepository zrodloPos_zwrotRepository;
 
     private ZrodloPos_AdresRepository zrodloPos_adresRepository;
     private ZrodloPos_KlientRepository zrodloPos_klientRepository;
@@ -96,6 +98,8 @@ public class RepositoryFactory {
             return stage_unitRepository;
         } else if (pClass == ZrodloPos_User.class) {
             return stage_userRepository;
+        } else if (pClass == ZrodloPos_Zwrot.class) {
+            return stage_zwrotRepository;
         } else if (pClass == ZrodloSystem_Adres.class) {
             return stage_adresRepository;
         } else if (pClass == ZrodloSystem_Klient.class) {
@@ -125,6 +129,8 @@ public class RepositoryFactory {
         } else if (pClass == Stage_Unit.class) {
             return stage_unitRepository;
         } else if (pClass == Stage_User.class) {
+            return stage_userRepository;
+        } else if (pClass == Stage_Zwrot.class) {
             return stage_userRepository;
         } else if (pClass == Stage_Adres.class) {
             return stage_adresRepository;
@@ -214,6 +220,8 @@ public class RepositoryFactory {
             return zrodloPos_unitRepository;
         } else if (pClass == ZrodloPos_User.class) {
             return zrodloPos_userRepository;
+        } else if (pClass == ZrodloPos_Zwrot.class) {
+            return zrodloPos_zwrotRepository;
         } else if (pClass == ZrodloSystem_Adres.class) {
             return zrodloPos_adresRepository;
         } else if (pClass == ZrodloSystem_Klient.class) {

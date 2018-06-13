@@ -29,6 +29,12 @@ public class WarehouseAppApplication implements CommandLineRunner {
     @Autowired
     PromocjaFactTransformer promocjaFactTransformer;
     @Autowired
+    SprzedazFactTransformer sprzedazFactTransformer;
+    @Autowired
+    ZwrotFactTransformer zwrotFactTransformer;
+    @Autowired
+    ZmianaPracowniczaFactTransformer zmianaPracowniczaFactTransformer;
+    @Autowired
     DostawaFactTransformer dostawaFactTransformer;
     @Autowired
     DictionaryGenerator dictionaryGenerator;
@@ -48,13 +54,16 @@ public class WarehouseAppApplication implements CommandLineRunner {
         extractor.extractDostawa();
         extractor.extractPromocja();
 
-//        dictionaryGenerator.generateDateAndTimes();
+        dictionaryGenerator.generateDateAndTimes();
 
         addressDimensionTransformer.transform();
         pracownikDimensionTransformer.transform();
         klientDimensionTransformer.transform();
         productDimensionTransformer.transform();
         sklepDimensionTransformer.transform();
+        sprzedazFactTransformer.transform();
+        zmianaPracowniczaFactTransformer.transform();
+        zwrotFactTransformer.transform();
         promocjaFactTransformer.transform();
         dostawaFactTransformer.transform();
 
