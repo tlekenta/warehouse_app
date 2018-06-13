@@ -9,4 +9,6 @@ public interface TmpToWarehouseIdMapRepository extends JpaRepository<TmpToWareho
 
     TmpToWarehouseIdMap findByTmpIdAndTmpTableName(Long id, String tableName);
 
+    TmpToWarehouseIdMap findByTmpIdAndWarehouseTableName(Long id, String tableName);
+
 }

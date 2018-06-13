@@ -10,13 +10,17 @@ import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.TmpToWarehouseIdMap;
 import pl.edu.wat.warehouse_app.stage.repository.TmpToWarehouseIdMapRepository;
 import pl.edu.wat.warehouse_app.util.DbLogger;
+import pl.edu.wat.warehouse_app.util.ReflectionUtils;
 import pl.edu.wat.warehouse_app.util.RepositoryFactory;
+import pl.edu.wat.warehouse_app.util.WarehouseEntityFactory;
+import pl.edu.wat.warehouse_app.util.annotation.ExternalId;
 import pl.edu.wat.warehouse_app.util.loader.dimentions.*;
 import pl.edu.wat.warehouse_app.util.loader.facts.*;
 import pl.edu.wat.warehouse_app.warehouse.model.dimension.*;
 import pl.edu.wat.warehouse_app.warehouse.model.fact.*;
 
 import javax.persistence.Entity;
+import java.lang.reflect.Field;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
@@ -39,7 +43,9 @@ public class Loader {
     PracownikDimensionLoader pracownikDimensionLoader;
     ProductDimensionLoader productDimensionLoader;
     RepositoryFactory repositoryFactory;
+    WarehouseEntityFactory warehouseEntityFactory;
     TmpToWarehouseIdMapRepository tmpToWarehouseIdMapRepository;
+    ReflectionUtils reflectionUtils;
 
     public void loadWarehouse() {
         Class[] warehouseClassNames = {
@@ -104,7 +110,7 @@ public class Loader {
         }
     }
 
-    public void load() {
+    public void load() throws NoSuchFieldException, IllegalAccessException {
         Reflections vReflections = new Reflections("pl.edu.wat.warehouse_app.stage.model.warehouse");
         Set<Class<?>> vClasses = vReflections.getTypesAnnotatedWith(Entity.class);
 
@@ -128,35 +134,73 @@ public class Loader {
             Utworzyć adnotację, która będzie na klucze obce, jako parametr będzie nazwa tabeli klucza obcego, dzięki niej będę wyciągał z mapy odpowiednie idki hurtowniane
              */
 
-            JpaRepository stageRepository = repositoryFactory.getStageRepositoryByWarehouseClass(clazz);
-            JpaRepository warehouseRepository = repositoryFactory.getWarehouseRepository(clazz);
+            JpaRepository stageRepository = repositoryFactory.getStageRepositoryByStageClass(clazz);
+            JpaRepository warehouseRepository = repositoryFactory.getWarehouseRepositoryByTmpClass(clazz);
 
             List<IStageEntity> allStageObjects = (List<IStageEntity>) stageRepository.findAll();
 
-            Timestamp lastImport = logger.getLastImportTimestamp(clazz.getSimpleName());
+            Timestamp lastImport = logger.getLastImportTimestamp(clazz.getSimpleName() + "_warehouse");
 
             List<IStageEntity> updatedStageObjects = allStageObjects
                     .stream()
-                    .filter(obj -> obj.getTimestampTo().after(lastImport) || (obj.getTimestampTo() != null && obj.getTimestampTo().after(lastImport)))
+                    .filter(obj -> obj.getTimestampFrom().after(lastImport) || (obj.getTimestampTo() != null && obj.getTimestampTo().after(lastImport)))
                     .collect(Collectors.toList());
 
             for(IStageEntity updatedStageObject: updatedStageObjects) {
                 TmpToWarehouseIdMap idMap = tmpToWarehouseIdMapRepository
-                        //TODO zapimplementować IBusinessEntity w tmp
                         .findByTmpIdAndTmpTableName(((IBusinessEntity) updatedStageObject).getId(), updatedStageObject.getClass().getSimpleName());
 
-                if(idMap != null) {
+                if(idMap == null) {
                     //utwórz nową encję, przepisz pola + przy pomocy mapowania ustaw odpowiednie idki dla kluczy obcych + utwórz mapowanie
+                    Object warehouseToSave = warehouseEntityFactory.getWarehouseEntity(updatedStageObject.getClass());
+                    reflectionUtils.rewriteFields(updatedStageObject, warehouseToSave);
+                    updateExternalId(updatedStageObject, warehouseToSave);
+
+                    warehouseRepository.save(warehouseToSave);
+
+                    idMap = new TmpToWarehouseIdMap();
+
+                    idMap.setTmpId(((IBusinessEntity) updatedStageObject).getId());
+                    idMap.setTmpTableName(updatedStageObject.getClass().getSimpleName());
+                    idMap.setWarehouseId(((IBusinessEntity)warehouseToSave).getId());
+                    idMap.setWarehouseTableName(warehouseToSave.getClass().getSimpleName());
+
+                    tmpToWarehouseIdMapRepository.save(idMap);
+
                 } else {
                     //wyciągnij po id (tym z mapy) obiekt z hurtowni, przepisz timestamp to + zakutalizuj idki dla kluczy obcych
+                    //aktualizacja tutaj kluczy obcych niema sensu (obiekt w tym miejscu na pewno nie został zaktualizowany)
                 }
             }
 
 
-            logger.logImport(clazz.getSimpleName(), new Timestamp(System.currentTimeMillis()), true);
+            logger.logImport(clazz.getSimpleName() + "_warehouse", new Timestamp(System.currentTimeMillis()), true);
 
         }
 
+    }
+
+    private void updateExternalId(Object tmpObject, Object warehouseObject) throws IllegalAccessException, NoSuchFieldException {
+        Field[] tmpFields = tmpObject.getClass().getDeclaredFields();
+
+        for(Field tmpField: tmpFields) {
+            ExternalId annotation = tmpField.getAnnotation(ExternalId.class);
+            if(annotation != null) {
+                tmpField.setAccessible(true);
+                TmpToWarehouseIdMap idMap = tmpToWarehouseIdMapRepository
+                        .findByTmpIdAndWarehouseTableName(tmpField.getLong(tmpObject), annotation.tableName());
+
+                String tmpFieldName = tmpField.getName();
+                Field warehouseField = warehouseObject.getClass().getDeclaredField(tmpFieldName);
+
+                warehouseField.setAccessible(true);
+
+                warehouseField.set(warehouseObject, idMap.getWarehouseId());
+
+                warehouseField.setAccessible(false);
+                tmpField.setAccessible(false);
+            }
+        }
     }
 
 }
