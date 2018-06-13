@@ -2,6 +2,7 @@ package pl.edu.wat.warehouse_app.warehouse.model.dimension;
 
 import lombok.Data;
 import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
+import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class W_Klient implements IBusinessEntity {
+public class W_Klient implements IBusinessEntity, IStageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
