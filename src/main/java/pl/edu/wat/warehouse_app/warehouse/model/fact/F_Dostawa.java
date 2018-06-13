@@ -1,37 +1,44 @@
 package pl.edu.wat.warehouse_app.warehouse.model.fact;
 
 import lombok.Data;
-import pl.edu.wat.warehouse_app.warehouse.model.dimension.W_Data;
-import pl.edu.wat.warehouse_app.warehouse.model.dimension.W_Produkt;
-import pl.edu.wat.warehouse_app.warehouse.model.dimension.W_Sklep;
-import pl.edu.wat.warehouse_app.warehouse.model.key.F_DostawaKey;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.sql.Timestamp;
 
 @Data
 @Entity
 public class F_Dostawa {
 
     @Id
-    private F_DostawaKey f_dostawaKey;
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    private Long id;
 
-    @ManyToOne
-    private W_Produkt produktId;
+    //klucz biznesowy
+    private String nrDokumentuDostawy;
 
-    private Long dostawcaId;
+    //klucz biznesowy
+    private Integer pozycjaDokumentu;
 
-    @ManyToOne
-    private W_Data dataId;
+    private Long produktId;
 
-    @ManyToOne
-    private W_Sklep sklepId;
+    private Long dataDostawyId;
+
+    private Long dataZaplatyId;
+
+    private Long sklepId;
+
+    private String dostawca;
 
     private Integer liczbaSztuk;
 
     private Float cenaJednostkowa;
 
-    private Integer stawkaVat;
-
     private Float cenaBrutto;
 
+    private Timestamp timestampFrom;
+
+    private Timestamp timestampTo;
 }

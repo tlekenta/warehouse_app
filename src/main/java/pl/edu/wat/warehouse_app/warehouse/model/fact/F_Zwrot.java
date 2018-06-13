@@ -1,36 +1,46 @@
 package pl.edu.wat.warehouse_app.warehouse.model.fact;
 
 import lombok.Data;
-import pl.edu.wat.warehouse_app.warehouse.model.dimension.*;
-import pl.edu.wat.warehouse_app.warehouse.model.key.F_ZwrotKey;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import java.sql.Timestamp;
 
 @Data
 @Entity
 public class F_Zwrot {
 
     @Id
-    private F_ZwrotKey f_zwrotKey;
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    private Long id;
 
-    @ManyToOne
-    private W_Pracownik produktId;
+    //klucz biznesowy
+    private String nrZwrotu;
 
-    @ManyToOne
-    private W_Klient klientId;
+    //klucz biznesowy
+    private String numerParagonu;
 
-    @ManyToOne
-    private W_Data dataId;
+    //klucz biznesowy
+    private Integer pozycjaParagonu;
 
-    @ManyToOne
-    private W_Sklep sklepId;
+    private Long produktId;
+
+    private Long klientId;
+
+    private Long dataId;
+
+    private Long sklepId;
 
     private Integer liczbaSztuk;
 
     private Float cenaJednostkowa;
 
     private Float strataCalkowita;
+
+    private Timestamp timestampFrom;
+
+    private Timestamp timestampTo;
 
 }
