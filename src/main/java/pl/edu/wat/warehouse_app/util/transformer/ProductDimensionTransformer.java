@@ -83,7 +83,7 @@ public class ProductDimensionTransformer {
 
         idMap.setStageId(newProd.getId());
         idMap.setStageTableName(newProd.getClass().getSimpleName());
-        idMap.setWarehouseId(prodToSave.getProduktId());
+        idMap.setWarehouseId(prodToSave.getId());
         idMap.setWarehouseTableName(prodToSave.getClass().getSimpleName());
 
         stageToWarehouseIdMapRepository.save(idMap);

@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
 import pl.edu.wat.warehouse_app.stage.model.Stage_Dostawa;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_F_Dostawa;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Data;
-import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Produkt;
 import pl.edu.wat.warehouse_app.stage.repository.StageToWarehouseIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.Stage_DostawaRepository;
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_F_DostawaRepository;
@@ -15,6 +13,7 @@ import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_ProductReposito
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_SklepRepository;
 import pl.edu.wat.warehouse_app.util.DbLogger;
 import pl.edu.wat.warehouse_app.util.ReflectionUtils;
+import pl.edu.wat.warehouse_app.util.helpers.WarehouseIdsGetter;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -36,6 +35,7 @@ public class DostawaFactTransformer {
     StageToWarehouseIdMapRepository stageToWarehouseIdMapRepository;
 
     DbLogger logger;
+    WarehouseIdsGetter warehouseIdsGetter;
 
     public void transform() throws IllegalAccessException {
 
@@ -65,10 +65,10 @@ public class DostawaFactTransformer {
                 //2 1* a) KONIEC
 
                 //2 1* b)
-                factSupply.setDataDostawyId(getDataId(sourceSupply.getDataDostawy()));
-                factSupply.setDataZaplatyId(getDataId(sourceSupply.getDataZaplaty()));
+                factSupply.setDataDostawyId(warehouseIdsGetter.getWarehouseDataId(sourceSupply.getDataDostawy()));
+                factSupply.setDataZaplatyId(warehouseIdsGetter.getWarehouseDataId(sourceSupply.getDataZaplaty()));
 
-                factSupply.setProduktId(getProductId(sourceSupply.getKodKreskowy()));
+                factSupply.setProduktId(warehouseIdsGetter.getWarehouseProductId(sourceSupply.getKodKreskowy()));
 
                 //2 2* a)
                 checkForWarehouseEntity(factSupply);
@@ -99,16 +99,6 @@ public class DostawaFactTransformer {
             lastWarehouseSupply.setTimestampTo(new Timestamp(System.currentTimeMillis()));
             tmp_f_dostawaRepository.save(lastWarehouseSupply);
         }
-    }
-
-    private Long getProductId(String kodKreskowy) {
-        TMP_W_Produkt produkt = tmp_w_productRepository.findByKodKreskowyAndTimestampToIsNull(kodKreskowy);
-        return produkt.getProduktId();
-    }
-
-    private Long getDataId(Timestamp timestamp) {
-        TMP_W_Data data = tmp_w_dataRepository.findByRokAndMiesiacAndDzien(timestamp.getYear() + 1900, timestamp.getMonth() + 1, timestamp.getDate());
-        return data.getDataId();
     }
 
 }

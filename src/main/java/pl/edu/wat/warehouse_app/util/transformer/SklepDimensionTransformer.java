@@ -3,7 +3,6 @@ package pl.edu.wat.warehouse_app.util.transformer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.metadata.repository.LogImportRepository;
-import pl.edu.wat.warehouse_app.stage.model.SourceToStageIdMap;
 import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Sklep;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.Stage_Sklep;
@@ -15,6 +14,7 @@ import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_AdresReposi
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_SklepRepository;
 import pl.edu.wat.warehouse_app.util.DbLogger;
 import pl.edu.wat.warehouse_app.util.ReflectionUtils;
+import pl.edu.wat.warehouse_app.util.helpers.WarehouseIdsGetter;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -41,6 +41,8 @@ public class SklepDimensionTransformer {
     ReflectionUtils reflectionUtils;
 
     DbLogger logger;
+
+    WarehouseIdsGetter warehouseIdsGetter;
 
     LogImportRepository logImportRepository;
 
@@ -69,7 +71,7 @@ public class SklepDimensionTransformer {
                 //2 1* a) KONIEC
 
                 //2 1* b)
-                warehouseShop.setAdresId(getWarehouseAddressId(newShop.getAdresID()));
+                warehouseShop.setAdresId(warehouseIdsGetter.getWarehouseAddressId(newShop.getAdresID()));
                 //2 2* a)
                 TMP_W_Sklep lastWarehouseShop = tmp_w_sklepRepository.findByNumerSklepuAndTimestampToIsNull(newShop.getNumerSklepu());
                 //2 2* b)
@@ -83,7 +85,7 @@ public class SklepDimensionTransformer {
                 StageToWarehouseIdMap idMap = new StageToWarehouseIdMap();
                 idMap.setStageId(newShop.getId());
                 idMap.setStageTableName(newShop.getClass().getSimpleName());
-                idMap.setWarehouseId(warehouseShop.getSklepId());
+                idMap.setWarehouseId(warehouseShop.getId());
                 idMap.setWarehouseTableName(warehouseShop.getClass().getSimpleName());
                 stageToWarehouseIdMapRepository.save(idMap);
 
@@ -100,13 +102,4 @@ public class SklepDimensionTransformer {
 
     }
 
-
-    private Long getWarehouseAddressId(Long sourceAddressId) {
-        SourceToStageIdMap sourceAddressMap = sourceToStageIdMapRepository.
-                findBySourceIdAndSourceTableName(sourceAddressId, "ZrodloSystem_Adres");
-
-        return stageToWarehouseIdMapRepository.
-                findByStageIdAndStageTableName(sourceAddressMap.getStageId(), sourceAddressMap.getStageTableName()).
-                getWarehouseId();
-    }
 }

@@ -3,7 +3,6 @@ package pl.edu.wat.warehouse_app.util.transformer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.metadata.repository.LogImportRepository;
-import pl.edu.wat.warehouse_app.stage.model.SourceToStageIdMap;
 import pl.edu.wat.warehouse_app.stage.model.StageToWarehouseIdMap;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Klient;
 import pl.edu.wat.warehouse_app.stage.model.zrodlo_system.Stage_Klient;
@@ -15,6 +14,7 @@ import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_AdresReposi
 import pl.edu.wat.warehouse_app.stage.repository.zrodlo_system.Stage_KlientRepository;
 import pl.edu.wat.warehouse_app.util.DbLogger;
 import pl.edu.wat.warehouse_app.util.ReflectionUtils;
+import pl.edu.wat.warehouse_app.util.helpers.WarehouseIdsGetter;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -50,6 +50,8 @@ public class KlientDimensionTransformer {
 
     DbLogger logger;
 
+    WarehouseIdsGetter warehouseIdsGetter;
+
     LogImportRepository logImportRepository;
 
     ReflectionUtils reflectionUtils;
@@ -66,10 +68,10 @@ public class KlientDimensionTransformer {
                         .filter(klient -> (klient.getTimestampFrom().after(lastImport) || (klient.getTimestampTo() != null && klient.getTimestampTo().after(lastImport))))
                         .collect(Collectors.toList());
 
-        for(Stage_Klient newClient: newClients) {
+        for (Stage_Klient newClient : newClients) {
             TMP_W_Klient warehouseClient = new TMP_W_Klient();
 
-            if(newClient.getTimestampTo() == null) {
+            if (newClient.getTimestampTo() == null) {
                 //2 1* a) START
                 reflectionUtils.transformFields(newClient, warehouseClient);
 
@@ -79,11 +81,11 @@ public class KlientDimensionTransformer {
                 //2 1* a) KONIEC
 
                 //2 1* b)
-                warehouseClient.setAdresId(getWarehouseAddressId(newClient.getAdresId()));
+                warehouseClient.setAdresId(warehouseIdsGetter.getWarehouseAddressId(newClient.getAdresId()));
 
                 //2 2* a)
                 TMP_W_Klient lastWarehouseClient = tmp_w_klientRepository.findByNumerKlientaAndTimestampToIsNull(newClient.getNumerKlienta());
-                if(null != lastWarehouseClient){
+                if (null != lastWarehouseClient) {
                     //2 2* b)
                     lastWarehouseClient.setTimestampTo(new Timestamp(System.currentTimeMillis()));
                     tmp_w_klientRepository.save(lastWarehouseClient);
@@ -95,14 +97,14 @@ public class KlientDimensionTransformer {
                 StageToWarehouseIdMap idMap = new StageToWarehouseIdMap();
                 idMap.setStageId(newClient.getId());
                 idMap.setStageTableName(newClient.getClass().getSimpleName());
-                idMap.setWarehouseId(warehouseClient.getKlientId());
+                idMap.setWarehouseId(warehouseClient.getId());
                 idMap.setWarehouseTableName(warehouseClient.getClass().getSimpleName());
                 stageToWarehouseIdMapRepository.save(idMap);
 
             } else {
                 //musi kurde być
                 TMP_W_Klient lastWarehouseClient = tmp_w_klientRepository.findByNumerKlientaAndTimestampToIsNull(newClient.getNumerKlienta());
-                if(null != lastWarehouseClient){
+                if (null != lastWarehouseClient) {
                     lastWarehouseClient.setTimestampTo(new Timestamp(System.currentTimeMillis()));
                     tmp_w_klientRepository.save(lastWarehouseClient);
                 }
@@ -113,12 +115,4 @@ public class KlientDimensionTransformer {
 
     }
 
-    private Long getWarehouseAddressId(Long sourceAddressId) {
-        SourceToStageIdMap sourceAddressMap = sourceToStageIdMapRepository.
-                findBySourceIdAndSourceTableName(sourceAddressId, "ZrodloSystem_Adres");
-
-        return stageToWarehouseIdMapRepository.
-                findByStageIdAndStageTableName(sourceAddressMap.getStageId(), sourceAddressMap.getStageTableName()).
-                getWarehouseId();
-    }
 }
