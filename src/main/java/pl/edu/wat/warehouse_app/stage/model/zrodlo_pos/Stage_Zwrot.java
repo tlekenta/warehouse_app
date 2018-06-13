@@ -1,29 +1,31 @@
-package pl.edu.wat.warehouse_app.stage.model.warehouse;
+package pl.edu.wat.warehouse_app.stage.model.zrodlo_pos;
 
 import lombok.Data;
 import pl.edu.wat.warehouse_app.stage.model.IBusinessEntity;
+import pl.edu.wat.warehouse_app.stage.model.IStageEntity;
 import pl.edu.wat.warehouse_app.util.annotation.TransformedField;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
-@Data
 @Entity
-public class TMP_F_Zwrot implements IBusinessEntity {
+@Data
+public class Stage_Zwrot implements IStageEntity, IBusinessEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue
     private Long id;
+
+    private String kodKreskowy;
+    private String klientNumber;
 
     @TransformedField(name = "kod_paragonu")
     private String receiptCode;
-
-    private Long productId;
-
-    private Long klientId;
-
     @TransformedField(name = "data_zawrotu")
     private Timestamp date;
 
@@ -31,10 +33,12 @@ public class TMP_F_Zwrot implements IBusinessEntity {
 
     private Timestamp timestampTo;
 
+    @Override
+    public Long getId() { return id; }
 
     @Override
     @Transient
     public List getBusinessKey() {
-        return Arrays.asList(receiptCode, productId);
+        return Arrays.asList(receiptCode, kodKreskowy);
     }
 }

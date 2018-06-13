@@ -42,70 +42,70 @@ INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(18, 3, '2018-04-30 14:50:50'
 INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(19, 4, '2018-05-01 15:23:43', 'PAR-019', 0.00, 4);
 INSERT INTO ZRODLO_POS.dbo.ZrodloPos_Receipt VALUES(20, 5, '2018-05-02 16:18:09', 'PAR-020', 0.00, 4);
 
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(1, 1, 1, 'PAR-001', 14.28, 1);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(2, 1, 2, 'PAR-002', 14.09, 2);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(3, 1, 3, 'PAR-003', 15.39, 3);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(4, 1, 4, 'PAR-004', 9.84, 4);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(5, 1, 5, 'PAR-005', 4.91, 5);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(6, 1, 6, 'PAR-006', 0.03, 6);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(7, 1, 7, 'PAR-007', 7.11, 7);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(8, 1, 8, 'PAR-008', 18.83, 8);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(9, 1, 9, 'PAR-009', 5.66, 1);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(10, 1, 10, 'PAR-010', 10.62, 2);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(11, 1, 11, 'PAR-011', 3.62, 3);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(12, 1, 12, 'PAR-012', 2.88, 4);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(13, 1, 13, 'PAR-013', 17.21, 5);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(14, 1, 14, 'PAR-014', 9.11, 6);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(15, 1, 15, 'PAR-015', 13.66, 7);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(16, 1, 16, 'PAR-016', 0.85, 8);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(17, 1, 17, 'PAR-017', 4.66, 1);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(18, 1, 18, 'PAR-018', 19.36, 2);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(19, 1, 19, 'PAR-019', 5.75, 3);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(20, 1, 20, 'PAR-020', 5.93, 4);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(21, 2, 1, 'PAR-001', 4.61, 5);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(22, 2, 2, 'PAR-002', 12.06, 6);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(23, 2, 3, 'PAR-003', 11.98, 7);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(24, 2, 4, 'PAR-004', 19.68, 8);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(25, 2, 5, 'PAR-005', 8.9, 1);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(26, 2, 6, 'PAR-006', 18.57, 2);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(27, 2, 7, 'PAR-007', 17.46, 3);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(28, 2, 8, 'PAR-008', 5.26, 4);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(29, 2, 9, 'PAR-009', 13.8, 5);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(30, 2, 10, 'PAR-010', 14.01, 6);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(31, 2, 11, 'PAR-011', 0.38, 7);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(32, 2, 12, 'PAR-012', 9.52, 8);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(33, 2, 13, 'PAR-013', 15.93, 1);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(34, 2, 14, 'PAR-014', 4.95, 2);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(35, 2, 15, 'PAR-015', 17.16, 3);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(36, 2, 16, 'PAR-016', 11.97, 4);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(37, 2, 17, 'PAR-017', 2.58, 5);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(38, 2, 18, 'PAR-018', 0.98, 6);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(39, 2, 19, 'PAR-019', 18.4, 7);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(40, 2, 20, 'PAR-020', 19.92, 8);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(41, 3, 1, 'PAR-001', 10.56, 1);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(42, 3, 2, 'PAR-002', 12.53, 2);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(43, 3, 3, 'PAR-003', 10.1, 3);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(44, 3, 4, 'PAR-004', 19.88, 4);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(45, 3, 5, 'PAR-005', 16.57, 5);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(46, 3, 6, 'PAR-006', 18.55, 6);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(47, 3, 7, 'PAR-007', 6.54, 7);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(48, 3, 8, 'PAR-008', 10.3, 8);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(49, 3, 9, 'PAR-009', 4.74, 1);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(50, 3, 10, 'PAR-010', 10.22, 2);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(51, 3, 11, 'PAR-011', 1.8, 3);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(52, 3, 12, 'PAR-012', 3.33, 4);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(53, 3, 13, 'PAR-013', 2.01, 5);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(54, 3, 14, 'PAR-014', 12.85, 6);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(55, 3, 15, 'PAR-015', 3.42, 7);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(56, 3, 16, 'PAR-016', 10.12, 8);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(57, 3, 17, 'PAR-017', 16.11, 1);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(58, 3, 18, 'PAR-018', 9.7, 2);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(59, 3, 19, 'PAR-019', 11.3, 3);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(60, 3, 20, 'PAR-020', 10.8, 4);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(61, 4, 1, 'PAR-001', 1.24, 5);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(62, 4, 2, 'PAR-002', 8.46, 6);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(63, 4, 3, 'PAR-003', 11.7, 7);
-INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptId, reciptNumber, amount, productId) VALUES(64, 4, 4, 'PAR-004', 14.82, 8);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(1, 1, 1, 'PAR-001', 14.28, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(2, 1, 2, 'PAR-002', 14.09, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(3, 1, 3, 'PAR-003', 15.39, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(4, 1, 4, 'PAR-004', 9.84, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(5, 1, 5, 'PAR-005', 4.91, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(6, 1, 6, 'PAR-006', 0.03, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(7, 1, 7, 'PAR-007', 7.11, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(8, 1, 8, 'PAR-008', 18.83, 8);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(9, 1, 9, 'PAR-009', 5.66, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(10, 1, 10, 'PAR-010', 10.62, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(11, 1, 11, 'PAR-011', 3.62, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(12, 1, 12, 'PAR-012', 2.88, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(13, 1, 13, 'PAR-013', 17.21, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(14, 1, 14, 'PAR-014', 9.11, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(15, 1, 15, 'PAR-015', 13.66, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(16, 1, 16, 'PAR-016', 0.85, 8);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(17, 1, 17, 'PAR-017', 4.66, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(18, 1, 18, 'PAR-018', 19.36, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(19, 1, 19, 'PAR-019', 5.75, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(20, 1, 20, 'PAR-020', 5.93, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(21, 2, 1, 'PAR-001', 4.61, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(22, 2, 2, 'PAR-002', 12.06, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(23, 2, 3, 'PAR-003', 11.98, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(24, 2, 4, 'PAR-004', 19.68, 8);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(25, 2, 5, 'PAR-005', 8.9, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(26, 2, 6, 'PAR-006', 18.57, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(27, 2, 7, 'PAR-007', 17.46, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(28, 2, 8, 'PAR-008', 5.26, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(29, 2, 9, 'PAR-009', 13.8, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(30, 2, 10, 'PAR-010', 14.01, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(31, 2, 11, 'PAR-011', 0.38, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(32, 2, 12, 'PAR-012', 9.52, 8);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(33, 2, 13, 'PAR-013', 15.93, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(34, 2, 14, 'PAR-014', 4.95, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(35, 2, 15, 'PAR-015', 17.16, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(36, 2, 16, 'PAR-016', 11.97, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(37, 2, 17, 'PAR-017', 2.58, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(38, 2, 18, 'PAR-018', 0.98, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(39, 2, 19, 'PAR-019', 18.4, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(40, 2, 20, 'PAR-020', 19.92, 8);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(41, 3, 1, 'PAR-001', 10.56, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(42, 3, 2, 'PAR-002', 12.53, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(43, 3, 3, 'PAR-003', 10.1, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(44, 3, 4, 'PAR-004', 19.88, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(45, 3, 5, 'PAR-005', 16.57, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(46, 3, 6, 'PAR-006', 18.55, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(47, 3, 7, 'PAR-007', 6.54, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(48, 3, 8, 'PAR-008', 10.3, 8);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(49, 3, 9, 'PAR-009', 4.74, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(50, 3, 10, 'PAR-010', 10.22, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(51, 3, 11, 'PAR-011', 1.8, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(52, 3, 12, 'PAR-012', 3.33, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(53, 3, 13, 'PAR-013', 2.01, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(54, 3, 14, 'PAR-014', 12.85, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(55, 3, 15, 'PAR-015', 3.42, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(56, 3, 16, 'PAR-016', 10.12, 8);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(57, 3, 17, 'PAR-017', 16.11, 1);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(58, 3, 18, 'PAR-018', 9.7, 2);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(59, 3, 19, 'PAR-019', 11.3, 3);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(60, 3, 20, 'PAR-020', 10.8, 4);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(61, 4, 1, 'PAR-001', 1.24, 5);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(62, 4, 2, 'PAR-002', 8.46, 6);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(63, 4, 3, 'PAR-003', 11.7, 7);
+INSERT INTO ZRODLO_POS.dbo.ZrodloPos_ReceiptItem(id, position, receiptCode, reciptNumber, amount, kodKreskowy) VALUES(64, 4, 4, 'PAR-004', 14.82, 8);
 
 
 
@@ -114,9 +114,9 @@ GO
 
 WITH tmp AS 
 (
-	SELECT receiptId, sum(amount) AS suma
+	SELECT receiptCode, sum(amount) AS suma
 	FROM ZrodloPos_ReceiptItem
-	GROUP BY receiptId
+	GROUP BY receiptCode
 )
 
-UPDATE ZrodloPos_Receipt SET totalCost = tmp.suma FROM ZrodloPos_Receipt r INNER JOIN tmp ON r.id = tmp.receiptId;
+UPDATE ZrodloPos_Receipt SET totalCost = tmp.suma FROM ZrodloPos_Receipt r INNER JOIN tmp ON r.id = tmp.receiptCode;

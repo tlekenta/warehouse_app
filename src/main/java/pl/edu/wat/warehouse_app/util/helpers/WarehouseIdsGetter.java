@@ -5,11 +5,13 @@ import org.springframework.stereotype.Service;
 import pl.edu.wat.warehouse_app.stage.model.SourceToStageIdMap;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Czas;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Data;
+import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Klient;
 import pl.edu.wat.warehouse_app.stage.model.warehouse.TMP_W_Produkt;
 import pl.edu.wat.warehouse_app.stage.repository.SourceToStageIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.StageToWarehouseIdMapRepository;
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_CzasRepository;
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_DataRepository;
+import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_KlientRepository;
 import pl.edu.wat.warehouse_app.stage.repository.warehouse.TMP_W_ProductRepository;
 
 import java.sql.Timestamp;
@@ -23,6 +25,8 @@ public class WarehouseIdsGetter {
     TMP_W_DataRepository tmp_w_dataRepository;
     @Autowired
     TMP_W_ProductRepository tmp_w_productRepository;
+    @Autowired
+    TMP_W_KlientRepository tmp_w_klientRepository;
     @Autowired
     SourceToStageIdMapRepository sourceToStageIdMapRepository;
     @Autowired
@@ -73,5 +77,8 @@ public class WarehouseIdsGetter {
                 getWarehouseId();
     }
 
-
+    public Long getWarehouseKlientId(String klientNumber) {
+        TMP_W_Klient klient = tmp_w_klientRepository.findByNumerKlientaAndTimestampToIsNull(klientNumber);
+        return klient.getId();
+    }
 }
