@@ -54,7 +54,8 @@ public class WarehouseAppApplication implements CommandLineRunner {
         extractor.extractDostawa();
         extractor.extractPromocja();
 
-        dictionaryGenerator.generateDateAndTimes();
+        if(!dictionaryGenerator.isDateTimeDictionaryGenerated())
+            dictionaryGenerator.generateDateAndTimes();
 
         addressDimensionTransformer.transform();
         pracownikDimensionTransformer.transform();

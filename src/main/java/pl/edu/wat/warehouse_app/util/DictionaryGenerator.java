@@ -82,4 +82,8 @@ public class DictionaryGenerator {
         czasRepository.save(czas);
         return czas;
     }
+
+    public boolean isDateTimeDictionaryGenerated() {
+        return czasRepository.count() == 8640;
+    }
 }
